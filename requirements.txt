@@ -1,0 +1,7 @@
+redflagbpm
+pycurl
+pandas
+XlsxWriter
+openpyxl
+psycopg2-binary
+

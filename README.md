@@ -1,6 +1,20 @@
-# Main template
+# My New Project!
 
+## Important
 
+Edit this script to set up this project:
+
+- **env.sh**: configure paths used by other scripts 
+
+Run these scripts to initialize this project:
+
+- **after-clone.sh**: creates venv and import all dependencies.
+
+Use these scripts to run tests with this project:
+
+- **proxy.sh**: starts a SOCKS5 Web Proxy on port 6666.
+- **tunnel.sh**: starts local tunnels to BPM Test and DB.
+- **sync.sh**: uploads local changes to BMP Test server.
 
 ## Getting started
 
