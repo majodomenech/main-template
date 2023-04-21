@@ -129,6 +129,7 @@ select  "concertacion"::date,
    when "tipoTitulo" like '%%valado%%' then 'CPD Avalado'
    when "tipoTitulo" like '%%ECHEQ%%' then 'CPD Directo'
    when "tipoTitulo" is null and "informacion" like '%%Conciliar%%diferencias%%%%' then 'Conciliar diferencias recuperos'
+   when "tipoTitulo" is null then "operacion"||' - '||"informacion"
    else "tipoTitulo"
    end as "tipoTitulo",
   "tipoOperacion",
@@ -145,6 +146,7 @@ select  "concertacion"::date,
   (case when "moneda" ~ 'USD.*' then round("cantidad"*(select tc from USD),2) else "valuacion" end) as "valuacionMEP"
 from MOVS
 where not("tipoTitulo" is null and "informacion" like '%%Conciliar%%diferencias%%recuperos%%' and "cantidad" = 0)
+  and not ("tipoTitulo" is null and "informacion" like '%%DB%%Diferencia%%')
 )"""
 
 SQL_ARANCELES=SQL_ARANCELES_BASE+""", redu1 as (
@@ -224,6 +226,8 @@ def create_report(desde: date, hasta: date):
     workbook = load_workbook('TEMPLATE.xlsx')
     writer = pd.ExcelWriter("/tmp/deting.xlsx", engine='openpyxl')
     writer.book = workbook
+    writer.sheets["Datos Aranceles"] = workbook["Datos Aranceles"]
+    writer.sheets["Datos Aranceles Ranking"] = workbook["Datos Aranceles Ranking"]
 
     dfAranceles.to_excel(writer, "Datos Aranceles")
     dfArancelesRanking.to_excel(writer, "Datos Aranceles Ranking")
