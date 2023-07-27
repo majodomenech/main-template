@@ -1,9 +1,4 @@
 #!/bin/bash
 
-pushd openapi
-
-xdg-open http://localhost:8000
-
-python3 -m http.server
-
-popd
+xdg-open http://localhost:8123
+python3 -m http.server --directory $(pwd)/openapi 8123
