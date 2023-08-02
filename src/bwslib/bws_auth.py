@@ -28,24 +28,17 @@ SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 import binascii
 import datetime
 import errno
+import gzip
 import io
 import json
 import logging
 import os
+import shutil
 import sys
 import time
 import uuid
-
-# Cope with python2/3 differences
-try:
-    import http.client as http_lib
-except ImportError:
-    import httplib as http_lib
-
-try:
-    from urllib.parse import urlparse
-except ImportError:
-    from urlparse import urlparse
+import http.client as http_lib
+from urllib.parse import urlparse
 
 import jwt
 
@@ -352,10 +345,19 @@ def download(session_, url_, out_path, chunk_size=2048, stream=True, headers=Non
             if 'content_length' in locals():
                 LOG.info(content_length)
 
-            LOG.info('\tContent-Type: %s', response_.headers['Content-Type'])
-            LOG.info('\tFile downloaded to: %s', out_path)
+        if out_path.endswith(".gz"):
+            # gunzip the file
+            with gzip.open(out_path, 'rb') as f_in:
+                with open(out_path[:-3], 'wb') as f_out:
+                    shutil.copyfileobj(f_in, f_out)
+            os.remove(out_path)
+            out_path = out_path[:-3]
 
-            return response_
+        LOG.info('\tContent-Type: %s', response_.headers['Content-Type'])
+        LOG.info('\tFile downloaded to: %s', out_path)
+
+        return response_
+
 
 
 def handle_response(response):
