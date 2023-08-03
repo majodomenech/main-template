@@ -25,6 +25,80 @@ def adapt_dict(dict_var):
 register_adapter(dict, adapt_dict)
 register_adapter(list, adapt_dict)
 
+# Database
+# ===================================================================
+# create schema bbg;
+# drop table IF EXISTS bbg.des;
+# CREATE TABLE IF NOT EXISTS bbg.des
+# (
+#     id character varying COLLATE pg_catalog."default" NOT NULL,
+#     id_hg bigint,
+#     id_isin character varying(12) COLLATE pg_catalog."default",
+#     id_cusip character varying(9) COLLATE pg_catalog."default",
+#     name character varying COLLATE pg_catalog."default",
+#     data jsonb,
+#     cash_flow jsonb,
+#     factor_schedule jsonb,
+#     last_update timestamp without time zone,
+#     CONSTRAINT des_pkey PRIMARY KEY (id)
+# );
+
+DATA_FIELD_LIST = [
+    {'mnemonic': 'NAME'},
+    {'mnemonic': 'LONG_COMP_NAME'},
+    {'mnemonic': 'INSTRUMENT_FULL_NAME'},
+    {'mnemonic': 'EXCH_NAMES'},
+    {'mnemonic': 'PRIMARY_EXCHANGE_NAME'},
+    {'mnemonic': 'SECURITY_TYP'},
+    {'mnemonic': 'COUNTRY'},
+    {'mnemonic': 'CRNCY'},
+    {'mnemonic': 'ID_ISIN'},
+    {'mnemonic': 'TICKER'},
+    {'mnemonic': 'MATURITY'},
+    {'mnemonic': 'MIN_PIECE'},
+    {'mnemonic': 'CPN'},
+    {'mnemonic': 'PX_BID'},
+    {'mnemonic': 'PX_ASK'},
+    {'mnemonic': 'YLD_YTM_BID'},
+    {'mnemonic': 'YLD_YTM_ASK'},
+    {'mnemonic': 'INT_ACC'},
+    {'mnemonic': 'SINKING_FUND_FACTOR'},
+    {'mnemonic': 'RTG_SP'},
+    {'mnemonic': 'RTG_FITCH'},
+    {'mnemonic': 'RTG_MOODY'},
+    {'mnemonic': 'BB_COMPOSITE'},
+    {'mnemonic': 'ID_BB_UNIQUE'},
+    {'mnemonic': 'ISSUE_DT'},
+    {'mnemonic': 'ID_CUSIP'},
+    {'mnemonic': 'ID_BB_GLOBAL'},
+    {'mnemonic': 'ID_BB_COMPANY'},
+    {'mnemonic': 'CPN_FREQ'},
+    {'mnemonic': 'PAR_AMT'},
+    {'mnemonic': 'AMT_OUTSTANDING'},
+    {'mnemonic': 'CNTRY_ISSUE_ISO'},
+    {'mnemonic': 'FIRST_CPN_DT'},
+    {'mnemonic': 'CALC_TYP'},
+    {'mnemonic': 'AMT_ISSUED'},
+    {'mnemonic': 'DAY_CNT_DES'},
+    {'mnemonic': 'INT_ACC_DT'},
+    {'mnemonic': 'MIN_INCREMENT'},
+    {'mnemonic': 'ISSUE_PX'},
+    {'mnemonic': 'FIRST_SETTLE_DT'},
+    {'mnemonic': 'MARKET_ISSUE'},
+    {'mnemonic': 'CNTRY_OF_RISK'},
+    {'mnemonic': 'PAYMENT_RANK'},
+    {'mnemonic': 'LEAD_MGR'},
+    {'mnemonic': 'IS_TRACE_ELIGIBLE'},
+    {'mnemonic': 'DES_NOTES'},
+    {'mnemonic': 'USE_OF_PROCEEDS'},
+    {'mnemonic': 'BC_USE_OF_PROCEEDS'},
+    {'mnemonic': 'STEP_UP_DOWN_PROVISION'},
+    {'mnemonic': 'CHNG_OF_CONTROL_COVENANT'},
+    {'mnemonic': 'HYBRID_CUMULATIVE_INDICATOR'},
+    {'mnemonic': 'CLASSIFICATION_SCHEME'},
+    {'mnemonic': 'ID_LOCAL'}
+]
+
 
 def __get_detail(credentials: str, isin_list: list):
     try:
@@ -79,59 +153,7 @@ def __get_detail(credentials: str, isin_list: list):
             },
             'fieldList': {
                 '@type': 'DataFieldList',
-                'contains': [
-                    {'mnemonic': 'NAME'},
-                    {'mnemonic': 'SECURITY_TYP'},
-                    {'mnemonic': 'COUNTRY'},
-                    {'mnemonic': 'CRNCY'},
-                    {'mnemonic': 'ID_ISIN'},
-                    {'mnemonic': 'TICKER'},
-                    {'mnemonic': 'MATURITY'},
-                    {'mnemonic': 'MIN_PIECE'},
-                    {'mnemonic': 'CPN'},
-                    {'mnemonic': 'PX_BID'},
-                    {'mnemonic': 'PX_ASK'},
-                    {'mnemonic': 'YLD_YTM_BID'},
-                    {'mnemonic': 'YLD_YTM_ASK'},
-                    {'mnemonic': 'INT_ACC'},
-                    {'mnemonic': 'SINKING_FUND_FACTOR'},
-                    {'mnemonic': 'RTG_SP'},
-                    {'mnemonic': 'RTG_FITCH'},
-                    {'mnemonic': 'RTG_MOODY'},
-                    {'mnemonic': 'BB_COMPOSITE'},
-                    {'mnemonic': 'ID_BB_UNIQUE'},
-                    # {'mnemonic': 'DES_CASH_FLOW'},
-                    # {'mnemonic': 'DES_CASH_FLOW_ADJ'},
-                    {'mnemonic': 'ISSUE_DT'},
-                    {'mnemonic': 'ID_CUSIP'},
-                    {'mnemonic': 'ID_BB_GLOBAL'},
-                    {'mnemonic': 'ID_BB_COMPANY'},
-                    {'mnemonic': 'CPN_FREQ'},
-                    {'mnemonic': 'PAR_AMT'},
-                    {'mnemonic': 'AMT_OUTSTANDING'},
-                    {'mnemonic': 'CNTRY_ISSUE_ISO'},
-                    {'mnemonic': 'FIRST_CPN_DT'},
-                    {'mnemonic': 'CALC_TYP'},
-                    {'mnemonic': 'AMT_ISSUED'},
-                    {'mnemonic': 'DAY_CNT_DES'},
-                    {'mnemonic': 'INT_ACC_DT'},
-                    {'mnemonic': 'MIN_INCREMENT'},
-                    {'mnemonic': 'ISSUE_PX'},
-                    {'mnemonic': 'FIRST_SETTLE_DT'},
-                    {'mnemonic': 'MARKET_ISSUE'},
-                    {'mnemonic': 'CNTRY_OF_RISK'},
-                    {'mnemonic': 'PAYMENT_RANK'},
-                    {'mnemonic': 'LEAD_MGR'},
-                    {'mnemonic': 'IS_TRACE_ELIGIBLE'},
-                    {'mnemonic': 'DES_NOTES'},
-                    {'mnemonic': 'USE_OF_PROCEEDS'},
-                    {'mnemonic': 'BC_USE_OF_PROCEEDS'},
-                    {'mnemonic': 'STEP_UP_DOWN_PROVISION'},
-                    {'mnemonic': 'CHNG_OF_CONTROL_COVENANT'},
-                    {'mnemonic': 'HYBRID_CUMULATIVE_INDICATOR'},
-                    {'mnemonic': 'CLASSIFICATION_SCHEME'},
-                    {'mnemonic': 'ID_LOCAL'}
-                ],
+                'contains': DATA_FIELD_LIST,
             },
             'trigger': {
                 "@type": "SubmitTrigger",
@@ -281,7 +303,7 @@ def __get_cashflow(credentials: str, isin_dict: dict):
                 '@type': 'DataFieldList',
                 'contains': [
                     {'mnemonic': 'DES_CASH_FLOW'},
-                    {'mnemonic': 'ID_BB_UNIQUE'}
+                    {'mnemonic': 'FACTOR_SCHEDULE'}
                 ],
             },
             'trigger': {
@@ -374,9 +396,9 @@ def __update_data(connection, data: dict):
         with connection.cursor() as cursor:
             # Sentencia SQL para insertar el registro
             sql_insert = """
-                INSERT INTO bbg.des (id_hg, id_isin, id_cusip, id_bb, name, data, last_update)
-                VALUES (%(id_hg)s, %(id_isin)s, %(id_cusip)s, %(id_bb)s, %(name)s, %(data)s, current_timestamp)
-                ON CONFLICT (id_bb) DO UPDATE 
+                INSERT INTO bbg.des (id_hg, id_isin, id_cusip, id, name, data, last_update)
+                VALUES (%(id_hg)s, %(id_isin)s, %(id_cusip)s, %(id)s, %(name)s, %(data)s, current_timestamp)
+                ON CONFLICT (id) DO UPDATE 
                 SET data = %(data)s, 
                     last_update = current_timestamp, 
                     id_isin = %(id_isin)s, 
@@ -385,13 +407,13 @@ def __update_data(connection, data: dict):
             """
             for instrument in data:
                 # Ejemplo de datos que deseas insertar en la tabla
-                LOG.info('Inserting/updating ' + instrument['ID_BB_UNIQUE'] + ' ' + instrument['NAME'] + '...')
+                LOG.info('Inserting/updating history: ' + instrument['IDENTIFIER'] + ' ' + instrument['INSTRUMENT_FULL_NAME'] + '...')
                 datos_a_insertar = {
+                    "id": instrument['IDENTIFIER'],
                     "id_hg": None,
                     "id_isin": instrument['IDENTIFIER'],
                     "id_cusip": instrument['ID_CUSIP'],
-                    "id_bb": instrument['ID_BB_UNIQUE'],
-                    "name": instrument['NAME'],
+                    "name": instrument['INSTRUMENT_FULL_NAME'],
                     "data": instrument
                 }
 
@@ -400,6 +422,7 @@ def __update_data(connection, data: dict):
     except Exception as e:
         print("Error:", e)
 
+
 def __update_flows(connection, data: dict):
     try:
         with connection.cursor() as cursor:
@@ -407,21 +430,24 @@ def __update_flows(connection, data: dict):
             sql_insert = """
                 update bbg.des 
                 SET cash_flow= %(cash_flow)s, 
+                    factor_schedule= %(factor_schedule)s,
                     last_update = current_timestamp 
-                where id_isin = %(id_isin)s  or id_bb = %(id_bb)s
+                where id_isin = %(id_isin)s  or id = %(id)s
             """
             for instrument in data:
                 LOG.info('Inserting/updating cashflow ' + instrument['IDENTIFIER'] + '...')
                 datos_a_actualizar = {
+                    "id": instrument['IDENTIFIER'],
                     "id_isin": instrument['IDENTIFIER'],
-                    "id_bb": instrument['ID_BB_UNIQUE'],
-                    "cash_flow": instrument['DES_CASH_FLOW']
+                    "cash_flow": instrument['DES_CASH_FLOW'],
+                    "factor_schedule": instrument['FACTOR_SCHEDULE']
                 }
 
                 # Ejecuta la consulta de inserción con los datos proporcionados
                 cursor.execute(sql_insert, datos_a_actualizar)
     except Exception as e:
         print("Error:", e)
+
 
 def update_instruments(bpm: redflagbpm.BPMService, isin_list: list):
     credentials = bpm.service.text("BBG_CREDENTIALS")

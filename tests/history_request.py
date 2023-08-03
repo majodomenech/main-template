@@ -110,12 +110,8 @@ if __name__ == '__main__':
         'fieldList': {
             '@type': 'HistoryFieldList',
             'contains': [
-                {'mnemonic': 'PX_LAST'},
-                {'mnemonic': 'AMT_OUTSTANDING'},
-                {'mnemonic': 'AMT_ISSUED'},
-                {'mnemonic': 'REDEMP_VAL'},
-                {'mnemonic': 'BASE_ACC_RT'},
-
+                {'mnemonic': 'ID_BB_UNIQUE'},
+                {'mnemonic': 'PX_LAST'}
             ],
         },
         'trigger': {
@@ -128,7 +124,7 @@ if __name__ == '__main__':
                 'startDate': '2021-01-01',
                 'endDate': '2023-05-01'
             },
-            "period": "weekly"
+            "period": "daily"
         },
         'formatting': {
             '@type': 'MediaType',

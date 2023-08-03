@@ -131,7 +131,7 @@ if __name__ == '__main__':
                         {
                             "@type": "FieldOverride",
                             "mnemonic": "SETTLE_DT",
-                            "override": "20200813"
+                            "override": "20210101"
                         }
                     ]
                 },
@@ -144,7 +144,20 @@ if __name__ == '__main__':
                         {
                             "@type": "FieldOverride",
                             "mnemonic": "SETTLE_DT",
-                            "override": "20161027"
+                            "override": "20210101"
+                        }
+                    ]
+                },
+                {
+                    '@type': 'Identifier',
+                    'identifierType': 'ISIN',
+                    'identifierValue': 'ARPCDB320099',
+                    # co26
+                    "fieldOverrides": [
+                        {
+                            "@type": "FieldOverride",
+                            "mnemonic": "SETTLE_DT",
+                            "override": "20210101"
                         }
                     ]
                 }
@@ -153,7 +166,7 @@ if __name__ == '__main__':
         'fieldList': {
             '@type': 'DataFieldList',
             'contains': [
-                # {'mnemonic': 'NAME'},
+                {'mnemonic': 'NAME'},
                 # {'mnemonic': 'SECURITY_TYP'},
                 # {'mnemonic': 'COUNTRY'},
                 # {'mnemonic': 'CRNCY'},
@@ -166,14 +179,14 @@ if __name__ == '__main__':
                 # {'mnemonic': 'PX_ASK'},
                 # {'mnemonic': 'YLD_YTM_BID'},
                 # {'mnemonic': 'YLD_YTM_ASK'},
-                # {'mnemonic': 'INT_ACC'},
-                # {'mnemonic': 'SINKING_FUND_FACTOR'},
+                {'mnemonic': 'FACTOR_SCHEDULE'},
+                {'mnemonic': 'SINKING_FUND_FACTOR'},
                 # {'mnemonic': 'RTG_SP'},
                 # {'mnemonic': 'RTG_FITCH'},
                 # {'mnemonic': 'RTG_MOODY'},
                 # {'mnemonic': 'BB_COMPOSITE'},
                 # {'mnemonic': 'ID_BB_UNIQUE'},
-                {'mnemonic': 'DES_CASH_FLOW'},
+                # {'mnemonic': 'DES_CASH_FLOW'},
                 # {'mnemonic': 'DES_CASH_FLOW_ADJ'},
                 # {'mnemonic': 'ISSUE_DT'},
                 # {'mnemonic': 'ID_CUSIP'},
@@ -181,11 +194,13 @@ if __name__ == '__main__':
                 # {'mnemonic': 'ID_BB_COMPANY'},
                 # {'mnemonic': 'CPN_FREQ'},
                 # {'mnemonic': 'PAR_AMT'},
-                # {'mnemonic': 'AMT_OUTSTANDING'},
+                {'mnemonic': 'AMT_OUTSTANDING'},
                 # {'mnemonic': 'CNTRY_ISSUE_ISO'},
                 # {'mnemonic': 'FIRST_CPN_DT'},
                 # {'mnemonic': 'CALC_TYP'},
-                # {'mnemonic': 'AMT_ISSUED'},
+                {'mnemonic': 'AMT_ISSUED'},
+                {'mnemonic': 'MTG_HIST_FACT'},
+                {'mnemonic': 'MTG_FACTOR'},
                 # {'mnemonic': 'DAY_CNT_DES'},
                 # {'mnemonic': 'INT_ACC_DT'},
                 # {'mnemonic': 'MIN_INCREMENT'},
@@ -296,7 +311,7 @@ if __name__ == '__main__':
                 LOG.info("Some other delivery occurred - continue waiting")
                 continue
 
-            output_file_path = os.path.join('/tmp', distribution_id)
+            output_file_path = os.path.join('./downloads', distribution_id)
 
             # Add 'Accept-Encoding: gzip' header to reduce download time.
             # Note that the vast majority of dataset files exceed 100MB in size,
