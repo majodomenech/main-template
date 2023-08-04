@@ -7,6 +7,7 @@ from bbg.updateDET import update_instruments, update_cashflows
 from bbg.updateHIS import update_history
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
+from fastapi.applications import get_swagger_ui_html
 
 app = FastAPI()
 bpm = redflagbpm.BPMService()

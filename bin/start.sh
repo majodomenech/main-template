@@ -19,6 +19,6 @@ pushd "$DIR_NAME/../src" || exit
 port=${1:-10001}
 
 echo "Starting..."
-uvicorn main:app --port $port --reload
+uvicorn main:app --port $port --reload --root-path ./
 
 popd || exit
