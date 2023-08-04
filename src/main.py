@@ -1,3 +1,5 @@
+import asyncio
+import time
 from threading import Thread
 
 import redflagbpm
@@ -8,6 +10,8 @@ from bbg.updateHIS import update_history
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 from fastapi.applications import get_swagger_ui_html
+
+import uvicorn
 
 app = FastAPI()
 bpm = redflagbpm.BPMService()
@@ -63,3 +67,5 @@ async def query_data_history_endpoint(isin: str, start_date: str, end_date: str,
     fields = fields.split(',') if fields is not None else None
     dp = queryDataHistory(bpm, isin, start_date, end_date, fields)
     return dp
+
+bpm.register_app(app, prefix="bbg:")
