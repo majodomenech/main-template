@@ -38,18 +38,22 @@ register_adapter(list, adapt_dict)
 #     CONSTRAINT his_pkey PRIMARY KEY (id,target_date)
 # );
 
-HISTORY_FIELD_LIST = [
-    {'mnemonic': 'PX_LAST'},
-    {'mnemonic': 'PX_BID'},
-    {'mnemonic': 'PX_ASK'},
-    {'mnemonic': 'YLD_YTM_BID'},
-    {'mnemonic': 'YLD_YTM_ASK'},
-]
+HISTORY_FIELD_LIST = (
+    'PX_LAST',
+    'PX_BID',
+    'PX_ASK',
+    'YLD_YTM_BID',
+    'YLD_YTM_ASK',
+)
 
 
-def __get_history(credentials: str, isin_list: list, start_date: str, end_date: str, periodicity='daily'):
+def __get_history(credentials: str, isin_list: list, start_date: str, end_date: str, fields=HISTORY_FIELD_LIST,
+                  periodicity='daily'):
     try:
         SESSION, SSE_CLIENT = connect(credentials=credentials)
+
+        if fields is None:
+            fields = HISTORY_FIELD_LIST
 
         ############################################################################
         # - Discover catalog identifier for scheduling requests
@@ -100,7 +104,7 @@ def __get_history(credentials: str, isin_list: list, start_date: str, end_date: 
             },
             'fieldList': {
                 '@type': 'HistoryFieldList',
-                'contains': HISTORY_FIELD_LIST,
+                'contains': [{'mnemonic': i} for i in fields],
             },
             'trigger': {
                 "@type": "SubmitTrigger",
@@ -224,9 +228,10 @@ def __update_data(connection, data: dict):
         print("Error:", e)
 
 
-def update_history(bpm: redflagbpm.BPMService, isin_list: list, start_date: str, end_date: str, periodicity: str):
+def update_history(bpm: redflagbpm.BPMService, isin_list: list, start_date: str, end_date: str, fields: list,
+                   periodicity: str):
     credentials = bpm.service.text("BBG_CREDENTIALS")
-    file = __get_history(credentials, isin_list, start_date, end_date, periodicity)
+    file = __get_history(credentials, isin_list, start_date, end_date, fields, periodicity)
     # parse json file
     with open(file) as f:
         data = json.load(f)

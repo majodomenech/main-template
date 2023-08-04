@@ -43,65 +43,68 @@ register_adapter(list, adapt_dict)
 #     CONSTRAINT des_pkey PRIMARY KEY (id)
 # );
 
-DATA_FIELD_LIST = [
-    {'mnemonic': 'NAME'},
-    {'mnemonic': 'LONG_COMP_NAME'},
-    {'mnemonic': 'INSTRUMENT_FULL_NAME'},
-    {'mnemonic': 'EXCH_NAMES'},
-    {'mnemonic': 'PRIMARY_EXCHANGE_NAME'},
-    {'mnemonic': 'SECURITY_TYP'},
-    {'mnemonic': 'COUNTRY'},
-    {'mnemonic': 'CRNCY'},
-    {'mnemonic': 'ID_ISIN'},
-    {'mnemonic': 'TICKER'},
-    {'mnemonic': 'MATURITY'},
-    {'mnemonic': 'MIN_PIECE'},
-    {'mnemonic': 'CPN'},
-    {'mnemonic': 'PX_BID'},
-    {'mnemonic': 'PX_ASK'},
-    {'mnemonic': 'YLD_YTM_BID'},
-    {'mnemonic': 'YLD_YTM_ASK'},
-    {'mnemonic': 'INT_ACC'},
-    {'mnemonic': 'SINKING_FUND_FACTOR'},
-    {'mnemonic': 'RTG_SP'},
-    {'mnemonic': 'RTG_FITCH'},
-    {'mnemonic': 'RTG_MOODY'},
-    {'mnemonic': 'BB_COMPOSITE'},
-    {'mnemonic': 'ID_BB_UNIQUE'},
-    {'mnemonic': 'ISSUE_DT'},
-    {'mnemonic': 'ID_CUSIP'},
-    {'mnemonic': 'ID_BB_GLOBAL'},
-    {'mnemonic': 'ID_BB_COMPANY'},
-    {'mnemonic': 'CPN_FREQ'},
-    {'mnemonic': 'PAR_AMT'},
-    {'mnemonic': 'AMT_OUTSTANDING'},
-    {'mnemonic': 'CNTRY_ISSUE_ISO'},
-    {'mnemonic': 'FIRST_CPN_DT'},
-    {'mnemonic': 'CALC_TYP'},
-    {'mnemonic': 'AMT_ISSUED'},
-    {'mnemonic': 'DAY_CNT_DES'},
-    {'mnemonic': 'INT_ACC_DT'},
-    {'mnemonic': 'MIN_INCREMENT'},
-    {'mnemonic': 'ISSUE_PX'},
-    {'mnemonic': 'FIRST_SETTLE_DT'},
-    {'mnemonic': 'MARKET_ISSUE'},
-    {'mnemonic': 'CNTRY_OF_RISK'},
-    {'mnemonic': 'PAYMENT_RANK'},
-    {'mnemonic': 'LEAD_MGR'},
-    {'mnemonic': 'IS_TRACE_ELIGIBLE'},
-    {'mnemonic': 'DES_NOTES'},
-    {'mnemonic': 'USE_OF_PROCEEDS'},
-    {'mnemonic': 'BC_USE_OF_PROCEEDS'},
-    {'mnemonic': 'STEP_UP_DOWN_PROVISION'},
-    {'mnemonic': 'CHNG_OF_CONTROL_COVENANT'},
-    {'mnemonic': 'HYBRID_CUMULATIVE_INDICATOR'},
-    {'mnemonic': 'CLASSIFICATION_SCHEME'},
-    {'mnemonic': 'ID_LOCAL'}
-]
+DATA_FIELD_LIST = (
+    'NAME',
+    'LONG_COMP_NAME',
+    'INSTRUMENT_FULL_NAME',
+    'EXCH_NAMES',
+    'PRIMARY_EXCHANGE_NAME',
+    'SECURITY_TYP',
+    'COUNTRY',
+    'CRNCY',
+    'ID_ISIN',
+    'TICKER',
+    'MATURITY',
+    'MIN_PIECE',
+    'CPN',
+    'PX_BID',
+    'PX_ASK',
+    'YLD_YTM_BID',
+    'YLD_YTM_ASK',
+    'INT_ACC',
+    'SINKING_FUND_FACTOR',
+    'RTG_SP',
+    'RTG_FITCH',
+    'RTG_MOODY',
+    'BB_COMPOSITE',
+    'ID_BB_UNIQUE',
+    'ISSUE_DT',
+    'ID_CUSIP',
+    'ID_BB_GLOBAL',
+    'ID_BB_COMPANY',
+    'CPN_FREQ',
+    'PAR_AMT',
+    'AMT_OUTSTANDING',
+    'CNTRY_ISSUE_ISO',
+    'FIRST_CPN_DT',
+    'CALC_TYP',
+    'AMT_ISSUED',
+    'DAY_CNT_DES',
+    'INT_ACC_DT',
+    'MIN_INCREMENT',
+    'ISSUE_PX',
+    'FIRST_SETTLE_DT',
+    'MARKET_ISSUE',
+    'CNTRY_OF_RISK',
+    'PAYMENT_RANK',
+    'LEAD_MGR',
+    'IS_TRACE_ELIGIBLE',
+    'DES_NOTES',
+    'USE_OF_PROCEEDS',
+    'BC_USE_OF_PROCEEDS',
+    'STEP_UP_DOWN_PROVISION',
+    'CHNG_OF_CONTROL_COVENANT',
+    'HYBRID_CUMULATIVE_INDICATOR',
+    'CLASSIFICATION_SCHEME',
+    'ID_LOCAL'
+)
 
 
-def __get_detail(credentials: str, isin_list: list):
+def __get_detail(credentials: str, isin_list: list, fields: list = DATA_FIELD_LIST):
     try:
+        if fields is None:
+            fields = DATA_FIELD_LIST
+
         SESSION, SSE_CLIENT = connect(credentials=credentials)
 
         ############################################################################
@@ -153,7 +156,7 @@ def __get_detail(credentials: str, isin_list: list):
             },
             'fieldList': {
                 '@type': 'DataFieldList',
-                'contains': DATA_FIELD_LIST,
+                'contains': [{'mnemonic': i} for i in fields],
             },
             'trigger': {
                 "@type": "SubmitTrigger",
@@ -407,7 +410,8 @@ def __update_data(connection, data: dict):
             """
             for instrument in data:
                 # Ejemplo de datos que deseas insertar en la tabla
-                LOG.info('Inserting/updating history: ' + instrument['IDENTIFIER'] + ' ' + instrument['INSTRUMENT_FULL_NAME'] + '...')
+                LOG.info('Inserting/updating history: ' + instrument['IDENTIFIER'] + ' ' + instrument[
+                    'INSTRUMENT_FULL_NAME'] + '...')
                 datos_a_insertar = {
                     "id": instrument['IDENTIFIER'],
                     "id_hg": None,
@@ -449,9 +453,9 @@ def __update_flows(connection, data: dict):
         print("Error:", e)
 
 
-def update_instruments(bpm: redflagbpm.BPMService, isin_list: list):
+def update_instruments(bpm: redflagbpm.BPMService, isin_list: list, fields: list):
     credentials = bpm.service.text("BBG_CREDENTIALS")
-    file = __get_detail(credentials, isin_list)
+    file = __get_detail(credentials, isin_list, fields)
     # parse json file
     with open(file) as f:
         data = json.load(f)
