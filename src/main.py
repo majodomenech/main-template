@@ -24,7 +24,7 @@ async def root():
 
 
 @app.get("/update_instruments")
-async def update_instruments_endpoint(instruments: str, fields: str):
+async def update_instruments_endpoint(instruments: str, fields: str = None):
     isin_list = instruments.split(',')
     fields = fields.split(',') if fields is not None else None
     t = Thread(target=update_instruments, args=(bpm, isin_list, fields))
