@@ -72,3 +72,19 @@ def queryDataHistory(bpm: redflagbpm.BPMService, isin: str, start_date: str, end
                 return rows
             else:
                 return [{f: row[f] if f in row else None for f in fields} for row in rows]
+
+
+def queryField(bpm: redflagbpm.BPMService, field: str):
+    with get_connection(bpm, 'FLW') as connection:
+        with connection.cursor(cursor_factory=RealDictCursor) as cursor:
+            sql = """
+                SELECT data
+                FROM bbg.fields
+                WHERE id = %s or mnemonic = %s
+                LIMIT 1
+            """
+            cursor.execute(sql, (field, field))
+            if cursor.rowcount == 0:
+                return {}
+            row = cursor.fetchone()['data']
+            return row

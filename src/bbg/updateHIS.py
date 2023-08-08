@@ -42,6 +42,8 @@ HISTORY_FIELD_LIST = (
     'PX_LAST',
     'PX_BID',
     'PX_ASK',
+    'PX_DISC_MID',
+    'PX_DIRTY_MID',
     'YLD_YTM_BID',
     'YLD_YTM_ASK',
 )

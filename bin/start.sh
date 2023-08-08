@@ -12,6 +12,10 @@ if [ ! -d "$DIR_NAME/../venv" ]; then
     echo "Installing requirements..."
     pip3 install -r requirements.txt
     popd || exit
+else
+    pushd ../ || exit
+    source venv/bin/activate
+    popd || exit
 fi
 
 pushd "$DIR_NAME/../src" || exit

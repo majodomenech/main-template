@@ -181,6 +181,7 @@ if __name__ == '__main__':
                 # {'mnemonic': 'YLD_YTM_ASK'},
                 {'mnemonic': 'FACTOR_SCHEDULE'},
                 {'mnemonic': 'SINKING_FUND_FACTOR'},
+                {'identifier': 'pxAsk/'},
                 # {'mnemonic': 'RTG_SP'},
                 # {'mnemonic': 'RTG_FITCH'},
                 # {'mnemonic': 'RTG_MOODY'},

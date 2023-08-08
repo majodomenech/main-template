@@ -1,7 +1,6 @@
 import psycopg2.extras
 import redflagbpm
-from redflagbpm.PgUtils import get_pool, get_connection
-import json
+from redflagbpm.PgUtils import get_connection
 import os
 import datetime
 import logging
@@ -10,7 +9,6 @@ import uuid
 from urllib.parse import urljoin
 from utils.bbgConnect import connect
 from bwslib.bws_auth import download, handle_response
-from psycopg2.pool import SimpleConnectionPool
 from psycopg2.extensions import register_adapter, QuotedString
 import json
 
@@ -100,7 +98,7 @@ DATA_FIELD_LIST = (
 )
 
 
-def __get_detail(credentials: str, isin_list: list, fields: list = DATA_FIELD_LIST):
+def __get_detail(credentials: str, isin_list: list, fields: list = DATA_FIELD_LIST, target_date: str = None):
     try:
         if fields is None:
             fields = DATA_FIELD_LIST
@@ -139,11 +137,25 @@ def __get_detail(credentials: str, isin_list: list, fields: list = DATA_FIELD_LI
 
         instruments = []
         for isin in isin_list:
-            instruments.append({
-                '@type': 'Identifier',
-                'identifierType': 'ISIN',
-                'identifierValue': isin,
-            })
+            if target_date is not None:
+                instruments.append({
+                    '@type': 'Identifier',
+                    'identifierType': 'ISIN',
+                    'identifierValue': isin,
+                    "fieldOverrides": [
+                        {
+                            "@type": "FieldOverride",
+                            "mnemonic": "SETTLE_DT",
+                            "override": target_date
+                        }
+                    ]
+                })
+            else:
+                instruments.append({
+                    '@type': 'Identifier',
+                    'identifierType': 'ISIN',
+                    'identifierValue': isin,
+                })
 
         request_payload = {
             '@type': 'DataRequest',
@@ -166,6 +178,7 @@ def __get_detail(credentials: str, isin_list: list, fields: list = DATA_FIELD_LI
                 'outputMediaType': 'application/json',
             }
         }
+
         LOG.info('Request component payload:\n%s', pprint.pformat(request_payload))
 
         catalog_url = urljoin(HOST, '/eap/catalogs/{c}/'.format(c=catalog_id))
@@ -464,6 +477,11 @@ def update_instruments(bpm: redflagbpm.BPMService, isin_list: list, fields: list
         __update_data(connection, data)
 
 
+def update_instruments_and_cashflows(bpm: redflagbpm.BPMService, isin_list: list, fields: list):
+    update_instruments(bpm, isin_list, fields)
+    update_cashflows(bpm)
+
+
 def update_cashflows(bpm: redflagbpm.BPMService):
     credentials = bpm.service.text("BBG_CREDENTIALS")
 
@@ -483,3 +501,39 @@ def update_cashflows(bpm: redflagbpm.BPMService):
                     data = json.load(f)
                 # insert into database
                 __update_flows(connection, data)
+
+
+def __update_date(connection, data: dict, target_date: str):
+    try:
+        with connection.cursor() as cursor:
+            # Sentencia SQL para insertar el registro
+            sql_insert = """
+                INSERT INTO bbg.his as his (id, target_date, data, last_update)
+                VALUES (%(id)s, %(target_date)s::date, %(data)s::jsonb, current_timestamp)
+                ON CONFLICT (id, target_date) DO UPDATE 
+                SET data = his.data||excluded.data, 
+                    last_update = excluded.last_update 
+            """
+            for instrument in data:
+                LOG.info('Inserting/updating ' + target_date + " - " + instrument['IDENTIFIER'] + '...')
+                datos_a_insertar = {
+                    "id": instrument['IDENTIFIER'],
+                    "target_date": target_date,
+                    "data": instrument
+                }
+
+                # Ejecuta la consulta de inserción con los datos proporcionados
+                cursor.execute(sql_insert, datos_a_insertar)
+    except Exception as e:
+        print("Error:", e)
+
+
+def update_date(bpm: redflagbpm.BPMService, isin_list: list, fields: list, target_date: str):
+    credentials = bpm.service.text("BBG_CREDENTIALS")
+    file = __get_detail(credentials, isin_list, fields, target_date)
+    # parse json file
+    with open(file) as f:
+        data = json.load(f)
+    # insert into database
+    with get_connection(bpm, 'FLW') as connection:
+        __update_date(connection, data, target_date)
