@@ -144,7 +144,7 @@ async def query_cash_flow_endpoint(isin: str):
     return dp
 
 
-@app.get("/query_factor_shedule", tags=["query"])
+@app.get("/query_factor_schedule", tags=["query"])
 async def query_factor_schedule_endpoint(isin: str):
     """ Consulta el factor schedule de un instrumento en particular.
         La consulta se realiza sobre la tabla bbg.det.
