@@ -78,13 +78,30 @@ def queryField(bpm: redflagbpm.BPMService, field: str):
     with get_connection(bpm, 'FLW') as connection:
         with connection.cursor(cursor_factory=RealDictCursor) as cursor:
             sql = """
-                SELECT data
-                FROM bbg.fields
-                WHERE id = %s or mnemonic = %s
+                SELECT row_to_json(fc)
+                FROM bbg.field_catalog fc
+                WHERE id = %s or mnemonic = %s or clean_name = %s
                 LIMIT 1
             """
-            cursor.execute(sql, (field, field))
+            cursor.execute(sql, (field, field, field))
             if cursor.rowcount == 0:
                 return {}
             row = cursor.fetchone()['data']
             return row
+
+
+def queryFields(bpm: redflagbpm.BPMService, filter: str):
+    with get_connection(bpm, 'FLW') as connection:
+        with connection.cursor(cursor_factory=RealDictCursor) as cursor:
+            sql = """
+                SELECT id, mnemonic, clean_name, description, get_history, get_fundamentals, get_company, definition
+                FROM bbg.field_catalog fc
+                WHERE mnemonic like '%%'||%s||'%%'
+                    or clean_name like '%%'||%s||'%%'
+                    or description like '%%'||%s||'%%'
+                    or definition like '%%'||%s||'%%'
+            """
+            cursor.execute(sql, (filter, filter, filter, filter))
+            if cursor.rowcount == 0:
+                return {}
+            return cursor.fetchall()

@@ -4,7 +4,7 @@ from threading import Thread
 
 import redflagbpm
 
-from bbg.query import queryDataPoint, queryDataHistory, queryChashFlow, queryFactorSchedule, queryField
+from bbg.query import queryDataPoint, queryDataHistory, queryChashFlow, queryFactorSchedule, queryField, queryFields
 from bbg.updateDET import update_instruments_and_cashflows, update_cashflows, update_date
 from bbg.updateFields import update_fields, update_field, update_missing
 from bbg.updateHIS import update_history
@@ -168,6 +168,13 @@ async def query_field_endpoint(field: str):
     """ Consulta información de un campo en particular. Admite indicar el mnemónico del campo a consultar.
     """
     dp = queryField(bpm, field)
+    return dp
+
+@app.get("/query_fields", tags=["query"])
+async def query_field_endpoint(filter: str):
+    """ Consulta de campos.
+    """
+    dp = queryFields(bpm, filter)
     return dp
 
 
