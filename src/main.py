@@ -170,6 +170,16 @@ async def query_field_endpoint(field: str):
     dp = queryField(bpm, field)
     return dp
 
+@app.get("/query_field_name", tags=["query"])
+async def query_field_name_endpoint(field: str):
+    """ Consulta información de un campo en particular. Admite indicar el mnemónico del campo a consultar.
+    """
+    dp = queryField(bpm, field)
+    if dp is not None:
+        dp = dp['description']
+    return dp
+
+
 @app.get("/query_fields", tags=["query"])
 async def query_field_endpoint(filter: str):
     """ Consulta de campos.
