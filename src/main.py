@@ -92,17 +92,17 @@ async def update_date_endpoint(instruments: str, target_date: str, fields: str =
     return {"message": "OK"}
 
 
-@app.get("/update_fields", tags=["update"])
-async def update_fields_endpoint(mnemonics: str):
-    """ Actualiza la información de campos (tabla bbg.field) de los instrumentos que no cuentan con la misma.
-        Admite indicar los mnemonicos de los campos a actualizar.
-    """
-    mnemonics = mnemonics.split(',')
-    t = Thread(target=update_missing, args=(bpm, mnemonics))
-    t.start()
-    return {"message": "OK"}
-
-
+# @app.get("/update_fields", tags=["update"])
+# async def update_fields_endpoint(mnemonics: str):
+#     """ Actualiza la información de campos (tabla bbg.field) de los instrumentos que no cuentan con la misma.
+#         Admite indicar los mnemonicos de los campos a actualizar.
+#     """
+#     mnemonics = mnemonics.split(',')
+#     t = Thread(target=update_missing, args=(bpm, mnemonics))
+#     t.start()
+#     return {"message": "OK"}
+#
+#
 # @app.get("/update_all_fields", tags=["update"])
 # async def update_all_fields_endpoint(queryParameters: str = None):
 #     """
