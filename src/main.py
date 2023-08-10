@@ -103,26 +103,26 @@ async def update_fields_endpoint(mnemonics: str):
     return {"message": "OK"}
 
 
-@app.get("/update_all_fields", tags=["update"])
-async def update_all_fields_endpoint(queryParameters: str = None):
-    """
-    Actualiza los campos de todos los instrumentos basados en los parámetros de la query.
-    Los parámetros se definenen como un query string, por ejemplo:
-        q=PX_LAST&DL:Bulk=true
-    """
-    t = Thread(target=update_fields, args=(bpm, queryParameters))
-    t.start()
-    return {"message": "OK"}
-
-
-@app.get("/update_field", tags=["update"])
-async def update_field_endpoint(identifier: str):
-    """ Actualiza la información de un campo específico (basado en el identificador de bloomberg, 
-        no en mnemómico, ej:pxLast)
-    """
-    t = Thread(target=update_field, args=(bpm, identifier))
-    t.start()
-    return {"message": "OK"}
+# @app.get("/update_all_fields", tags=["update"])
+# async def update_all_fields_endpoint(queryParameters: str = None):
+#     """
+#     Actualiza los campos de todos los instrumentos basados en los parámetros de la query.
+#     Los parámetros se definenen como un query string, por ejemplo:
+#         q=PX_LAST&DL:Bulk=true
+#     """
+#     t = Thread(target=update_fields, args=(bpm, queryParameters))
+#     t.start()
+#     return {"message": "OK"}
+#
+#
+# @app.get("/update_field", tags=["update"])
+# async def update_field_endpoint(identifier: str):
+#     """ Actualiza la información de un campo específico (basado en el identificador de bloomberg,
+#         no en mnemómico, ej:pxLast)
+#     """
+#     t = Thread(target=update_field, args=(bpm, identifier))
+#     t.start()
+#     return {"message": "OK"}
 
 
 @app.get("/query_data_point", tags=["query"])
