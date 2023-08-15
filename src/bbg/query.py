@@ -105,3 +105,18 @@ def queryFields(bpm: redflagbpm.BPMService, filter: str):
             if cursor.rowcount == 0:
                 return {}
             return cursor.fetchall()
+
+def queryWatchList(bpm: redflagbpm.BPMService):
+    with get_connection(bpm, 'SYC') as connection:
+        with connection.cursor(cursor_factory=RealDictCursor) as cursor:
+            sql = """
+                select string_agg(trim(upper(u."CODIGOISIN")),',') as isins
+                from "UNI_ATRIBUTO" a
+                inner join "UNI_UNIDAD" u ON u."UNI_UNIDAD_ID" = a."UNIDAD"
+                where trim(upper(a."VALOR")) not in ('NO','FALSE','FALSO')
+                and a."ATRIBUTO"='Bloomberg'
+            """
+            cursor.execute(sql)
+            if cursor.rowcount == 0:
+                return None
+            return cursor.fetchone()['isins'].split(',')
