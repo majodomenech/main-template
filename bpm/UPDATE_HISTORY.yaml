@@ -1,0 +1,40 @@
+name: BBG/UPDATE_HISTORY
+caption: Actualizar historial BBG
+reusable: false
+requestUrl: 'curl -X "GET" "http://localhost:10001/update_history?instruments=${instruments}&start_date=${jsonHelper.formatMillis($start_date,"yyyy-MM-dd")}&end_date=${jsonHelper.formatMillis($end_date,"yyyy-MM-dd")}&periodicity=daily"'
+responseType: MESSAGE
+inputSchema:
+  type: object
+  hints:
+    fieldOrder:
+      - instruments
+      - start_date
+      - end_date
+  title: Actualizar historial BBG
+  properties:
+    instruments:
+      type: string
+      title: Lista de ISINs separados por coma
+      hints:
+        rowStart: true
+        rowEnd: true
+    start_date:
+      type: number
+      hints:
+        subtype: date
+      title: Desde
+    end_date:
+      type: number
+      hints:
+        subtype: date
+      title: Hasta
+targetGroups:
+  - ADMIN
+  - OPE
+requestOptions: { }
+responseScript: |
+  var input = JSON.parse(input);
+  if (input['message'] != 'OK') {
+    throw "ERROR: "+input;
+  }
+  "Actualización iniciada con éxito. Los resultados pueden demorar unos minutos en estar disponibles.";

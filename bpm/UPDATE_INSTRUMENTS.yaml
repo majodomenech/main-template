@@ -1,0 +1,25 @@
+name: BBG/UPDATE_INSTRUMENTS
+caption: Actualizar información BBG
+reusable: false
+requestUrl: 'curl -X "GET" "http://localhost:10001/update_instruments?instruments=${instruments}"'
+responseType: Message
+inputSchema:
+  type: object
+  hints:
+    fieldOrder:
+    - instruments
+  title: Actualizar información BBG
+  properties:
+    instruments:
+      type: string
+      title: Lista de ISINs separados por coma
+targetGroups:
+- ADMIN
+- OPE
+requestOptions: {}
+responseScript: |
+  var input = JSON.parse(input);
+  if (input['message'] != 'OK') {
+    throw "ERROR: "+input;
+  }
+  "Actualización iniciada con éxito. Los resultados pueden demorar unos minutos en estar disponibles.";

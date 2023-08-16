@@ -6,4 +6,4 @@ if [[ ! $BPM_HOME ]]; then
   BPM_HOME=ubuntu@bpmtest.sycinversiones.com:/home/ubuntu/bpmtest/files/BpmApp
 fi
 
-BMP_PROJECT_DIR=repos/DETING
+BMP_PROJECT_DIR=repos/bloomberg-api

@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Funciones BBG</title>
+    <style>
+        /* Estilos generales */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #333;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #555;
+            margin-top: 20px;
+        }
+
+        p {
+            color: #777;
+            line-height: 1.5;
+        }
+
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+            color: #777;
+            line-height: 1.5;
+        }
+
+        /* Enlaces */
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Tablas */
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Bloques de código */
+        code {
+            background-color: #f8f8f8;
+            padding: 2px;
+            border: 1px solid #ddd;
+            font-family: Consolas, monospace;
+            font-size: 14px;
+        }
+
+        /* Sección de ejemplos */
+        .example-section {
+            margin-top: 20px;
+            background-color: #f5f5f5;
+            padding: 10px;
+            border: 1px solid #ddd;
+        }
+
+        /* Margen inferior para el último elemento */
+        :last-child {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Manual de Ayuda - Funciones BBG</h1>
+
+
+<h2>BBGDATAPOINT(isin, field)</h2>
+<p>Obtiene el valor puntual de un campo en Bloomberg.</p>
+<p><strong>Parámetros:</strong></p>
+<ul>
+    <li><code>isin</code>: El ISIN del instrumento.</li>
+    <li><code>field</code>: El mnemónico del campo Bloomberg.</li>
+</ul>
+<p><strong>Retorno:</strong> El valor del campo.</p>
+
+<h2>BDP(isin, field)</h2>
+<p>Obtiene el valor puntual de un campo en Bloomberg.</p>
+<p><strong>Parámetros:</strong></p>
+<ul>
+    <li><code>isin</code>: El ISIN del instrumento.</li>
+    <li><code>field</code>: El mnemónico del campo Bloomberg.</li>
+</ul>
+<p><strong>Retorno:</strong> El valor del campo.</p>
+
+<h2>BBGFIELDNAME(field)</h2>
+<p>Obtiene el nombre de un campo Bloomberg.</p>
+<p><strong>Parámetros:</strong></p>
+<ul>
+    <li><code>field</code>: El mnemónico del campo Bloomberg.</li>
+</ul>
+<p><strong>Retorno:</strong> El nombre del campo Bloomberg.</p>
+
+<h2>BBGDATA(isin)</h2>
+<p>Obtiene todos los campos de Bloomberg de un instrumento.</p>
+<p><strong>Parámetros:</strong></p>
+<ul>
+    <li><code>isin</code>: El ISIN del instrumento.</li>
+</ul>
+<p><strong>Retorno:</strong> La lista de campos y sus valores.</p>
+
+<h2>BBGFIELD(field)</h2>
+<p>Obtiene la descripción de un campo de Bloomberg.</p>
+<p><strong>Parámetros:</strong></p>
+<ul>
+    <li><code>field</code>: El mnemónico del campo Bloomberg.</li>
+</ul>
+<p><strong>Retorno:</strong> Una lista de valores con la descripción del campo de Bloomberg.</p>
+
+<h2>BBGCASHFLOW(isin)</h2>
+<p>Obtiene el cash flow de un instrumento.</p>
+<p><strong>Parámetros:</strong></p>
+<ul>
+    <li><code>isin</code>: El ISIN del instrumento.</li>
+</ul>
+<p><strong>Retorno:</strong> Una lista de tres columnas con DES_CASH_FLOW_DT (fecha), DES_CASH_FLOW_CPN_AMT (cupón de
+    amortización), DES_CASH_FLOW_PRINC_AMT (principal).</p>
+
+<h2>BBGFACTORSCHEDULE(isin)</h2>
+<p>Obtiene el calendario de factores de un instrumento.</p>
+<p><strong>Parámetros:</strong></p>
+<ul>
+    <li><code>isin</code>: El ISIN del instrumento.</li>
+</ul>
+<p><strong>Retorno:</strong> Una lista de tres columnas con BC_FACTR_SCHEDULE_DT (fecha), BC_FACTOR_SCHEDULE_FACTOR
+    (factor).</p>
+
+<h2>BBGHISTORY(isin, fields, start_date, end_date)</h2>
+<p>Obtiene una lista de campos históricos entre dos fechas.</p>
+<p><strong>Parámetros:</strong></p>
+<ul>
+    <li><code>isin</code>: El ISIN del instrumento.</li>
+    <li><code>fields</code>: La lista de mnemónicos de campos Bloomberg (separada por coma, ej: 'DATE,PX_LAST').</li>
+    <li><code>start_date</code>: La fecha de inicio de la consulta.</li>
+    <li><code>end_date</code>: La fecha de fin de la consulta.</li>
+</ul>
+<p><strong>Retorno:</strong> Una lista con una columna por cada campo solicitado, para todas las fechas del rango.</p>
+
+<h2>BDH(isin, fields, start_date, end_date)</h2>
+<p>Obtiene una lista de campos históricos entre dos fechas.</p>
+<p><strong>Parámetros:</strong></p>
+<ul>
+    <li><code>isin</code>: El ISIN del instrumento.</li>
+    <li><code>fields</code>: La lista de mnemónicos de campos Bloomberg (separada por coma, ej: 'DATE,PX_LAST').</li>
+    <li><code>start_date</code>: La fecha de inicio de la consulta.</li>
+    <li><code>end_date</code>: La fecha de fin de la consulta.</li>
+</ul>
+<p><strong>Retorno:</strong> Una lista con una columna por cada campo solicitado, para todas las fechas del rango.</p>
+
+<h2>BBGFIELDS(filter)</h2>
+<p>Obtiene una lista de campos Bloomberg que coinciden con el filtro.</p>
+<p><strong>Parámetros:</strong></p>
+<ul>
+    <li><code>filter</code>: El filtro de búsqueda.</li>
+</ul>
+<p><strong>Retorno:</strong> Una lista de campos Bloomberg con varias columnas.</p>
+
+</body>
+</html>
