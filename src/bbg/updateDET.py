@@ -99,6 +99,12 @@ def __get_detail(credentials: str, isin_list: list, fields: list = DATA_FIELD_LI
         if fields is None:
             fields = DATA_FIELD_LIST
 
+        # make a copy of fields
+        fields = fields.copy()
+        # add ISSUE_DT to fields if not present
+        if 'ISSUE_DT' not in fields:
+            fields.append('ISSUE_DT')
+
         SESSION, SSE_CLIENT = connect(credentials=credentials)
 
         ############################################################################

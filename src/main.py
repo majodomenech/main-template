@@ -1,19 +1,14 @@
-import asyncio
 import datetime
-import multiprocessing
 import time
-from threading import Thread
-
 import redflagbpm
 
+from threading import Thread
 from bbg.query import queryDataPoint, queryDataHistory, queryChashFlow, queryFactorSchedule, queryField, queryFields, \
     queryWatchList
 from bbg.updateDET import update_instruments_and_cashflows, update_cashflows, update_date, update_instruments
 from bbg.updateHIS import update_history
 from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
-
-import uvicorn
 
 tags_metadata = [
     {
