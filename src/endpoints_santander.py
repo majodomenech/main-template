@@ -3,10 +3,17 @@ import json
 import os
 import requests
 
+sandbimport requests
 
-usrpass = base64.b64encode("fci_ag105:nueva123".encode('ascii')).decode('ascii')
+url = "https://sbx.santander.com.ar/oauthv2/token"
 
+payload = {}
 headers = {
-    'Content-Type': 'application/json',
-    'Authorization': 'Basic ' + usrpass
+  'Authorization': 'Basic OXY3WjFib1BRNUNrR3pzQWhPWE10cGNXTDBFQlJYbW86QXQ4dFJRS1N3U3lsV0RuRGpITUZBdkNicFNyZXVrRTA='
+}
+
+response = requests.request("POST", url, headers=headers, data=payload)
+
+print(response.text)
+
 }
