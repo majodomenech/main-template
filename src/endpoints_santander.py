@@ -5,15 +5,17 @@ import requests
 
 sandbimport requests
 
-url = "https://sbx.santander.com.ar/oauthv2/token"
+usrpass = base64.b64encode("At8tRQKSwSylWDnDjHMFAvCbpSreukE0:jZRT5p5KR2yEknBbacFzBkxGxDxNBl29".encode('ascii')).decode('ascii')
+print(usrpass)
+payload = {'grant_type':usrpass}
 
 payload = {}
 headers = {
-  'Authorization': 'Basic OXY3WjFib1BRNUNrR3pzQWhPWE10cGNXTDBFQlJYbW86QXQ4dFJRS1N3U3lsV0RuRGpITUZBdkNicFNyZXVrRTA='
+    'Content-Type': 'application/json',
+    'Authorization': 'Basic ' + usrpass
 }
 
+
+url = "https://sbx.santander.com.ar/oauthv2/token"
 response = requests.request("POST", url, headers=headers, data=payload)
-
 print(response.text)
-
-}
