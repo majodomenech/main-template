@@ -3,7 +3,7 @@ import json
 import os
 import requests
 
-#Docu BYMA
+#Docu BYMA cURL
 
 # curl --location --request POST 'https://sbx.santander.com.ar/oauthv2/token' \
 # --header 'Accept: application/json' \
@@ -11,9 +11,9 @@ import requests
 # --header 'Authorization: Basic QXQ4dFJRS1N3U3lsV0RuRGpITUZBdkNicFNyZXVrRTA6alpSVDVwNUtSMnlFa25CYmFjRnpCa3hHeER4TkJsMjk=' \
 # --data-urlencode 'grant_type=client_credentials'
 def post_login():
+    #python cURL --> pycurl
     usrpass = base64.b64encode("At8tRQKSwSylWDnDjHMFAvCbpSreukE0:jZRT5p5KR2yEknBbacFzBkxGxDxNBl29".encode('ascii')).decode('ascii')
     print(usrpass)
-    # payload = {'grant_type': usrpass}
 
     #payload is url encoded string
     payload = 'grant_type=client_credentials'
