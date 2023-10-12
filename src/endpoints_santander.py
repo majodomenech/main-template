@@ -28,7 +28,7 @@ response = login_apigee()
 token = response.json()['access_token']
 
 headers = {
-    'Content-Type': 'application/x-www-form-urlencoded',
+    'Content-Type': 'application/json',
     'Accept': 'application/json',
     'Authorization': 'Bearer ' + token
 }
