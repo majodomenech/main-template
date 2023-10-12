@@ -3,14 +3,34 @@ import json
 import os
 import requests
 
+def login_apigee():
+    #payload is url encoded string
+    payload = 'grant_type=client_credentials'
+    url = "https://sbx.santander.com.ar/oauthv2/token"
+    usrpass = base64.b64encode(
+        "At8tRQKSwSylWDnDjHMFAvCbpSreukE0:jZRT5p5KR2yEknBbacFzBkxGxDxNBl29".encode('ascii')).decode(
+        'ascii')
 
-usrpass = base64.b64encode("At8tRQKSwSylWDnDjHMFAvCbpSreukE0:jZRT5p5KR2yEknBbacFzBkxGxDxNBl29".encode('ascii')).decode(
-    'ascii')
+    headers = {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        'Accept': 'application/json',
+        'Authorization': 'Basic ' + usrpass
+    }
+    try:
+        proxy = {'https': os.environ['PROXY_BYMA']}
+    except KeyError:
+        proxy = {}
+    return requests.request("POST", url, headers=headers, data=payload, proxies=proxy)
+
+
+response = login_apigee()
+# recibo un jwt: json web token
+token = response.json()['access_token']
 
 headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
     'Accept': 'application/json',
-    'Authorization': 'Basic ' + usrpass
+    'Authorization': 'Bearer ' + token
 }
 
 def get(url: str):
@@ -34,15 +54,6 @@ def put(url: str):
         proxy = {}
     return requests.request("PUT", url, headers=headers, proxies=proxy)
 
-def login_apigee():
-    #payload is url encoded string
-    payload = 'grant_type=client_credentials'
-    url = "https://sbx.santander.com.ar/oauthv2/token"
-    return post(url, payload)
-
-response = login_apigee()
-# recibo un jwt: json web token
-token = response.json()['access_token']
 
 def save_suscription(subscriptions: dict):
     payload = json.dumps(subscriptions)
@@ -95,5 +106,5 @@ def get_fund_by_id_rules(fundId):
     url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/{fundId}/rules"
     return get(url)
 
-# resp = search_redemption()
-# print(resp.text)
+resp = search_redemption()
+print(resp.text)
