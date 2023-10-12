@@ -29,6 +29,7 @@ token = response.json()['access_token']
 
 headers = {
     'Content-Type': 'application/json',
+    'x-ibm-client-id': 'e3fa0fa8-ec9d-406b-960a-150071b151a7',
     'Accept': 'application/json',
     'Authorization': 'Bearer ' + token
 }
@@ -63,7 +64,6 @@ def save_suscription(subscriptions: dict):
 def confirm_suscription(transactionId):
     url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/subscriptions/{transactionId}?action=confirm"
     return put(url)
-
 
 def find_subscriptions():
     url = "https://sbx.santander.com.ar/apif-api_mutual_funds/v2/subscriptions/search"
@@ -106,5 +106,17 @@ def get_fund_by_id_rules(fundId):
     url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/{fundId}/rules"
     return get(url)
 
-resp = search_redemption()
+subscriptions = {
+    "fundId": 130,
+    "type": "amount",
+    "value": 1000,
+    "investmentAccount": 5987311,
+    "paymentMethod": {
+        "type": "ACCOUNT",
+        "UBK": "0720112320000001419672"
+    },
+    "externalReference": 484670111111111
+}
+
+resp = save_suscription(subscriptions)
 print(resp.text)
