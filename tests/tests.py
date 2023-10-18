@@ -1,30 +1,39 @@
-# the inclusion of the tests module is not meant to offer best practices for
-# testing in general, but rather to support the `find_packages` example in
-# setup.py that excludes installing the "tests" package
+#!python3
 
 import unittest
 import os
 import sys
+import redflagbpm
 
-sys.path.append('../src')
-
+sys.path.append('../src', '../backtesting')
+from data import get_suscription_selection
+from endpoints_santander import save_suscription
 
 class Tests(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        # Preparación global, se ejecuta una vez antes de ejecutar cualquier caso de prueba
+        print(f"Inicializando recursos globales")
+        #backtesting suscription data
+        cls.suscripcion = get_suscription_selection()
+        cls.bpm = redflagbpm.BPMService()
+    @classmethod
+    def tearDownClass(cls):
+        print(f"Eliminando recursos globales")
+        pass
 
     # Uncomment to skip
     # @unittest.skip
     def test_case_001(self):
+        print(f"{64 * '='}\nTest Case 001: Dar de alta e ingresar suscripción\n{64 * '='}\n{self.subscripcions}\n\n\nLog de request y response:\n{32 * '-'}")
+        resp = save_suscription(subscriptions)
+        Tests.id_list = id_list
+        print(f"{64 * '='}\n\n\n")
         pass
 
-    # Uncomment to skip
-    # @unittest.skip
-    def test_case_002(self):
-        pass
-
-    # Uncomment to skip
-    # @unittest.skip
-    def test_case_002(self):
-        pass
+    @unittest.skip
+    def tearDown(self) -> None:
+        input(f"Presione enter para continuar\n\n\n")
 
 
 if __name__ == '__main__':
