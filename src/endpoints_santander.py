@@ -106,18 +106,18 @@ def get_fund_by_id_rules(fundId):
     url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/{fundId}/rules"
     return get(url)
 
-#backtesting data from docu
-subscriptions = {
-    "fundId": 130,
-    "type": "amount",
-    "value": 1000,
-    "investmentAccount": 5987311,
-    "paymentMethod": {
-        "type": "ACCOUNT",
-        "UBK": "0720112320000001419672"
-    },
-    "externalReference": 484670111111111
-}
-
-resp = save_suscription(subscriptions)
-print(resp.text)
+# #backtesting data from docu
+# subscriptions = {
+#     "fundId": 130,
+#     "type": "amount",
+#     "value": 1000,
+#     "investmentAccount": 5987311,
+#     "paymentMethod": {
+#         "type": "ACCOUNT",
+#         "UBK": "0720112320000001419672"
+#     },
+#     "externalReference": 484670111111111
+# }
+#
+# resp = save_suscription(subscriptions)
+# print(resp.text)
