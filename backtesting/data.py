@@ -19,7 +19,7 @@ def get_suscription_selection():
     return data
 
 def get_suscription():
-    data = [{
+    data = {
             "fundId": 130,
             "type": "amount",
             "value": 1000,
@@ -29,6 +29,6 @@ def get_suscription():
                 "UBK": "0720112320000001419672"
             },
             "externalReference": 484670111111111
-        }]
+        }
     return data
 

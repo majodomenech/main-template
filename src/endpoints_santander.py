@@ -2,8 +2,9 @@ import base64
 import json
 import os
 import requests
-
-from data import get_suscription
+import sys
+sys.path.append('../backtesting')
+# from data import get_suscription
 
 
 def login_apigee():
@@ -36,6 +37,7 @@ headers = {
     'Accept': 'application/json',
     'Authorization': 'Bearer ' + token
 }
+
 
 def get(url: str):
     try:
@@ -110,6 +112,16 @@ def get_fund_by_id_rules(fundId):
     return get(url)
 
 # #backtesting data from docu
-# subscriptions = get_suscription()
-# resp = save_suscription(subscriptions)
-# print(resp.text)
+data = \
+    {"fundId": 23808,
+     "type": "amount",
+     "value": 1009734.0,
+     "investmentAccount": 5006038,
+     "paymentMethod":
+         {"type": "ACCOUNT",
+          "UBK": "0150804601000112693584"},
+     "externalReference": 215471}
+from data import get_suscription
+# data = get_suscription()
+resp = save_suscription(data)
+print(resp.text)

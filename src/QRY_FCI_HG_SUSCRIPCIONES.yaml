@@ -3,15 +3,17 @@ caption: FCI STDR - Solicitud de Suscripciones
 view: |
   select 
       t."IRM_TAREA_ID" as "idOrigen",
-      unf."CODIGO" as codigo_fci,
+      unf."CODIGO"::bigint as codigo_fci,
       '[' ||unf."CODIGO" ||'] ' || unf."NOMBRE" as fci,
       p."ID" as cuit,
       "ASUNTO",
       unf."ACPIC", p."DENOMINACION", 
-      c."ID" as cuenta_id
+      c."ID"::bigint as cuenta_id,
       '[' || c."ID" ||'] ' || c."DENOMINACION" as cuenta, 
       cfci."ID" as cuenta_fci,
       uni."CODIGO" as unidad,
+  	  unif."CODIGO" as moneda,
+  	  cb."CBU" as cbu,
       "DINERO",
       cm."CODIGO" as mkt,
       chro."CODIGO" as "T+0",
@@ -38,6 +40,8 @@ view: |
       left join "CTA_CODIGO_INTEGRACION" chs on unf."CUENTAAAPIC"=chs."ESQUEMA" and chs."CODIFICACION"='Límite presentación suscripción FCI'
       left join "CTA_ESQUEMA" cfci on cfci."CTA_ESQUEMA_ID" = unf."CUENTAAAPIC"
       inner join "UNI_UNIDAD" uni on uni."UNI_UNIDAD_ID"=t."UNIDAD"
+  	  inner join "CTA_CUENTA_BANCARIA" cb ON cb."ESQUEMA" = c."CTA_ESQUEMA_ID"
+  	  inner join "UNI_UNIDAD" unif on unif."UNI_UNIDAD_ID"=cb."MONEDA"
   where t."CLASS" = 'com.aunesa.irmo.model.acdi.ISolicitudSuscripcionFCI'
       and "FECHAFIN"::date = current_date
       -- and t."ESTADO" = 'Liquidación pendiente'
