@@ -160,14 +160,3 @@ def update_suscripcion_status(conn, id_origen, mensaje, **kwargs):
 
     cur.close()
 
-def update_suscripciones_eliminadas(conn, fecha_alta_desde, fecha_alta_hasta):
-    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-    update = """
-    update FCISTDR.suscripcion_status set estado = 'ELIMINADO' where
-        fecha_alta::date between
-        %s and %s 
-        and estado = 'PREINGRESADO'
-        """
-    params = tuple([fecha_alta_desde, fecha_alta_hasta])
-    cur.execute(update, params)
-    cur.close()

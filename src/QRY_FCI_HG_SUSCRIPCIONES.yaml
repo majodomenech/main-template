@@ -1,5 +1,5 @@
 name: FCISTDR/QRY_FCI_HG_SUSCRIPCIONES
-caption: FCI - Solicitud de Suscripciones
+caption: FCI STDR - Solicitud de Suscripciones
 view: |
   select 
       t."IRM_TAREA_ID" as "idOrigen",
@@ -8,6 +8,7 @@ view: |
       p."ID" as cuit,
       "ASUNTO",
       unf."ACPIC", p."DENOMINACION", 
+      c."ID" as cuenta_id
       '[' || c."ID" ||'] ' || c."DENOMINACION" as cuenta, 
       cfci."ID" as cuenta_fci,
       uni."CODIGO" as unidad,
@@ -39,7 +40,8 @@ view: |
       inner join "UNI_UNIDAD" uni on uni."UNI_UNIDAD_ID"=t."UNIDAD"
   where t."CLASS" = 'com.aunesa.irmo.model.acdi.ISolicitudSuscripcionFCI'
       and "FECHAFIN"::date = current_date
-      and t."ESTADO" = 'Liquidación pendiente'
+      -- and t."ESTADO" = 'Liquidación pendiente'
+  limit 1
 viewBindings: []
 postProcessors:
 - FCISTDR/TEMPLATE_QRY_FCI_HG_SUSCRIPCIONES

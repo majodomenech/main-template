@@ -5,19 +5,32 @@ from DB_connect import _get_flw_connection
 from auxiliar import procesar_respuesta
 from codigo_emisor import get_codigo_emisor_byma_cuit
 from endpoints_fci_byma import alta_bilateral_suscripcion, ingresar_bilateral_suscripcion
+
+from endpoints_santander import save_suscription, confirm_suscription
 from write_DB import log_suscripcion
 
-def suscripcion_alta_ingreso(bpm, seleccionados):
+def suscripcion_simulacion_ingreso(bpm, seleccionados):
     data = seleccionados
     alta_ingresar_status_list = []
     error_list = []
     id_suscri_list = []
     for susi in data:
-        suscr = {"emisor": {"codigo": get_codigo_emisor_byma_cuit(susi['cuit'])},
-                 "cantidadCuotaPartes": susi["cantidad_cuotapartes"],
-                 "especie": susi["codigo_fci"], 'idOrigen': susi["idOrigen"]}
-        # Dar alta de suscripción bilateral
-        resp_alta = alta_bilateral_suscripcion(suscr)
+        suscr = {
+            "fundId": susi["codigo_fci"],
+            "type": "amount",
+            "value": susi["cantidad"],
+            "investmentAccount": susi["cuenta_id"],
+            "paymentMethod": {
+                "type": "ACCOUNT",
+                "UBK": "0720112320000001419672"
+            },
+            "externalReference": susi['idOrigen']
+        }
+        # suscr = {"emisor": {"codigo": get_codigo_emisor_byma_cuit(susi['cuit'])},
+        #          "cantidadCuotaPartes": susi["cantidad_cuotapartes"],
+        #          "especie": susi["codigo_fci"], 'idOrigen': susi["idOrigen"]}
+        # Simular suscripción APIC
+        resp_alta = save_suscription(suscr)
         print(resp_alta.json())
         # chequeo el estado del response
         resp_alta_ok, mje = procesar_respuesta(resp_alta, error_list, None, 'Suscripcion: Alta')
@@ -32,12 +45,12 @@ def suscripcion_alta_ingreso(bpm, seleccionados):
                             descripción=resp_alta.text)
 
             # para suscris dadas de alta llamo al endpoint de ingresar
-            resp_ingresar = ingresar_bilateral_suscripcion(resp_alta.json()['id'])
+            resp_ingresar = confirm_suscription(resp_alta.json()['id'])
             # chequeo el estado del ingrso
             resp_ingresar_ok, msj = procesar_respuesta(resp_ingresar, error_list, suscr, 'Suscripcion: Ingresar')
             rta = f"Suscripción {susi['idOrigen']} dada de alta"
             alta_ingresar_status_list.append(rta)
-            print('RESP INGRESAR: \n', resp_ingresar)
+            print('RESP CONFIRMAR \n', resp_ingresar)
             if resp_ingresar_ok:
                 rta = f"Suscripción {susi['idOrigen']} ingresada"
                 # si el response no arroja errores impacto en la tabla FCISTDR.suscripcion_status
@@ -66,5 +79,5 @@ if __name__ == '__main__':
     bpm = redflagbpm.BPMService()
     #Uso la selección del usuario (ve el listado de suscris de HG)
     seleccionados = bpm.context['selection']
-    html, id_suscri_list = suscripcion_alta_ingreso(bpm, seleccionados)
+    html, id_suscri_list = suscripcion_simulacion_ingreso(bpm, seleccionados)
     bpm.reply(html)

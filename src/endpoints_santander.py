@@ -109,7 +109,7 @@ def get_fund_by_id_rules(fundId):
     url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/{fundId}/rules"
     return get(url)
 
-#backtesting data from docu
-subscriptions = get_suscription()
-resp = save_suscription(subscriptions)
-print(resp.text)
+# #backtesting data from docu
+# subscriptions = get_suscription()
+# resp = save_suscription(subscriptions)
+# print(resp.text)
