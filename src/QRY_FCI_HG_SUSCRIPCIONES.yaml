@@ -1,0 +1,84 @@
+name: FCISTDR/QRY_FCI_HG_SUSCRIPCIONES
+caption: FCI - Solicitud de Suscripciones
+view: |
+  select 
+      t."IRM_TAREA_ID" as "idOrigen",
+      unf."CODIGO" as codigo_fci,
+      '[' ||unf."CODIGO" ||'] ' || unf."NOMBRE" as fci,
+      p."ID" as cuit,
+      "ASUNTO",
+      unf."ACPIC", p."DENOMINACION", 
+      '[' || c."ID" ||'] ' || c."DENOMINACION" as cuenta, 
+      cfci."ID" as cuenta_fci,
+      uni."CODIGO" as unidad,
+      "DINERO",
+      cm."CODIGO" as mkt,
+      chro."CODIGO" as "T+0",
+      chr."CODIGO" as "T++",
+      t."ESTADO", 
+      "FECHA", 
+      "FECHAFIN", 
+      "PROPIETARIO",
+      t."TIPO", "SOLICITUD", t."CLASS", "CONTEXTO", 
+      t."CANTIDAD"::real as cantidad,
+      t."VALORCUOTAPARTE", 
+      t."CANTIDADCUOTAPARTES"::real as cantidad_cuotapartes,
+      "CANTIDADSOLICITUD", "UNIDAD", "FECHASOLICITUD",
+      "INTEGRACOMITENTE",
+      null as template
+  from "IRM_TAREA" t
+      inner join "CTA_ESQUEMA" c on c."CTA_ESQUEMA_ID"  = t."CUENTA"
+      inner join "SEC_USUARIO" u on u."SEC_USUARIO_ID" = t."PROPIETARIO"
+      inner join "UNI_UNIDAD" unf on unf."UNI_UNIDAD_ID"=t."FCI" 
+      inner join "GNT_PERSONA" p on p."GNT_PERSONA_ID" = unf."ACPIC"
+      left join "CTA_CODIGO_INTEGRACION" cm on unf."CUENTAAAPIC"=cm."ESQUEMA" and cm."CODIFICACION"='Modo operativo FCI'
+      left join "CTA_CODIGO_INTEGRACION" chro on unf."CUENTAAAPIC"=chro."ESQUEMA" and chro."CODIFICACION"='Límite presentación rescate FCI T+0'
+      left join "CTA_CODIGO_INTEGRACION" chr on unf."CUENTAAAPIC"=chr."ESQUEMA" and chr."CODIFICACION"='Límite presentación rescate FCI T++'
+      left join "CTA_CODIGO_INTEGRACION" chs on unf."CUENTAAAPIC"=chs."ESQUEMA" and chs."CODIFICACION"='Límite presentación suscripción FCI'
+      left join "CTA_ESQUEMA" cfci on cfci."CTA_ESQUEMA_ID" = unf."CUENTAAAPIC"
+      inner join "UNI_UNIDAD" uni on uni."UNI_UNIDAD_ID"=t."UNIDAD"
+  where t."CLASS" = 'com.aunesa.irmo.model.acdi.ISolicitudSuscripcionFCI'
+      and "FECHAFIN"::date = current_date
+      and t."ESTADO" = 'Liquidación pendiente'
+viewBindings: []
+postProcessors:
+- FCISTDR/TEMPLATE_QRY_FCI_HG_SUSCRIPCIONES
+columns:
+- name: cuit
+  caption: cuit
+  fieldType: java.lang.String
+- name: cantidad_cuotapartes
+  caption: cantidad_cuotapartes
+  fieldType: java.lang.Double
+- name: codigo_fci
+  caption: codigo_fci
+  fieldType: character varying
+- name: idOrigen
+  caption: idOrigen
+  fieldType: java.lang.Integer
+- name: template
+  caption: Template
+  fieldType: java.lang.String
+template: |
+  <div inner-h-t-m-l="[[item.template]]"></div>
+sortables: []
+targetUsers: []
+targetGroups:
+- ADMIN
+- OPB
+filterGroup: {}
+dataSource: SYC
+dataSourceOptions: {}
+details: []
+reports: []
+services: []
+scripts:
+- FCISTDR/SUSCRIPCION_ALTA_INGRESO
+selectionScript: |
+  #!python3
+  import redflagbpm
+  bpm = redflagbpm.BPMService()
+  bpm.reply("Cantidad seleccionada: " + str(len(bpm.context["selection"])))
+context: {}
+exportable: true
+
