@@ -36,8 +36,6 @@ def login_apigee():
     return auth_headers
 
 
-
-
 def get(auth_headers:dict, url: str):
     try:
         proxy = {'https': os.environ['PROXY_BYMA']}
@@ -69,7 +67,7 @@ def confirm_suscription(auth_headers:dict, transactionId):
     url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/subscriptions/{transactionId}?action=confirm"
     return put(auth_headers,url)
 
-def find_subscriptions(auth_headers:dict):
+def search_subscription(auth_headers:dict):
     url = "https://sbx.santander.com.ar/apif-api_mutual_funds/v2/subscriptions/search"
     return get(auth_headers, url)
 
@@ -83,7 +81,8 @@ def save_redemption(auth_headers:dict, redemptions: dict):
     return post(auth_headers, url, payload)
 
 def search_redemption(auth_headers:dict):
-    url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/redemption/search"
+    # payload = json.dumps({})
+    url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/redemptions/search"
     return get(auth_headers, url)
 
 def get_redemption(auth_headers:dict, transactionId):
@@ -109,3 +108,8 @@ def get_fund_by_id_details(auth_headers:dict, fundId):
 def get_fund_by_id_rules(auth_headers:dict, fundId):
     url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/{fundId}/rules"
     return get(auth_headers, url)
+
+
+headers = login_apigee()
+resp = search_redemption(headers)
+print(resp.text)

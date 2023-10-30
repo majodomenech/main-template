@@ -59,8 +59,8 @@ columns:
 - name: cuenta
   caption: Cuenta
   fieldType: java.lang.String
-- name: codigo_fci
-  caption: codigo_fci
+- name: fci
+  caption: fci
   fieldType: character varying
 - name: idOrigen
   caption: idOrigen

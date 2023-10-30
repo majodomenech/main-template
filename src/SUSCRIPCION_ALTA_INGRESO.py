@@ -92,7 +92,8 @@ def suscripcion_simulacion_ingreso(headers, bpm, selection):
 if __name__ == '__main__':
     bpm = redflagbpm.BPMService()
     #Uso la selección del usuario (ve el listado de suscris de HG)
-    selection = bpm.context['selection']
+    selection = json.dumps(bpm.context['selection'])
+    print(80 * '\../ ', selection)
     selection = json.loads(selection)
     headers = login_apigee()
     html, id_suscri_list = suscripcion_simulacion_ingreso(headers, bpm, selection)
