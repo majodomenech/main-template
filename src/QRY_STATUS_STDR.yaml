@@ -1,5 +1,5 @@
 name: FCISTDR/QRY_STATUS_STDR
-caption: FCI - Status BYMA
+caption: FCI STDR - Status Fondos
 view: |
     with rescates_nd_suscripciones as (select 
     rs.cantidad_cp::real as cantidad_cp,
