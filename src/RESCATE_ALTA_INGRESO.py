@@ -88,6 +88,7 @@ if __name__ == '__main__':
     bpm = redflagbpm.BPMService()
     #Uso la selección del usuario (ve el listado de suscris y rescates de BYMA)
     selection = bpm.context['selection']
+    print(80*'\../ ', selection)
     selection = json.loads(selection)
     headers = login_apigee()
     html, id_rescate_list = rescate_simulacion_ingreso(headers, bpm, selection)
