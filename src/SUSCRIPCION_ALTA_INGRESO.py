@@ -19,11 +19,17 @@ requests_log.setLevel(logging.DEBUG)
 requests_log.propagate = True
 
 
-def suscripcion_simulacion_ingreso(headers, selection):
+def suscripcion_simulacion_ingreso(headers, bpm, selection):
     data = selection
     alta_ingresar_status_list = []
     error_list = []
     id_suscri_list = []
+    if bpm.service.text("STAGE") == 'DEV':
+        db = "flowabletest"
+    else:
+        db = "flowable"
+    conn = _get_flw_connection(db)
+
     for susi in data:
         suscr = {
             # "fundId": susi["codigo_fci"], #no funciona el ID de CV
@@ -42,9 +48,7 @@ def suscripcion_simulacion_ingreso(headers, selection):
         print(resp_alta.json())
         # chequeo el estado del response
         resp_alta_ok, mje = procesar_respuesta(resp_alta, error_list, None, 'Suscripcion: Alta')
-        db = "flowabletest"
-        # conecto a la DB
-        conn = _get_flw_connection(db)
+
         # con el id del response del endpoint de alta llamo al endpoint de ingresar
         if resp_alta_ok:
             id_suscri_list.append(resp_alta.json()['transactionId'])
@@ -53,25 +57,25 @@ def suscripcion_simulacion_ingreso(headers, selection):
                             descripción=resp_alta.text)
 
             # para suscris dadas de alta llamo al endpoint de ingresar
-            resp_ingresar = confirm_suscription(resp_alta.json()['transactionId'])
-            resp_ingresar.json()
+            resp_confirmar = confirm_suscription(headers, resp_alta.json()['transactionId'])
+            print(resp_confirmar.json())
             # chequeo el estado del ingrso
-            resp_ingresar_ok, msj = procesar_respuesta(resp_ingresar, error_list, suscr, 'Suscripcion: Ingresar')
+            resp_confirmar_ok, msj = procesar_respuesta(resp_confirmar, error_list, suscr, 'Suscripcion: Ingresar')
             rta = f"Suscripción {susi['idOrigen']} dada de alta"
             alta_ingresar_status_list.append(rta)
-            print('RESP CONFIRMAR \n', resp_ingresar)
-            if resp_ingresar_ok:
+            print('RESP CONFIRMAR \n', resp_confirmar)
+            if resp_confirmar_ok:
                 rta = f"Suscripción {susi['idOrigen']} ingresada"
                 # si el response no arroja errores impacto en la tabla FCISTDR.suscripcion_status
                 log_suscripcion(conn, id_origen=susi['idOrigen'], mensaje='Ingresado',
-                                id_suscri=resp_alta.json()['id'], descripción=resp_ingresar.text)
+                                id_suscri=resp_alta.json()['id'], descripción=resp_confirmar.text)
                 alta_ingresar_status_list.append(rta)
             else:
                 rta = f"{susi['idOrigen']}:{msj}"
                 alta_ingresar_status_list.append(rta)
                 log_suscripcion(conn, id_origen=susi['idOrigen'], mensaje=msj,
-                                id_suscri=resp_alta.json()['id'], estado='NO INGRESADO',
-                                descripción=resp_ingresar.text)
+                                id_suscri=resp_alta.json()['transactionId'], estado='NO INGRESADO',
+                                descripción=resp_confirmar.text)
         else:
             # si el response de alta arroja errores impacto en la tabla FCISTDR.suscripciones_status
             rta = f"{susi['idOrigen']}:{mje}"
@@ -90,5 +94,5 @@ if __name__ == '__main__':
     selection = bpm.context['selection']
     selection = json.loads(selection)
     headers = login_apigee()
-    html, id_suscri_list = suscripcion_simulacion_ingreso(headers, selection)
+    html, id_suscri_list = suscripcion_simulacion_ingreso(headers, bpm, selection)
     bpm.reply(html)

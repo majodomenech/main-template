@@ -1,0 +1,156 @@
+name: FCISTDR/QRY_STATUS_STDR
+caption: FCI - Status BYMA
+view: |
+    with rescates_nd_suscripciones as (select 
+    rs.cantidad_cp::real as cantidad_cp,
+    rs."descripción" as descripcion,
+    rs.distribucion,
+    rs.especie,
+    rs.estado,
+    rs.fecha_alta,
+    rs.id_grupo,
+    rs.id_origen,
+    rs.id_rescate,
+    null as id_suscri,
+    rs.log::character varying,
+    rs.certif_id,
+    'Rescate' as tipo
+    from fcistdr.rescate_status rs
+    union
+    select 
+    ss.cantidad_cp::real as cantidad_cp,
+    ss."descripción" as descripcion,
+    null as distribucion,
+    ss.especie,
+    ss.estado,
+    ss.fecha_alta,
+    null as id_grupo,
+    ss.id_origen,
+    null as id_rescate,
+    ss.id_suscri,
+    ss.log::character varying,
+    ss.certif_id,
+    'Suscripción' as tipo
+    from fcistdr.suscripcion_status ss)
+    select * from rescates_nd_suscripciones
+        where (?::character varying is null or tipo=?) 
+        and (?::bigint is null or id_origen=?)
+        and (?::character varying is null or estado is null or estado=?)
+        and (?::bigint is null or certif_id=?)
+        and (?::numeric is null or fecha_alta::date>= (timestamp 'epoch' + ?::numeric * interval '1 ms')::date)
+        and (?::numeric is null or fecha_alta::date<= (timestamp 'epoch' + ?::numeric * interval '1 ms')::date)
+viewBindings:
+- tipo
+- tipo
+- id_origen
+- id_origen
+- estado
+- estado
+- certif_id
+- certif_id
+- fecha_desde
+- fecha_desde
+- fecha_hasta
+- fecha_hasta
+columns:
+- name: tipo
+  caption: Tipo
+  fieldType: java.lang.String
+- name: certif_id
+  caption: Certificate ID
+  fieldType: java.lang.Long
+  format: "0"
+- name: estado
+  caption: Estado
+  fieldType: java.lang.String
+- name: especie
+  caption: Especie
+  fieldType: java.lang.Long
+  format: "0"
+- name: cantidad_cp
+  caption: Cantidad Cuotapartes
+  fieldType: java.lang.Double
+- name: fecha_alta
+  caption: Fecha Alta
+  fieldType: java.sql.Date
+- name: id_origen
+  caption: ID HG
+  fieldType: java.lang.Long
+  format: "0"
+#- name: descripcion
+#  caption: Descripción
+#  fieldType: java.lang.String
+#- name: log
+#  caption: Log
+#  fieldType: java.lang.String
+keys:
+- id_origen
+sortables: []
+targetUsers: []
+targetGroups:
+- INTERNAL
+filterGroup:
+  caption: Filtros
+  filters:
+  - name: tipo
+    caption: Tipo
+    fieldType: java.lang.String
+    required: false
+    dependents: []
+    possibleValues:
+      - "Suscripción"
+      - "Rescate"
+  - name: id_origen
+    caption: ID HG
+    fieldType: java.lang.Integer
+    required: false
+    dependents: []
+  - name: estado
+    caption: Estado
+    fieldType: java.lang.String
+    required: false
+    dependents: []
+    possibleValues:
+      - "PREINGRESADO"
+      - "INGRESADO"
+      - "ANULADO"
+      - "RECHAZADO"
+  - name: especie
+    caption: Especie
+    fieldType: java.lang.String
+    required: false
+    dependents: []
+  - name: certif_id
+    caption: Nro. Pedido
+    fieldType: java.lang.Integer
+    dependents: []
+  - name: fecha_desde
+    caption: Fecha Alta Desde
+    fieldType: java.sql.Date
+    required: true
+    dependents: []
+  - name: fecha_hasta
+    caption: Fecha Alta Hasta
+    fieldType: java.sql.Date
+    required: true
+    dependents: [ ]
+  subgroups: []
+  defaultFilter:
+    fecha_desde: ;new java.lang.Long(Date.now()- 4*24*60*60*1000);
+    fecha_hasta: ;new java.lang.Long(Date.now());
+  uniqueItems: false
+dataSource: FLW
+dataSourceOptions: {}
+details: []
+reports: []
+services: []
+initContextScript: #!run:FCISTDR/SYNC_STDR_STATUS
+scripts:
+- FCISTDR/QRY_STATUS_STDR_DETAIL
+selectionScript: |
+    #!python3
+    import redflagbpm
+    bpm = redflagbpm.BPMService()
+    bpm.reply("Cantidad seleccionada: " + str(len(bpm.context["selection"])))
+context: {}
+exportable: true

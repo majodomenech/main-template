@@ -7,12 +7,12 @@ import datetime
 
 def procesar_respuesta(resp, error_list, context, tarea):
     if resp.status_code == 400 and context is not None:
-        err = [tarea+' ' + i['descripcion'] for i in resp.json()['errores']]
-        [error_list.append(tarea+' ' + i['descripcion'] + str(context) for i in resp.json()['errores'])]
+        err = [tarea+' ' + resp.json()['code'] + resp.json()['message']]
+        [error_list.append(tarea+' ' + resp.json()['message'] + str(context))]
         return False, str(err)
     elif resp.status_code == 400 and context is None:
-        err = [tarea+' ' + i['descripcion'] for i in resp.json()['errores']]
-        [error_list.append(tarea+' ' + i['descripcion'] for i in resp.json()['errores'])]
+        err = [tarea+' ' + resp.json()['code'] + resp.json()['message']]
+        [error_list.append(tarea+' '  + resp.json()['code'] + resp.json()['message'])]
         return False, str(err)
     elif resp.status_code == 200 or resp.status_code == 201:
         return True, None
