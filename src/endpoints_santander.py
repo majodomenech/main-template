@@ -86,26 +86,26 @@ def search_redemption(auth_headers:dict):
     url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/redemption/search"
     return get(auth_headers, url)
 
-def get_redemption(transactionId):
+def get_redemption(auth_headers:dict, transactionId):
     url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/redemption/{transactionId}"
-    return get(url)
+    return get(auth_headers, url)
 
-def confirm_redemption(transactionId):
+def confirm_redemption(auth_headers:dict, transactionId):
     url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/redemptions/{transactionId}?action=confirm"
-    return put(url)
+    return put(auth_headers, url)
 
-def all_funds():
+def all_funds(auth_headers:dict):
     url = "https://sbx.santander.com.ar/apif-api_mutual_funds/v2/"
-    return get(url)
+    return get(auth_headers, url)
 
-def get_fund_by_id(fundId):
+def get_fund_by_id(auth_headers:dict, fundId):
     url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/{fundId}"
-    return get(url)
+    return get(auth_headers, url)
 
-def get_fund_by_id_details(fundId):
+def get_fund_by_id_details(auth_headers:dict, fundId):
     url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/{fundId}/details"
-    return get(url)
+    return get(auth_headers, url)
 
-def get_fund_by_id_rules(fundId):
+def get_fund_by_id_rules(auth_headers:dict, fundId):
     url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/{fundId}/rules"
-    return get(url)
+    return get(auth_headers, url)
