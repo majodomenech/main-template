@@ -44,7 +44,7 @@ def suscripcion_simulacion_ingreso(headers, bpm, selection):
                 "UBK": "0720112320000001419672"}, #no funciona el CBU asociado al ID de CV
             "externalReference": susi['idOrigen']
         }
-
+        # Dar alta la suscri (simular)
         resp_alta = save_suscription(headers, suscr)
         print(resp_alta.json())
         # chequeo el estado del response

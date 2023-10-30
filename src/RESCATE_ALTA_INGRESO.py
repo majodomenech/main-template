@@ -26,10 +26,11 @@ def rescate_simulacion_ingreso(headers, bpm, selection):
     else:
         db = "flowable"
     conn = _get_flw_connection(db)
+
     for reci in data:
         #calculo la fecha de liquidacion teniendo usando los días hábiles y el plazo de liquidación
         fecha_liquidacion = get_fecha_liquidacion(reci['plazo_liq'])
-
+        #rescate por cuotapartes
         resc = {
                     # "fundId": reci["codigo_fci"], #no funciona el ID de CV
                     "fundId": 130,
@@ -49,6 +50,7 @@ def rescate_simulacion_ingreso(headers, bpm, selection):
         print(resp_alta.json())
         # chequeo el estado del response
         resp_alta_ok, msj = procesar_respuesta(resp_alta, error_list, None, 'Rescate: Alta')
+        # con el id del response del endpoint de alta llamo al endpoint de ingresar
         if resp_alta_ok:
             id_rescate_list.append(resp_alta.json()['transactionId'])
             log_rescate(conn, id_origen=reci['idOrigen'], mensaje=resp_alta.json()['status'],
