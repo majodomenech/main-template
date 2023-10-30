@@ -1,8 +1,6 @@
 name: FCISTDR/QRY_FCI_HG_RESCATES
 caption: FCI STDR - Solicitud de Rescates
 view: |
-  with 
-  rescates as (
       select 
           t."IRM_TAREA_ID" as "idOrigen",
           unf."CODIGO" as codigo_fci,
@@ -27,9 +25,11 @@ view: |
           t."CANTIDAD" as cantidad,
           t."VALORCUOTAPARTE", 
           t."CANTIDADCUOTAPARTES",
-          "CANTIDADSOLICITUD", "UNIDAD", "FECHASOLICITUD",
+          "CANTIDADSOLICITUD"::double precision as cantidad_cuotapartes, 
+          "UNIDAD", "FECHASOLICITUD",
           "INTEGRACOMITENTE", 
-          unf."ACPIC", p."DENOMINACION"
+          unf."ACPIC", p."DENOMINACION",
+            null as template
       from "IRM_TAREA" t
           inner join "CTA_ESQUEMA" c on c."CTA_ESQUEMA_ID"  = t."CUENTA"
           inner join "SEC_USUARIO" u on u."SEC_USUARIO_ID" = t."PROPIETARIO"
@@ -42,104 +42,38 @@ view: |
           left join "CTA_ESQUEMA" cfci on cfci."CTA_ESQUEMA_ID" = unf."CUENTAAAPIC"
           left join "UNI_UNIDAD" uni on uni."UNI_UNIDAD_ID"=unf."MONEDA"
       where t."CLASS" = 'com.aunesa.irmo.model.acdi.ISolicitudRescateFCI'
-          and t."ESTADO" = 'Liquidación pendiente'),
-  primera_agrupacion as(
-      select 
-          codigo_fci,
-          "VALORCUOTAPARTE",
-          sum("CANTIDADSOLICITUD")::double precision as "CP_X_CUENTA",
-          tipo_rescate,
-          "FECHA", "FECHAFIN",
-          cuit,
-          "ID" as cuenta,
-          json_agg(json_build_object('cantidad',"CANTIDADSOLICITUD"::double precision, 'idOrden', "idOrigen"::bigint, 'solicitud', "SOLICITUD", 'propietario',"PROPIETARIO") order by "idOrigen") as origenes,
-          cuenta_fci,unidad,"DINERO", plazo_liq,
-          mkt,
-          "T+0",
-          "T++",
-          fci, 
-          "ESTADO", 
-          "TIPO", "CLASS", "CONTEXTO", 
-          "UNIDAD", "FECHASOLICITUD",
-          "INTEGRACOMITENTE", "ACPIC", "DENOMINACION"
-      from rescates
-      where (plazo_liq = 0) = (?= 'T+0')
-          group by "ID", codigo_fci, "VALORCUOTAPARTE",cuit,
-          cuenta_fci,
-          unidad,
-          "DINERO", tipo_rescate,plazo_liq,
-          mkt,
-          "T+0",
-          "T++",
-          codigo_fci,
-          fci, 
-          "ESTADO", 
-          "FECHA", "FECHAFIN",
-          "TIPO", "CLASS", "CONTEXTO", 
-          "UNIDAD", "FECHASOLICITUD",
-          "INTEGRACOMITENTE", "ACPIC", "DENOMINACION")
-
-      select 
-          codigo_fci,
-          "VALORCUOTAPARTE",
-          sum("CP_X_CUENTA") as cp_total,
-          tipo_rescate,
-          "FECHA", "FECHAFIN",
-          cuit,
-          json_agg(json_build_object('cantidad', "CP_X_CUENTA", 'cuenta', cuenta, 'origenes', origenes))::text as resumen_orden,
-          cuenta_fci,unidad,"DINERO", plazo_liq,
-          mkt,
-          "T+0",
-          "T++",
-          fci, 
-          "ESTADO", 
-          "TIPO", "CLASS", "CONTEXTO", 
-          "UNIDAD", "FECHASOLICITUD",
-          "INTEGRACOMITENTE", "ACPIC", "DENOMINACION"
-      from primera_agrupacion
-      where "FECHA" = current_date
-          group by 
-          codigo_fci, "VALORCUOTAPARTE",cuit, 
-          cuenta_fci,
-          unidad,
-          "DINERO", tipo_rescate,plazo_liq,
-          mkt,
-          "T+0",
-          "T++",
-          codigo_fci,
-          fci, 
-          "ESTADO", 
-          "FECHA", "FECHAFIN",
-          "TIPO", "CLASS", "CONTEXTO", 
-          "UNIDAD", "FECHASOLICITUD",
-          "INTEGRACOMITENTE", "ACPIC", "DENOMINACION"
-
+          and t."ESTADO" = 'Liquidación pendiente'
+          and (unf."PLAZOLIQUDACIONRESCATE" = 0) = (?= 'T+0')
+          and "FECHA"::date = current_date
+          limit 1
 viewBindings:
   - plazo_liq
-#postProcessors:
-#- FCISTDR/TEMPLATE_QRY_FCI_HG_RESCATES
+postProcessors:
+- FCISTDR/TEMPLATE_QRY_FCI_HG_RESCATES
 columns:
-- name: resumen_orden
-  caption: Resumen de orden
-  fieldType: java.lang.String
-  width: 8
 - name: plazo_liq
   caption: Plazo de liquidación
   fieldType: java.lang.Integer
 - name: cuit
   caption: CUIT
   fieldType: java.lang.String
-- name: cp_total
+- name: cuenta
+  caption: Cuenta
+  fieldType: java.lang.String
+- name: cantidad_cuotapartes
   caption: Cuotapartes
   fieldType: java.lang.Double
 - name: codigo_fci
   caption: Código FCI
   fieldType: java.lang.String
-#- name: template
-#  caption: Template
-#  fieldType: java.lang.String
-#template: |
-#  <div inner-h-t-m-l="[[item.template]]"></div>
+- name: idOrigen
+  caption: idOrigen
+  fieldType: java.lang.Integer
+- name: template
+  caption: Template
+  fieldType: java.lang.String
+template: |
+  <div inner-h-t-m-l="[[item.template]]"></div>
 sortables: []
 targetUsers: []
 targetGroups:

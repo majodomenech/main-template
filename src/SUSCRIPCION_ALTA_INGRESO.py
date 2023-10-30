@@ -31,6 +31,7 @@ def suscripcion_simulacion_ingreso(headers, bpm, selection):
     conn = _get_flw_connection(db)
 
     for susi in data:
+        #suscripción por monto
         suscr = {
             # "fundId": susi["codigo_fci"], #no funciona el ID de CV
             "fundId": 130,

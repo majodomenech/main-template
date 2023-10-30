@@ -56,6 +56,9 @@ columns:
 - name: cantidad_cuotapartes
   caption: cantidad_cuotapartes
   fieldType: java.lang.Double
+- name: cuenta
+  caption: Cuenta
+  fieldType: java.lang.String
 - name: codigo_fci
   caption: codigo_fci
   fieldType: character varying

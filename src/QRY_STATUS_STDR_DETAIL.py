@@ -15,7 +15,7 @@ try:
     fecha_alta = bpm.context['fecha_alta']
     id_origen = bpm.context['id_origen']
     str_reply+= f"""Tipo: {tipo}
-                    N° Pedido: {certif_id}
+                    Certificate ID: {certif_id}
                     Especie: {especie}
                     Estado: {estado}
                     Cantidad Cuotapartes: {cantidad_cp}
@@ -85,7 +85,7 @@ try:
                 <td class="tg-0lax center">{tipo}</td>
             </tr>
             <tr>
-                <td class="tg-0lax bold gray leftp">N° PEDIDO</td>
+                <td class="tg-0lax bold gray leftp">Certificate ID</td>
                 <td class="tg-0lax center"><span style="font-weight:400;font-style:normal">{certif_id}</span></td>
             </tr>
             <tr>
