@@ -24,68 +24,67 @@ def login_apigee():
         proxy = {'https': os.environ['PROXY_BYMA']}
     except KeyError:
         proxy = {}
-    return requests.request("POST", url, headers=headers, data=payload, proxies=proxy)
+    response=requests.request("POST", url, headers=headers, data=payload, proxies=proxy)
+    # recibo un jwt: json web token
+    token = response.json()['access_token']
+    auth_headers = {
+        'Content-Type': 'application/json',
+        'x-ibm-client-id': 'e3fa0fa8-ec9d-406b-960a-150071b151a7',
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ' + token
+    }
+    return auth_headers
 
 
-response = login_apigee()
-# recibo un jwt: json web token
-token = response.json()['access_token']
-
-headers = {
-    'Content-Type': 'application/json',
-    'x-ibm-client-id': 'e3fa0fa8-ec9d-406b-960a-150071b151a7',
-    'Accept': 'application/json',
-    'Authorization': 'Bearer ' + token
-}
 
 
-def get(url: str):
+def get(auth_headers:dict, url: str):
     try:
         proxy = {'https': os.environ['PROXY_BYMA']}
     except KeyError:
         proxy = {}
-    return requests.request("GET", url, headers=headers, proxies=proxy)
+    return requests.request("GET", url, headers=auth_headers, proxies=proxy)
 
-def post(url: str, payload: str):
+def post(auth_headers, url: str, payload: str):
     try:
         proxy = {'https': os.environ['PROXY_BYMA']}
     except KeyError:
         proxy = {}
-    return requests.request("POST", url, headers=headers, data=payload, proxies=proxy)
+    return requests.request("POST", url, headers=auth_headers, data=payload, proxies=proxy)
 
-def put(url: str):
+def put(auth_headers:dict, url: str):
     try:
         proxy = {'https': os.environ['PROXY_BYMA']}
     except KeyError:
         proxy = {}
-    return requests.request("PUT", url, headers=headers, proxies=proxy)
+    return requests.request("PUT", url, headers=auth_headers, proxies=proxy)
 
 
-def save_suscription(subscriptions: dict):
+def save_suscription(auth_headers: dict, subscriptions: dict):
     payload = json.dumps(subscriptions)
     url = "https://sbx.santander.com.ar/apif-api_mutual_funds/v2/subscriptions"
-    return post(url, payload)
+    return post(auth_headers,url, payload)
 
-def confirm_suscription(transactionId):
+def confirm_suscription(auth_headers:dict, transactionId):
     url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/subscriptions/{transactionId}?action=confirm"
-    return put(url)
+    return put(auth_headers,url)
 
-def find_subscriptions():
+def find_subscriptions(auth_headers:dict):
     url = "https://sbx.santander.com.ar/apif-api_mutual_funds/v2/subscriptions/search"
-    return get(url)
+    return get(auth_headers, url)
 
-def get_subscription(transactionId):
+def get_subscription(auth_headers:dict, transactionId):
     url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/subscriptions/{transactionId}"
-    return get(url)
+    return get(auth_headers, url)
 
-def save_redemption(redemptions: dict):
+def save_redemption(auth_headers:dict, redemptions: dict):
     payload = json.dumps(redemptions)
     url = "https://sbx.santander.com.ar/apif-api_mutual_funds/v2/redemptions"
-    return post(url, payload)
+    return post(auth_headers, url, payload)
 
-def search_redemption():
+def search_redemption(auth_headers:dict):
     url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/redemption/search"
-    return get(url)
+    return get(auth_headers, url)
 
 def get_redemption(transactionId):
     url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/redemption/{transactionId}"
@@ -110,18 +109,3 @@ def get_fund_by_id_details(fundId):
 def get_fund_by_id_rules(fundId):
     url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/{fundId}/rules"
     return get(url)
-
-# #backtesting data from docu
-data = \
-    {"fundId": 23808,
-     "type": "amount",
-     "value": 1009734.0,
-     "investmentAccount": 5006038,
-     "paymentMethod":
-         {"type": "ACCOUNT",
-          "UBK": "0150804601000112693584"},
-     "externalReference": 215471}
-from data import get_suscription
-# data = get_suscription()
-resp = save_suscription(data)
-print(resp.text)

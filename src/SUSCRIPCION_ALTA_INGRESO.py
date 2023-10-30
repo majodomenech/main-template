@@ -8,39 +8,37 @@ from auxiliar import procesar_respuesta
 
 from endpoints_santander import save_suscription, confirm_suscription, login_apigee
 from write_DB import log_suscripcion
+import logging
+import http.client as http_client
+http_client.HTTPConnection.debuglevel = 1
+#initialize logging
+logging.basicConfig()
+logging.getLogger().setLevel(logging.DEBUG)
+requests_log = logging.getLogger("requests.packages.urllib3")
+requests_log.setLevel(logging.DEBUG)
+requests_log.propagate = True
 
 
-
-def suscripcion_simulacion_ingreso(bpm, selection):
+def suscripcion_simulacion_ingreso(headers, selection):
     data = selection
     alta_ingresar_status_list = []
     error_list = []
     id_suscri_list = []
     for susi in data:
-        # suscr = {
-        #     "fundId": susi["codigo_fci"],
-        #     "type": "amount",
-        #     "value": susi["cantidad"],
-        #     "investmentAccount": susi["cuenta_id"],
-        #     "paymentMethod": {
-        #         "type": "ACCOUNT",
-        #         "UBK": susi['cbu']
-        #     },
-        #     "externalReference": susi['idOrigen']
-        # }
         suscr = {
+            # "fundId": susi["codigo_fci"], #no funciona el ID de CV
             "fundId": 130,
             "type": "amount",
-            "value": 1000,
-            "investmentAccount": 5987311,
+            "value": susi["cantidad"],
+            "investmentAccount": susi["cuenta_id"],
             "paymentMethod": {
                 "type": "ACCOUNT",
-                "UBK": "0720112320000001419672"
-            },
-            "externalReference": 484670111111111
+                # "UBK": susi['cbu']
+                "UBK": "0720112320000001419672"}, #no funciona el CBU asociado al ID de CV
+            "externalReference": susi['idOrigen']
         }
-        print(suscr)
-        resp_alta = save_suscription(suscr)
+
+        resp_alta = save_suscription(headers, suscr)
         print(resp_alta.json())
         # chequeo el estado del response
         resp_alta_ok, mje = procesar_respuesta(resp_alta, error_list, None, 'Suscripcion: Alta')
@@ -90,10 +88,7 @@ if __name__ == '__main__':
     bpm = redflagbpm.BPMService()
     #Uso la selección del usuario (ve el listado de suscris de HG)
     selection = bpm.context['selection']
-    # print(80*'/', selection)
     selection = json.loads(selection)
-
-    # recibo un jwt: json web token
-
-    html, id_suscri_list = suscripcion_simulacion_ingreso(bpm, selection)
+    headers = login_apigee()
+    html, id_suscri_list = suscripcion_simulacion_ingreso(headers, selection)
     bpm.reply(html)
