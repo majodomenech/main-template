@@ -7,7 +7,7 @@ view: |
           '[' ||unf."CODIGO" ||'] ' || unf."NOMBRE" as fci,
           p."ID" as cuit,
           "ASUNTO",
-          c."ID",
+          c."ID"::bigint as cuenta_id,
           '[' || c."ID" ||'] ' || c."DENOMINACION" as cuenta, 
           cfci."ID" as cuenta_fci,
           uni."CODIGO" as unidad,

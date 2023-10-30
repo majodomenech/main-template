@@ -51,7 +51,7 @@ def rescate_simulacion_ingreso(headers, bpm, selection):
         resp_alta_ok, msj = procesar_respuesta(resp_alta, error_list, None, 'Rescate: Alta')
         if resp_alta_ok:
             id_rescate_list.append(resp_alta.json()['transactionId'])
-            log_rescate(conn, id_origen=resc['idOrigen'], mensaje=resp_alta.json()['status'],
+            log_rescate(conn, id_origen=reci['idOrigen'], mensaje=resp_alta.json()['status'],
                                 id_rescate=resp_alta.json()['transactionId'], estado=resp_alta.json()['status'],
                                 descripción=resp_alta.text)
 
@@ -63,20 +63,20 @@ def rescate_simulacion_ingreso(headers, bpm, selection):
 
             # si el response no arroja errores impacto en la tabla fcistdr.rescates_status
             if resp_confirmar_ok:
-                rta = f"Rescate {order['idOrden']} ingresado"
-                log_rescate(conn, id_origen=resc['idOrigen'], mensaje='Ingresado',
+                rta = f"Rescate {reci['idOrigen']} ingresado"
+                log_rescate(conn, id_origen=reci['idOrigen'], mensaje='Ingresado',
                             id_rescate=resp_alta.json()['transactionId'], estado='Ingresado', descripción=resp_confirmar.text)
                 alta_ingresar_status_list.append(rta)
             else:
-                rta = f"{resc['idOrigen']}:{msj}"
-                log_rescate(conn, id_origen=resc['idOrigen'], mensaje=msj,
+                rta = f"{reci['idOrigen']}:{msj}"
+                log_rescate(conn, id_origen=reci['idOrigen'], mensaje=msj,
                             id_rescate=resp_alta.json()['transactionId'], estado='NO INGRESADO', descripción=resp_confirmar.text)
                 alta_ingresar_status_list.append(rta)
         else:
             # si el response de alta arroja errores impacto en la tabla fcistdr.rescates_status
             rta = f"{resc['idOrigen']}:{msj}"
             alta_ingresar_status_list.append(rta)
-            log_rescate(conn, id_origen=resc['idOrigen'], mensaje=msj)
+            log_rescate(conn, id_origen=reci['idOrigen'], mensaje=msj)
 
     html="""<div align="left">Resultado: <ul>"""
     for x in alta_ingresar_status_list:
