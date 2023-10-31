@@ -33,15 +33,12 @@ def suscripcion_simulacion_ingreso(headers, bpm, selection):
     for susi in data:
         #suscripción por monto
         suscr = {
-            # "fundId": susi["codigo_fci"], #no funciona el ID de CV
-            "fundId": 130,
+            "fundId": susi["codigo_fci"], #no funciona el ID de CV
             "type": "amount",
             "value": susi["cantidad"],
-            "investmentAccount": 5987311,
-            # "investmentAccount": susi["cuenta_id"],
+            "investmentAccount": susi["cuenta_id"],
             "paymentMethod": {
                 "type": "ACCOUNT",
-                # "UBK": susi['cbu'],
                 "UBK": "0720112320000001419672"
             }, #no funciona el CBU asociado al ID de CV
             "externalReference": susi['idOrigen']
@@ -61,7 +58,6 @@ def suscripcion_simulacion_ingreso(headers, bpm, selection):
 
             # para suscris dadas de alta llamo al endpoint de ingresar
             resp_confirmar = confirm_suscription(headers, resp_alta.json()['transactionId'])
-            resp_confirmar_json = json.loads(resp_confirmar.json())
             print(resp_confirmar)
             # chequeo el estado del ingrso
             resp_confirmar_ok, msj = procesar_respuesta(resp_confirmar, error_list, suscr, 'Suscripcion: Ingresar')
@@ -95,9 +91,13 @@ def suscripcion_simulacion_ingreso(headers, bpm, selection):
 if __name__ == '__main__':
     bpm = redflagbpm.BPMService()
     #Uso la selección del usuario (ve el listado de suscris de HG)
+
     selection = bpm.context['selection']
+    try:
+        selection = json.loads(selection)
+    except Exception:
+        pass
     print(80 * '\../ ', selection)
-    selection = json.loads(selection)
     headers = login_apigee()
     html, id_suscri_list = suscripcion_simulacion_ingreso(headers, bpm, selection)
     bpm.reply(html)

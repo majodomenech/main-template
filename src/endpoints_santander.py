@@ -112,7 +112,7 @@ def get_fund_by_id_rules(auth_headers:dict, fundId):
 data = {'fundId': 130, 'type': 'share', 'value': 1301.4482, 'paymentMethod': {'type': 'account', 'UBK': '0720099188000037875486'}, 'investmentAccount': 2707138, 'netShare': None, 'shareValue': None, 'netAmount': None, 'dateConcert': None, 'dateLiquid': None, 'transactionId': 59764, 'status': 'FAILED', 'certificateId': None, 'processDate': '2023-10-11', 'externalReference': '2000024'}
 
 
-headers = login_apigee()
-# resp = search_subscription(headers)
-resp  =search_redemption(headers)
-print(resp.text)
+# headers = login_apigee()
+# # resp = search_subscription(headers)
+# resp  =search_redemption(headers)
+# print(resp.text)

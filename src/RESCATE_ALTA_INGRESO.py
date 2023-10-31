@@ -28,20 +28,19 @@ def rescate_simulacion_ingreso(headers, bpm, selection):
     conn = _get_flw_connection(db)
 
     for reci in data:
+        print(reci)
         #calculo la fecha de liquidacion teniendo usando los días hábiles y el plazo de liquidación
         fecha_liquidacion = get_fecha_liquidacion(reci['plazo_liq'])
         #rescate por cuotapartes
         resc = {
-                    "fundId": reci["codigo_fci"], #no funciona el ID de CV
-                    # "fundId": 130,
+                    # "fundId": reci["codigo_fci"],
+                    "fundId": reci["codigo_fci"],
                     "type": "share",
                     "value": reci['cantidad_cuotapartes'],
                     "investmentAccount": reci['cuenta_id'],
-                    # "investmentAccount": 41621350,
                     "paymentMethod": {
-                        "type": "ACCOUNT",
+                        "type": "account",
                         "UBK": reci['cbu'],
-                        # "UBK": "0720112320000001419672"
                     },
                     "externalReference": reci['idOrigen']
                 }
@@ -77,7 +76,7 @@ def rescate_simulacion_ingreso(headers, bpm, selection):
                 alta_ingresar_status_list.append(rta)
         else:
             # si el response de alta arroja errores impacto en la tabla fcistdr.rescates_status
-            rta = f"{resc['idOrigen']}:{msj}"
+            rta = f"{reci['idOrigen']}:{msj}"
             alta_ingresar_status_list.append(rta)
             log_rescate(conn, id_origen=reci['idOrigen'], mensaje=msj)
 
@@ -90,9 +89,13 @@ def rescate_simulacion_ingreso(headers, bpm, selection):
 if __name__ == '__main__':
     bpm = redflagbpm.BPMService()
     #Uso la selección del usuario (ve el listado de suscris y rescates de BYMA)
-    # selection = bpm.context['selection']
-    selection = json.dumps(bpm.context['selection'])
-    selection = json.loads(selection)
+
+    selection = bpm.context['selection']
+    try:
+        selection = json.loads(selection)
+    except Exception:
+        pass
+
     print(80 * '\../ ', selection)
     headers = login_apigee()
     html, id_rescate_list = rescate_simulacion_ingreso(headers, bpm, selection)
