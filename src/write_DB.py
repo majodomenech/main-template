@@ -45,7 +45,7 @@ def log_rescate(conn, id_origen, mensaje, **kwargs):
 
     cur.close()
 
-def update_rescate_status(conn, id_grupo, mensaje, **kwargs):
+def update_rescate_status(conn, id_origen, mensaje, **kwargs):
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     #generate logs dict
     log = {}
@@ -55,10 +55,10 @@ def update_rescate_status(conn, id_grupo, mensaje, **kwargs):
     # dict to json
     log = json.dumps([log])
 
-    update = "UPDATE FCISTDR.rescate_status set id_grupo = %s, "
+    update = "UPDATE FCISTDR.rescate_status set id_origen = %s, "
 
     val_list = []
-    val_list.append(id_grupo)
+    val_list.append(id_origen)
     for k, v in kwargs.items():
         if k == 'estado':
             v = kwargs['estado'].upper()
@@ -67,9 +67,9 @@ def update_rescate_status(conn, id_grupo, mensaje, **kwargs):
 
     update += 'log = log || %s::jsonb'
     val_list.append(log)
-    val_list.append(id_grupo)
+    val_list.append(id_origen)
     # update = update[:-1]
-    update += ' where id_grupo = %s'
+    update += ' where id_origen = %s'
 
     params = tuple(val_list)
     cur.execute(update, params)

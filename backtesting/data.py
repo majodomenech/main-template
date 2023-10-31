@@ -6,7 +6,22 @@ import datetime
 import random
 
 def get_idOrigen():
-    pass
+    # Microseconds since epoch
+    timestamp = int(time.time() * 1000000)
+    #keep 4 middle digits of a string and back to integer
+    short_stamp = int(str(timestamp)[6:-5])
+    # Random 5-digit integer
+    random_value = random.randint(0, 99999)
+    #joining both within a strinf of at list 5 digits
+    unique_id = f"{short_stamp:03}{random_value:02}"
+    list_unique_id = list(unique_id)
+    #randomly shuffle the list
+    random.shuffle(list_unique_id)
+    #join the list and keep the first 5 digits
+    sample = list_unique_id[:5]
+    #sample list to string
+    sample = int(''.join(sample))
+    return sample
 
 def get_redemption_selection():
     data = [{'resumen_orden': json.dumps([{"cantidad": 60000, "cuenta": "5005957", "origenes": [{"cantidad": 60000, "idOrden": get_idOrigen(), "solicitud": "DOC 2023025505", "propietario": 6087}]},

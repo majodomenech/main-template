@@ -33,14 +33,13 @@ def rescate_simulacion_ingreso(headers, bpm, selection):
         fecha_liquidacion = get_fecha_liquidacion(reci['plazo_liq'])
         #rescate por cuotapartes
         resc = {
-                    # "fundId": reci["codigo_fci"],
                     "fundId": reci["codigo_fci"],
                     "type": "share",
                     "value": reci['cantidad_cuotapartes'],
                     "investmentAccount": reci['cuenta_id'],
                     "paymentMethod": {
                         "type": "account",
-                        "UBK": reci['cbu'],
+                        "UBK": reci['cbu']
                     },
                     "externalReference": reci['idOrigen']
                 }
