@@ -112,17 +112,17 @@ filterGroup:
     required: false
     dependents: []
     possibleValues:
-      - "PREINGRESADO"
-      - "INGRESADO"
-      - "ANULADO"
-      - "RECHAZADO"
+      - "CONFIRMED"
+      - "FAILED"
+      - "NO INGRESADO"
+      - "PENDING"
   - name: especie
     caption: Especie
     fieldType: java.lang.String
     required: false
     dependents: []
   - name: certif_id
-    caption: Nro. Pedido
+    caption: Certificate ID
     fieldType: java.lang.Integer
     dependents: []
   - name: fecha_desde
