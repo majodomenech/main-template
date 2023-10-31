@@ -5,6 +5,9 @@ import psycopg2
 import psycopg2.extras
 import datetime
 
+from endpoints_santander import all_funds, get_fund_by_id_details
+
+
 def procesar_respuesta(resp, error_list, context, tarea):
     if resp.status_code == 400 and context is not None:
         err = [tarea+' ' + resp.json()['code'] + resp.json()['message']]
@@ -115,3 +118,12 @@ def get_suscr_id(conn, id_origen):
     qry = cur.fetchall()
     cur.close()
     return qry
+
+def get_id_from_codigo_cv(headers, codigo_cv):
+    resp = all_funds(headers)
+    cod_mapping = {}
+    for fci in resp.json()['results']:
+        resp = get_fund_by_id_details(headers, fci['id'])
+        cod_mapping[resp.json()["CVCode"]] = fci['id']
+    return cod_mapping[codigo_cv]
+

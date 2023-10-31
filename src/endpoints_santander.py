@@ -114,7 +114,8 @@ data = {'fundId': 130, 'type': 'share', 'value': 1301.4482, 'paymentMethod': {'t
 
 headers = login_apigee()
 # # resp = search_subscription(headers)
-resp  =get_fund_by_id(headers, 116)
+# resp  =get_fund_by_id(headers, 130)
 # resp = get_fund_by_id_rules(headers, 130)
-# resp = get_fund_by_id_details(headers, 116)
+resp = get_fund_by_id_details(headers, 130)
+# resp = all_funds(headers)
 print(resp.text)

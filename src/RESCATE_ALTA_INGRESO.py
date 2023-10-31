@@ -2,7 +2,7 @@
 import redflagbpm
 import json
 from DB_connect import _get_flw_connection
-from auxiliar import get_fecha_liquidacion, procesar_respuesta
+from auxiliar import get_fecha_liquidacion, procesar_respuesta, get_id_from_codigo_cv
 from codigo_emisor import get_codigo_emisor_byma_cuit
 from endpoints_santander import login_apigee, save_redemption, confirm_redemption
 from write_DB import log_rescate
@@ -31,9 +31,11 @@ def rescate_simulacion_ingreso(headers, bpm, selection):
         print(reci)
         #calculo la fecha de liquidacion teniendo usando los días hábiles y el plazo de liquidación
         fecha_liquidacion = get_fecha_liquidacion(reci['plazo_liq'])
+        fundId = get_id_from_codigo_cv(headers, reci['codigo_fci'])
+        print(fundId)
         #rescate por cuotapartes
         resc = {
-                    "fundId": reci["codigo_fci"],
+                    "fundId": fundId,
                     "type": "share",
                     "value": reci['cantidad_cuotapartes'],
                     "investmentAccount": reci['cuenta_id'],

@@ -49,6 +49,8 @@ view: |
       and t."ESTADO" = 'Liquidación pendiente'
       and (unf."PLAZOLIQUDACIONRESCATE" = 0) = (?= 'T+0')
       and "FECHA"::date = current_date
+      -- Filtro la familia santander
+      -- and cfci."ID" like '%SANTANDER RIO ASSET%'
       limit 1
 viewBindings:
   - plazo_liq
