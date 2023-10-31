@@ -32,15 +32,16 @@ def rescate_simulacion_ingreso(headers, bpm, selection):
         fecha_liquidacion = get_fecha_liquidacion(reci['plazo_liq'])
         #rescate por cuotapartes
         resc = {
-                    # "fundId": reci["codigo_fci"], #no funciona el ID de CV
-                    "fundId": 130,
+                    "fundId": reci["codigo_fci"], #no funciona el ID de CV
+                    # "fundId": 130,
                     "type": "share",
                     "value": reci['cantidad_cuotapartes'],
                     "investmentAccount": reci['cuenta_id'],
+                    # "investmentAccount": 41621350,
                     "paymentMethod": {
                         "type": "ACCOUNT",
-                        # "UBK": reci['cbu'],
-                        "UBK": "0720112320000001419672"
+                        "UBK": reci['cbu'],
+                        # "UBK": "0720112320000001419672"
                     },
                     "externalReference": reci['idOrigen']
                 }
@@ -91,8 +92,8 @@ if __name__ == '__main__':
     #Uso la selección del usuario (ve el listado de suscris y rescates de BYMA)
     # selection = bpm.context['selection']
     selection = json.dumps(bpm.context['selection'])
-    print(80*'\../ ', selection)
     selection = json.loads(selection)
+    print(80 * '\../ ', selection)
     headers = login_apigee()
     html, id_rescate_list = rescate_simulacion_ingreso(headers, bpm, selection)
     bpm.reply(html)

@@ -8,7 +8,7 @@ import datetime
 def procesar_respuesta(resp, error_list, context, tarea):
     if resp.status_code == 400 and context is not None:
         err = [tarea+' ' + resp.json()['code'] + resp.json()['message']]
-        [error_list.append(tarea+' ' + resp.json()['message'] + str(context))]
+        [error_list.append(tarea+' ' +  resp.json()['message'] + str(context))]
         return False, str(err)
     elif resp.status_code == 400 and context is None:
         err = [tarea+' ' + resp.json()['code'] + resp.json()['message']]

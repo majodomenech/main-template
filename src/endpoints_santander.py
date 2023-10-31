@@ -86,7 +86,7 @@ def search_redemption(auth_headers:dict):
     return get(auth_headers, url)
 
 def get_redemption(auth_headers:dict, transactionId):
-    url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/redemption/{transactionId}"
+    url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/redemptions/{transactionId}"
     return get(auth_headers, url)
 
 def confirm_redemption(auth_headers:dict, transactionId):
@@ -109,7 +109,10 @@ def get_fund_by_id_rules(auth_headers:dict, fundId):
     url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/{fundId}/rules"
     return get(auth_headers, url)
 
+data = {'fundId': 130, 'type': 'share', 'value': 1301.4482, 'paymentMethod': {'type': 'account', 'UBK': '0720099188000037875486'}, 'investmentAccount': 2707138, 'netShare': None, 'shareValue': None, 'netAmount': None, 'dateConcert': None, 'dateLiquid': None, 'transactionId': 59764, 'status': 'FAILED', 'certificateId': None, 'processDate': '2023-10-11', 'externalReference': '2000024'}
+
 
 headers = login_apigee()
-resp = search_redemption(headers)
+# resp = search_subscription(headers)
+resp  =search_redemption(headers)
 print(resp.text)

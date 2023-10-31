@@ -37,11 +37,13 @@ def suscripcion_simulacion_ingreso(headers, bpm, selection):
             "fundId": 130,
             "type": "amount",
             "value": susi["cantidad"],
-            "investmentAccount": susi["cuenta_id"],
+            "investmentAccount": 5987311,
+            # "investmentAccount": susi["cuenta_id"],
             "paymentMethod": {
                 "type": "ACCOUNT",
-                # "UBK": susi['cbu']
-                "UBK": "0720112320000001419672"}, #no funciona el CBU asociado al ID de CV
+                # "UBK": susi['cbu'],
+                "UBK": "0720112320000001419672"
+            }, #no funciona el CBU asociado al ID de CV
             "externalReference": susi['idOrigen']
         }
         # Dar alta la suscri (simular)
@@ -59,7 +61,8 @@ def suscripcion_simulacion_ingreso(headers, bpm, selection):
 
             # para suscris dadas de alta llamo al endpoint de ingresar
             resp_confirmar = confirm_suscription(headers, resp_alta.json()['transactionId'])
-            print(resp_confirmar.json())
+            resp_confirmar_json = json.loads(resp_confirmar.json())
+            print(resp_confirmar)
             # chequeo el estado del ingrso
             resp_confirmar_ok, msj = procesar_respuesta(resp_confirmar, error_list, suscr, 'Suscripcion: Ingresar')
             rta = f"Suscripción {susi['idOrigen']} dada de alta"
@@ -92,7 +95,7 @@ def suscripcion_simulacion_ingreso(headers, bpm, selection):
 if __name__ == '__main__':
     bpm = redflagbpm.BPMService()
     #Uso la selección del usuario (ve el listado de suscris de HG)
-    selection = json.dumps(bpm.context['selection'])
+    selection = bpm.context['selection']
     print(80 * '\../ ', selection)
     selection = json.loads(selection)
     headers = login_apigee()
