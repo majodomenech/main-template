@@ -109,7 +109,7 @@ def get_fund_by_id_rules(auth_headers:dict, fundId):
     url = f"https://sbx.santander.com.ar/apif-api_mutual_funds/v2/{fundId}/rules"
     return get(auth_headers, url)
 
-data = {'fundId': 130, 'type': 'share', 'value': 1301.4482, 'paymentMethod': {'type': 'account', 'UBK': '0720099188000037875486'}, 'investmentAccount': 2707138, 'netShare': None, 'shareValue': None, 'netAmount': None, 'dateConcert': None, 'dateLiquid': None, 'transactionId': 59764, 'status': 'FAILED', 'certificateId': None, 'processDate': '2023-10-11', 'externalReference': '2000024'}
+# data = {'fundId': 130, 'type': 'share', 'value': 1301.4482, 'paymentMethod': {'type': 'account', 'UBK': '0720099188000037875486'}, 'investmentAccount': 2707138, 'netShare': None, 'shareValue': None, 'netAmount': None, 'dateConcert': None, 'dateLiquid': None, 'transactionId': 59764, 'status': 'FAILED', 'certificateId': None, 'processDate': '2023-10-11', 'externalReference': '2000024'}
 
 
 # headers = login_apigee()
