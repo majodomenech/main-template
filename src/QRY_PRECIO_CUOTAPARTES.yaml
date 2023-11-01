@@ -23,54 +23,6 @@ columns:
   caption: Disponible
   fieldType: java.math.BigDecimal
   format: "0.00"
-#MAV CAUCIONES
-- name: representacion
-  caption: Especie
-  fieldType: java.lang.String
-- name: fechaConcertacion
-  caption: Fecha Concertación
-  fieldType: java.lang.String
-- name: fechaLiquidacion
-  caption: Fecha Liquidación
-  fieldType: java.lang.String
-- name: cantidadVN
-  caption: VN
-  fieldType: java.math.BigDecimal
-  format: "0.00"
-- name: monto
-  caption: Monto
-  fieldType: java.math.BigDecimal
-  format: "0.00"
-- name: reposicion
-  caption: Reposición
-  fieldType: java.math.BigDecimal
-  format: "0.00"
-#BYMA CAUCIONES
-- name: tipoRequerimiento
-  caption: Tipo requerimiento
-  fieldType: java.lang.String
-- name: objetoNegociable
-  caption: Objeto Negociable
-  fieldType: java.lang.String
-- name: exigido
-  caption: Exigido
-  fieldType: java.math.BigDecimal
-  format: "0.00"
-- name: exigible
-  caption: Exigible
-  fieldType: java.math.BigDecimal
-  format: "0.00"
-- name: cubierto
-  caption: Cubierto
-  fieldType: java.math.BigDecimal
-  format: "0.00"
-- name: noCubierto
-  caption: No Cubierto
-  fieldType: java.math.BigDecimal
-  format: "0.00"
-- name: template
-  caption: Template
-  fieldType: java.lang.String
 template: |
   <div inner-h-t-m-l="[[item.template]]"></div>
 targetUsers: []
