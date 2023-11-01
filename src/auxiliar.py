@@ -5,7 +5,7 @@ import psycopg2
 import psycopg2.extras
 import datetime
 
-from endpoints_santander import all_funds, get_fund_by_id_details
+from endpoints_santander import get_all_funds, get_fund_by_id_details
 
 
 def procesar_respuesta(resp, error_list, context, tarea):
@@ -120,7 +120,7 @@ def get_suscr_id(conn, id_origen):
     return qry
 
 def get_id_from_codigo_cv(headers, codigo_cv):
-    resp = all_funds(headers)
+    resp = get_all_funds(headers)
     cod_mapping = {}
     for fci in resp.json()['results']:
         resp = get_fund_by_id_details(headers, fci['id'])
