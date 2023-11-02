@@ -1,14 +1,21 @@
 #!python3
 import json
-import re
-import urllib
-from datetime import date, timedelta
 import redflagbpm
-from decimal import Decimal
-import psycopg2
-import psycopg2.extras
-from endpoints_santander import login_apigee, get_all_funds, get_fund_by_id, get_fund_by_id_details
+from endpoints_santander import login_apigee, get_all_funds, get_fund_by_id
 
+def get_fundId():
+
+    sql = """
+    select
+        ....
+        fci."CODIGO" as codigoCajaValoresFondo,
+        atr."VALOR" as fundIdSantander,
+        .....
+    from ....
+        inner join "UNI_UNIDAD" fci on ....
+        left join "UNI_ATRIBUTO" atr on fci."UNI_UNIDAD_ID"= atr."UNIDAD" and "ATRIBUTO" = 'FundId Santander'
+    where ....
+    """
 
 def main():
     headers = login_apigee()

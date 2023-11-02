@@ -19,4 +19,5 @@ def _get_hg_connection(DB):
                         password="MTU1NDNjN2ZlZGU4ZDdhNDBhZTM2MjA2",
                         host="db.sycinversiones.com",
                         port="5432")
+    conn.autocommit = True
     return conn
