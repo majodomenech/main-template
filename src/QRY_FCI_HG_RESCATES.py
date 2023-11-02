@@ -22,6 +22,7 @@ def get_stdr_rescates(conn, plazo_liq):
                             t."IRM_TAREA_ID" as "idOrigen",
                             unf."CODIGO"::bigint as codigo_fci,
                             ''['' ||unf."CODIGO" ||''] '' || unf."NOMBRE" as fci,
+                            fid."VALOR" as fund_id,
                             p."ID" as cuit,
                             c."ID"::bigint as cuenta_id,
                             ''['' || c."ID" ||''] '' || c."DENOMINACION" as cuenta, 
@@ -44,7 +45,7 @@ def get_stdr_rescates(conn, plazo_liq):
                             t."VALORCUOTAPARTE", 
                             t."CANTIDADCUOTAPARTES",
                             "CANTIDADSOLICITUD"::double precision as cantidad_cuotapartes, 
-                            "UNIDAD", "FECHASOLICITUD",
+                            t."UNIDAD", "FECHASOLICITUD",
                             "INTEGRACOMITENTE", 
                             unf."ACPIC", p."DENOMINACION" as banco,
                             null as template
@@ -59,6 +60,7 @@ def get_stdr_rescates(conn, plazo_liq):
                             left join "CTA_CODIGO_INTEGRACION" chs on unf."CUENTAAAPIC"=chs."ESQUEMA" and chs."CODIFICACION"=''Límite presentación suscripción FCI''
                             left join "CTA_ESQUEMA" cfci on cfci."CTA_ESQUEMA_ID" = unf."CUENTAAAPIC"
                             inner join "UNI_UNIDAD" uni on uni."UNI_UNIDAD_ID"=unf."MONEDA"
+                            left join "UNI_ATRIBUTO" fid on fid."UNIDAD"=t."FCI" and fid."ATRIBUTO"=''FundId Santander''
                         where t."CLASS" = ''com.aunesa.irmo.model.acdi.ISolicitudRescateFCI''
                             and t."ESTADO" = ''Liquidación pendiente''
                             and (unf."PLAZOLIQUDACIONRESCATE" = 0) = ('%s'= ''T+0'')
@@ -67,7 +69,7 @@ def get_stdr_rescates(conn, plazo_liq):
                             -- and cfci."ID" like ''%%SANTANDER RIO ASSET%%''
                             order by 1
                         )
-                    select * from resc_fci')as f("idOrigen" bigint, codigo_fci bigint, fci character varying, 
+                    select * from resc_fci')as f("idOrigen" bigint, codigo_fci bigint, fci character varying, fund_id bigint, 
                         cuit character varying, cuenta_id bigint, cuenta character varying, cuenta_fci character varying, 
                         moneda character varying, cbu_pesos character varying, cbu_dolares character varying, 
                         dinero boolean, tipo_rescate character varying, plazo_liq integer, mkt character varying, 
