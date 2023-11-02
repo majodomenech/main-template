@@ -1,20 +1,15 @@
 #!python3
 import json
-
 import redflagbpm
 import psycopg2
 import psycopg2.extras
-
 from DB_connect import _get_hg_connection, _get_flw_connection
-
 
 def get_stdr_rescates(conn, plazo_liq):
     sql_connect = "SELECT dblink_connect_u('hg_fci', 'dbname=syc user=consyc password=MTU1NDNjN2ZlZGU4ZDdhNDBhZTM2MjA2')"
-
     sql_disconnect = "SELECT dblink_disconnect('hg_fci')"
     conn.autocommit = True
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-
     cur.execute(sql_connect)
 
     sql = """    
@@ -65,7 +60,7 @@ def get_stdr_rescates(conn, plazo_liq):
                             inner join "UNI_UNIDAD" uni on uni."UNI_UNIDAD_ID"=unf."MONEDA"
                         where t."CLASS" = ''com.aunesa.irmo.model.acdi.ISolicitudRescateFCI''
                             and t."ESTADO" = ''Liquidación pendiente''
-                            and (unf."PLAZOLIQUDACIONRESCATE" = 0) = (''T+0''= ''T+0'')
+                            and (unf."PLAZOLIQUDACIONRESCATE" = 0) = (''%s''= ''T+0'')
                             and "FECHA"::date = current_date
                             -- Filtro la familia santander
                             -- and cfci."ID" like ''%%SANTANDER RIO ASSET%%''
@@ -87,7 +82,7 @@ def get_stdr_rescates(conn, plazo_liq):
             where (st_rs.estado is null or st_rs.estado != 'CONFIRMADO')
         """
 
-    cur.execute(sql, (plazo_liq,) )
+    cur.execute(sql, (plazo_liq,))
     qry = cur.fetchall()
     cur.execute(sql_disconnect)
     cur.close()

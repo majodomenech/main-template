@@ -1,8 +1,6 @@
 name: FCISTDR/QRY_FCI_HG_RESCATES
 caption: FCI STDR - Solicitud de Rescates
 dataSource: "run:FCISTDR/HGFCI_QRY"
-viewBindings:
-  - plazo_liq
 postProcessors:
 - FCISTDR/TEMPLATE_QRY_FCI_HG_RESCATES
 columns:
@@ -46,7 +44,6 @@ filterGroup:
       - "T+0"
       - "T++"
   subgroups: []
-dataSource: SYC
 dataSourceOptions: {}
 reports: []
 services: []
