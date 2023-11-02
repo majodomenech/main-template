@@ -3,7 +3,8 @@ import json
 import redflagbpm
 import psycopg2
 import psycopg2.extras
-from DB_connect import _get_hg_connection, _get_flw_connection
+from DB_connect import _get_flw_connection
+import datetime
 
 def get_stdr_rescates(conn, plazo_liq):
     sql_connect = "SELECT dblink_connect_u('hg_fci', 'dbname=syc user=consyc password=MTU1NDNjN2ZlZGU4ZDdhNDBhZTM2MjA2')"
@@ -60,7 +61,7 @@ def get_stdr_rescates(conn, plazo_liq):
                             inner join "UNI_UNIDAD" uni on uni."UNI_UNIDAD_ID"=unf."MONEDA"
                         where t."CLASS" = ''com.aunesa.irmo.model.acdi.ISolicitudRescateFCI''
                             and t."ESTADO" = ''Liquidación pendiente''
-                            and (unf."PLAZOLIQUDACIONRESCATE" = 0) = (''%s''= ''T+0'')
+                            and (unf."PLAZOLIQUDACIONRESCATE" = 0) = ('%s'= ''T+0'')
                             and "FECHA"::date = current_date
                             -- Filtro la familia santander
                             -- and cfci."ID" like ''%%SANTANDER RIO ASSET%%''
@@ -97,7 +98,14 @@ def main():
         conn = _get_flw_connection('flowable')
     qry = get_stdr_rescates(conn, bpm.context['plazo_liq'])
     print(qry)
+    class DateEncoder(json.JSONEncoder):
+        def default(self, obj):
+            if isinstance(obj, (datetime.date, datetime.datetime)):
+                return obj.isoformat()
+            return super().default(obj)
 
+    qry = json.dumps(qry, cls=DateEncoder)
+    qry = json.loads(qry)
     with open('/tmp/qry_rescates.json', 'w') as f:
         json.dump(qry, f)
 
