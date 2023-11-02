@@ -1,6 +1,6 @@
 name: FCISTDR/QRY_FCI_HG_RESCATES
 caption: FCI STDR - Solicitud de Rescates
-dataSource: "run:FCISTDR/HGFCI_QRY"
+dataSource: "run:FCISTDR/QRY_FCI_HG_RESCATES"
 postProcessors:
 - FCISTDR/TEMPLATE_QRY_FCI_HG_RESCATES
 columns:
