@@ -44,12 +44,38 @@ def insert_strdr_fund_id(conn, **kwargs):
         print(k, v)
     pass
 
+#!python3
+import redflagbpm
+from redflagbpm import PgUtils
+
+bpm = redflagbpm.BPMService()
+
+def update_fund_id(conn, **kwargs):
+    conn.autocommit = False
+    sql_actualizar = """
+                        update public."UNI_ATRIBUTO"
+                        set "VALOR"= %s
+                        where "UNIDAD"=(select "UNI_UNIDAD_ID" from "UNI_UNIDAD" where "SUBCODIGO"= %s)
+                        and "ATRIBUTO" = %s;
+                    """
+    sql_insertar = """
+                            INSERT INTO public."UNI_ATRIBUTO"("UNIDAD", "ATRIBUTO", "VALOR")
+                            VALUES ((select "UNI_UNIDAD_ID" from "UNI_UNIDAD" where "SUBCODIGO"=%s), %s, %s);
+                        """
+    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    for k, v in kwargs.items():
+        print(k,v)
+    conn.autocommit = False
+
+
+
 
 def main():
     headers = login_apigee()
     # bpm = redflagbpm.BPMService()
     conn = _get_hg_connection('syc')
     funds_w_cv_code = call_stdr_fund_endpoints(headers)
+    update_fund_id(conn, **{'stdr_fund_id': 1, 'cv_id': 1})
     for i in json.loads(funds_w_cv_code)['results']:
         insert_strdr_fund_id(conn, **{'stdr_fund_id': i['id'], 'cv_id': i['codigo_cv']})
 

@@ -1,57 +1,6 @@
 name: FCISTDR/QRY_FCI_HG_RESCATES
 caption: FCI STDR - Solicitud de Rescates
-view: |
-  select 
-      t."IRM_TAREA_ID" as "idOrigen",
-      unf."CODIGO"::bigint as codigo_fci,
-      '[' ||unf."CODIGO" ||'] ' || unf."NOMBRE" as fci,
-      p."ID" as cuit,
-      "ASUNTO",
-      c."ID"::bigint as cuenta_id,
-      '[' || c."ID" ||'] ' || c."DENOMINACION" as cuenta, 
-      cfci."ID" as cuenta_fci,
-      uni."CODIGO" as unidad,
-      unif."CODIGO" as moneda,
-      cb."CBU" as cbu,
-      t."DINERO",
-      (case when t."DINERO" then 'Monto' else 'Cuotapartes' end) as tipo_rescate,
-      unf."PLAZOLIQUDACIONRESCATE" as plazo_liq,
-      cm."CODIGO" as mkt,
-      chro."CODIGO" as "T+0",
-      chr."CODIGO" as "T++",
-      t."ESTADO", 
-      "FECHA"::date, 
-      "FECHAFIN"::date, 
-      "PROPIETARIO",
-      t."TIPO", "SOLICITUD", t."CLASS", "CONTEXTO", 
-      t."CANTIDAD" as cantidad,
-      t."VALORCUOTAPARTE", 
-      t."CANTIDADCUOTAPARTES",
-      "CANTIDADSOLICITUD"::double precision as cantidad_cuotapartes, 
-      "UNIDAD", "FECHASOLICITUD",
-      "INTEGRACOMITENTE", 
-      unf."ACPIC", p."DENOMINACION",
-        null as template
-  from "IRM_TAREA" t
-      inner join "CTA_ESQUEMA" c on c."CTA_ESQUEMA_ID"  = t."CUENTA"
-      inner join "SEC_USUARIO" u on u."SEC_USUARIO_ID" = t."PROPIETARIO"
-      inner join "UNI_UNIDAD" unf on unf."UNI_UNIDAD_ID"=t."FCI" 
-      inner join "GNT_PERSONA" p on p."GNT_PERSONA_ID" = unf."ACPIC"
-      left join "CTA_CODIGO_INTEGRACION" cm on unf."CUENTAAAPIC"=cm."ESQUEMA" and cm."CODIFICACION"='Modo operativo FCI'
-      left join "CTA_CODIGO_INTEGRACION" chro on unf."CUENTAAAPIC"=chro."ESQUEMA" and chro."CODIFICACION"='Límite presentación rescate FCI T+0'
-      left join "CTA_CODIGO_INTEGRACION" chr on unf."CUENTAAAPIC"=chr."ESQUEMA" and chr."CODIFICACION"='Límite presentación rescate FCI T++'
-      left join "CTA_CODIGO_INTEGRACION" chs on unf."CUENTAAAPIC"=chs."ESQUEMA" and chs."CODIFICACION"='Límite presentación suscripción FCI'
-      left join "CTA_ESQUEMA" cfci on cfci."CTA_ESQUEMA_ID" = unf."CUENTAAAPIC"
-      inner join "UNI_UNIDAD" uni on uni."UNI_UNIDAD_ID"=unf."MONEDA"
-      inner join "CTA_CUENTA_BANCARIA" cb ON cb."ESQUEMA" = c."CTA_ESQUEMA_ID"
-      inner join "UNI_UNIDAD" unif on unif."UNI_UNIDAD_ID"=cb."MONEDA"
-  where t."CLASS" = 'com.aunesa.irmo.model.acdi.ISolicitudRescateFCI'
-      and t."ESTADO" = 'Liquidación pendiente'
-      and (unf."PLAZOLIQUDACIONRESCATE" = 0) = (?= 'T+0')
-      and "FECHA"::date = current_date
-      -- Filtro la familia santander
-      -- and cfci."ID" like '%SANTANDER RIO ASSET%'
-      limit 1
+dataSource: "run:FCISTDR/HGFCI_QRY"
 viewBindings:
   - plazo_liq
 postProcessors:
