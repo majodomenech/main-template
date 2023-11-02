@@ -22,6 +22,7 @@ def get_stdr_rescates(conn):
                             t."IRM_TAREA_ID" as "idOrigen",
                             unf."CODIGO"::bigint as codigo_fci,
                             ''['' ||unf."CODIGO" ||''] '' || unf."NOMBRE" as fci,
+							fid."VALOR" as fund_id,
                             p."ID" as cuit,
                             c."ID"::bigint as cuenta_id,
                             ''['' || c."ID" ||''] '' || c."DENOMINACION" as cuenta, 
@@ -43,7 +44,7 @@ def get_stdr_rescates(conn):
                             t."VALORCUOTAPARTE", 
                             t."CANTIDADCUOTAPARTES"::double precision as cantidad_cuotapartes,
                             "CANTIDADSOLICITUD", 
-                            "UNIDAD", "FECHASOLICITUD",
+                            t."UNIDAD", "FECHASOLICITUD",
                             "INTEGRACOMITENTE",
                             unf."ACPIC", p."DENOMINACION" as banco,
                             null as template
@@ -58,13 +59,14 @@ def get_stdr_rescates(conn):
                                 left join "CTA_CODIGO_INTEGRACION" chs on unf."CUENTAAAPIC"=chs."ESQUEMA" and chs."CODIFICACION"=''Límite presentación suscripción FCI''
                                 left join "CTA_ESQUEMA" cfci on cfci."CTA_ESQUEMA_ID" = unf."CUENTAAAPIC"
                                 inner join "UNI_UNIDAD" uni on uni."UNI_UNIDAD_ID"=t."UNIDAD"
+							    left join "UNI_ATRIBUTO" fid on fid."UNIDAD"=t."FCI" and fid."ATRIBUTO"=''FundId Santander''
                             where t."CLASS" = ''com.aunesa.irmo.model.acdi.ISolicitudSuscripcionFCI''
                                 and "FECHAFIN"::date = current_date
                                 -- and t."ESTADO" = ''Liquidación pendiente''
                                 -- Filtro la familia santander
                                 -- and cfci."ID" like ''%%SANTANDER RIO ASSET%%''
                                           )
-                    select * from suscri_fci')as f("idOrigen" bigint, codigo_fci bigint, fci character varying, 
+                    select * from suscri_fci')as f("idOrigen" bigint, codigo_fci bigint, fci character varying, fund_id bigint, 
                         cuit character varying, cuenta_id bigint, cuenta character varying, 
                         cuenta_fci character varying, moneda character varying, cbu_pesos character varying, 
                         cbu_dolares character varying, dinero boolean, mkt character varying, "T+0" character varying, 
