@@ -1,6 +1,6 @@
 name: FCISTDR/QRY_FCI_HG_SUSCRIPCIONES
 caption: FCI STDR - Solicitud de Suscripciones
-dataSource: "run:FCISTDR/QRY_FCI_HG_SUSCRIPCIONES"
+dataSource: "run:FCISTDR/SCRIPT_FCI_HG_SUSCRIPCIONES"
 viewBindings: []
 postProcessors:
 - FCISTDR/TEMPLATE_QRY_FCI_HG_SUSCRIPCIONES
