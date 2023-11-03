@@ -6,26 +6,31 @@ columns:
   caption: Tipo
   fieldType: java.lang.String
 - name: name
-  caption: Mercado
+  caption: FCI
   fieldType: java.lang.String
 - name: precio_cp
   caption: Precio cuotaparte
   fieldType: java.math.BigDecimal
   format: "0.00"
 - name: status
-  caption: Cheques
+  caption: Status
   fieldType: java.lang.String
 targetUsers: []
 targetGroups:
 - OPB
 - ADMIN
+filterGroup:
+  caption: Filtros
+  filters:
+  - name: status
+    caption: Status
+    fieldType:  java.lang.String
+    required: false
+    dependents: []
+    possibleValues:
+      - "CONFIRMADO"
+      - "PROVISORIO"
+  defaultFilter:
+    mercado: "CONFIRMADO"
 sortables: []
-filterGroup: []
-selectionScript: |
-  #!python3
-  import redflagbpm
-  bpm = redflagbpm.BPMService()
-  bpm.reply("Cantidad seleccionada: " + str(len(bpm.context["selection"])))
 exportable: false
-waitForFilter: true
-

@@ -33,7 +33,7 @@ def get_codigo_fci(conn, fundId):
 def main():
     headers = login_apigee()
     response = get_all_funds(headers)
-    all_funds = json.dumps(response.json(), indent=4, sort_keys=True, ensure_ascii=False)
+    all_funds = json.dumps(response.json(), indent=4, sort_keys=True, ensure_ascii=False)at
 
     all_funds = json.loads(all_funds)
     conn = _get_hg_connection('syc')
@@ -47,18 +47,18 @@ def main():
         fund['codigo_fci'] = get_codigo_fci(conn, str(fund['id']))
 
     #pretty print all_funds
-    pretty_all_funds = json.dumps(all_funds, indent=4, sort_keys=True, ensure_ascii=False)
-    # print(pretty_all_funds)
-
+    all_funds_results = json.dumps(all_funds['results'], indent=4, sort_keys=True, ensure_ascii=False)
+    print(all_funds_results)
+    all_funds_results = json.loads(all_funds_results)
     with open('/tmp/qry_precio_cp.json', 'w') as f:
-        json.dump(all_funds, f)
+        json.dump(all_funds_results, f)
 
     bpm = redflagbpm.BPMService()
     _responseHeaders = bpm.context.json._responseHeaders
     _responseHeaders["status"] = "200"
     _responseHeaders["Content-Type"] = "application/json"
     _responseHeaders["Content-Encoding"] = "UTF-8"
-    _responseHeaders["resource"] = "/tmp/qry_marga.json"
+    _responseHeaders["resource"] = "/tmp/qry_precio_cp.json"
 
 if __name__ == '__main__':
     main()

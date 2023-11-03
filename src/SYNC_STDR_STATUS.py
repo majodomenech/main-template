@@ -27,11 +27,11 @@ def main(headers):
     ##########################################################################################
     resp = search_subscription(headers)
     for suscripcion in resp.json()['result']:
-        # print(suscripcion)
+        print(suscripcion)
         # #string estado to upper case
         estado = suscripcion['status'].upper()
         certif_id = suscripcion['certificateId'] if 'certificateId' in suscripcion.keys() else None
-        id_origen = suscripcion['externalReference']
+        id_origen = suscripcion['transactionId']
         fecha_alta = suscripcion['processDate']
         especie = suscripcion['fundId']
         cantidad_cp = suscripcion["netShare"]
