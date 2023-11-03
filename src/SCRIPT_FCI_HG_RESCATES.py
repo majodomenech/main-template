@@ -99,6 +99,9 @@ def main():
     else:
         conn = _get_flw_connection('flowable')
     qry = get_stdr_rescates(conn, bpm.context['plazo_liq'])
+    # if len(qry) == 0:
+
+
     print(qry)
     class DateEncoder(json.JSONEncoder):
         def default(self, obj):
