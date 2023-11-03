@@ -28,8 +28,10 @@ def get_stdr_rescates(conn, plazo_liq):
                             ''['' || c."ID" ||''] '' || c."DENOMINACION" as cuenta, 
                             cfci."ID" as cuenta_fci,
                             uni."CODIGO" as moneda,
-                            unf."CBUPESOS",
-                            unf."CBUDOLARES",
+							case when uni."CODIGO"  = ''ARS''
+                            then unf."CBUPESOS"
+							when uni."CODIGO"  = ''USD'' then unf."CBUDOLARES"
+							end as cbu,
                             t."DINERO",
                             (case when t."DINERO" then ''Monto'' else ''Cuotapartes'' end) as tipo_rescate,
                             unf."PLAZOLIQUDACIONRESCATE" as plazo_liq,
@@ -62,7 +64,7 @@ def get_stdr_rescates(conn, plazo_liq):
                             inner join "UNI_UNIDAD" uni on uni."UNI_UNIDAD_ID"=unf."MONEDA"
                             left join "UNI_ATRIBUTO" fid on fid."UNIDAD"=t."FCI" and fid."ATRIBUTO"=''FundId Santander''
                         where t."CLASS" = ''com.aunesa.irmo.model.acdi.ISolicitudRescateFCI''
-                            and t."ESTADO" = ''Liquidación pendiente''
+                            -- and t."ESTADO" = ''Liquidación pendiente''
                             and (unf."PLAZOLIQUDACIONRESCATE" = 0) = ('%s'= ''T+0'')
                             and "FECHA"::date = current_date
                             -- Filtro la familia santander
@@ -71,7 +73,7 @@ def get_stdr_rescates(conn, plazo_liq):
                         )
                     select * from resc_fci')as f("idOrigen" bigint, codigo_fci bigint, fci character varying, fund_id bigint, 
                         cuit character varying, cuenta_id bigint, cuenta character varying, cuenta_fci character varying, 
-                        moneda character varying, cbu_pesos character varying, cbu_dolares character varying, 
+                        moneda character varying, cbu character varying, 
                         dinero boolean, tipo_rescate character varying, plazo_liq integer, mkt character varying, 
                         "T+0" character varying, "T++" character varying, estado character varying, fecha date, 
                         fechafin date, propietario bigint, tipo character varying, solicitud character varying, 

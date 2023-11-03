@@ -6,15 +6,13 @@ from endpoints_santander import login_apigee, get_all_funds, get_fund_by_id
 def get_fundId():
 
     sql = """
-    select
-        ....
-        fci."CODIGO" as codigoCajaValoresFondo,
-        atr."VALOR" as fundIdSantander,
-        .....
-    from ....
-        inner join "UNI_UNIDAD" fci on ....
-        left join "UNI_ATRIBUTO" atr on fci."UNI_UNIDAD_ID"= atr."UNIDAD" and "ATRIBUTO" = 'FundId Santander'
-    where ....
+        select uni."CODIGO", 
+                uni."NOMBRE", 
+               atr."VALOR" as fund_id
+        from "UNI_UNIDAD" uni
+            inner join "UNI_ATRIBUTO" atr 
+                on atr."UNIDAD"=uni."UNI_UNIDAD_ID"
+                   and atr."ATRIBUTO" = 'FundId Santander'
     """
 
 def main():

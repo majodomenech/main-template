@@ -28,8 +28,10 @@ def get_stdr_rescates(conn):
                             ''['' || c."ID" ||''] '' || c."DENOMINACION" as cuenta, 
                             cfci."ID" as cuenta_fci,
                             uni."CODIGO" as moneda,
-                            unf."CBUPESOS",
-                            unf."CBUDOLARES",
+							case when uni."CODIGO"  = ''ARS''
+                            then unf."CBUPESOS"
+							when uni."CODIGO"  = ''USD'' then unf."CBUDOLARES"
+							end as cbu,
                             "DINERO",
                             cm."CODIGO" as mkt,
                             chro."CODIGO" as "T+0",
@@ -68,8 +70,8 @@ def get_stdr_rescates(conn):
                                           )
                     select * from suscri_fci')as f("idOrigen" bigint, codigo_fci bigint, fci character varying, fund_id bigint, 
                         cuit character varying, cuenta_id bigint, cuenta character varying, 
-                        cuenta_fci character varying, moneda character varying, cbu_pesos character varying, 
-                        cbu_dolares character varying, dinero boolean, mkt character varying, "T+0" character varying, 
+                        cuenta_fci character varying, moneda character varying, cbu character varying, 
+                         dinero boolean, mkt character varying, "T+0" character varying, 
                         "T++" character varying, estado character varying, fecha date, fechafin date, 
                         propietario bigint, tipo character varying, solicitud character varying, 
                         cantidad double precision, valorcuotaparte double precision, 

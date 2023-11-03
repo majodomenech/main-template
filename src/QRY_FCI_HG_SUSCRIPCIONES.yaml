@@ -8,8 +8,8 @@ columns:
 - name: cuit
   caption: cuit
   fieldType: java.lang.String
-- name: cantidad_cuotapartes
-  caption: cantidad_cuotapartes
+- name: cantidad
+  caption: cantidad
   fieldType: java.lang.Double
 - name: cuenta
   caption: Cuenta

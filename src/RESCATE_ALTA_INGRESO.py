@@ -31,11 +31,11 @@ def rescate_simulacion_ingreso(headers, bpm, selection):
         print(reci)
         #calculo la fecha de liquidacion teniendo usando los días hábiles y el plazo de liquidación
         fecha_liquidacion = get_fecha_liquidacion(reci['plazo_liq'])
-        fundId = get_id_from_codigo_cv(headers, reci['codigo_fci'])
-        print(fundId)
+        # fundId = get_id_from_codigo_cv(headers, reci['codigo_fci'])
+        # print(fundId)
         #rescate por cuotapartes
         resc = {
-                    "fundId": fundId,
+                    "fundId": reci['fund_id'],
                     "type": "share",
                     "value": reci['cantidad_cuotapartes'],
                     "investmentAccount": reci['cuenta_id'],
@@ -48,7 +48,7 @@ def rescate_simulacion_ingreso(headers, bpm, selection):
 
         # Dar alta del rescate
         resp_alta = save_redemption(headers, resc)
-        print(resp_alta.json())
+        print(3*'ALTA\n', resp_alta.json())
         # chequeo el estado del response
         resp_alta_ok, msj = procesar_respuesta(resp_alta, error_list, None, 'Rescate: Alta')
         # con el id del response del endpoint de alta llamo al endpoint de ingresar

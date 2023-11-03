@@ -21,6 +21,7 @@ requests_log.propagate = True
 
 def suscripcion_simulacion_ingreso(headers, bpm, selection):
     data = selection
+    print(data)
     alta_ingresar_status_list = []
     error_list = []
     id_suscri_list = []
@@ -33,19 +34,19 @@ def suscripcion_simulacion_ingreso(headers, bpm, selection):
     for susi in data:
         #suscripción por monto
         suscr = {
-            "fundId": susi["codigo_fci"], #no funciona el ID de CV
+            "fundId": susi["fund_id"], #no funciona el ID de CV
             "type": "amount",
             "value": susi["cantidad"],
             "investmentAccount": susi["cuenta_id"],
             "paymentMethod": {
                 "type": "ACCOUNT",
-                "UBK": "0720112320000001419672"
+                "UBK": susi['cbu']
             }, #no funciona el CBU asociado al ID de CV
             "externalReference": susi['idOrigen']
         }
         # Dar alta la suscri (simular)
         resp_alta = save_suscription(headers, suscr)
-        print(resp_alta.json())
+        print(3*f'ALTA\n', resp_alta.json())
         # chequeo el estado del response
         resp_alta_ok, mje = procesar_respuesta(resp_alta, error_list, None, 'Suscripcion: Alta')
 
@@ -58,12 +59,12 @@ def suscripcion_simulacion_ingreso(headers, bpm, selection):
 
             # para suscris dadas de alta llamo al endpoint de ingresar
             resp_confirmar = confirm_suscription(headers, resp_alta.json()['transactionId'])
-            print(resp_confirmar)
+            print(3*'CONFIRMACIÓN\n', resp_confirmar.json())
             # chequeo el estado del ingrso
             resp_confirmar_ok, msj = procesar_respuesta(resp_confirmar, error_list, suscr, 'Suscripcion: Ingresar')
             rta = f"Suscripción {susi['idOrigen']} dada de alta"
             alta_ingresar_status_list.append(rta)
-            print('RESP CONFIRMAR \n', resp_confirmar)
+            # print('RESP CONFIRMAR \n', resp_confirmar)
             if resp_confirmar_ok:
                 rta = f"Suscripción {susi['idOrigen']} ingresada"
                 # si el response no arroja errores impacto en la tabla FCISTDR.suscripcion_status
@@ -97,7 +98,7 @@ if __name__ == '__main__':
         selection = json.loads(selection)
     except Exception:
         pass
-    print(80 * '\../ ', selection)
+
     headers = login_apigee()
     html, id_suscri_list = suscripcion_simulacion_ingreso(headers, bpm, selection)
     bpm.reply(html)
