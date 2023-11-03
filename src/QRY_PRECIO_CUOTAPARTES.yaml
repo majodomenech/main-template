@@ -2,59 +2,25 @@ name: FCISTDR/QRY_PRECIO_CUOTAPARTES
 caption: FCI STDR - Precio Cuotapartes
 dataSource: "run:FCISTDR/QRY_PRECIO_CUOTAPARTES_SCRIPT"
 columns:
-- name: tipo
+- name: codigo_fci
   caption: Tipo
   fieldType: java.lang.String
-- name: mercado
+- name: name
   caption: Mercado
   fieldType: java.lang.String
-- name: comitente
-  caption: Comitente
-  fieldType: java.lang.String
-- name: cheques
+- name: precio_cp
+  caption: Precio cuotaparte
+  fieldType: java.math.BigDecimal
+  format: "0.00"
+- name: status
   caption: Cheques
-  fieldType: java.math.BigDecimal
-  format: "0.00"
-- name: Garantizado
-  caption: Garantizado
-  fieldType: java.math.BigDecimal
-  format: "0.00"
-- name: disponible
-  caption: Disponible
-  fieldType: java.math.BigDecimal
-  format: "0.00"
-template: |
-  <div inner-h-t-m-l="[[item.template]]"></div>
+  fieldType: java.lang.String
 targetUsers: []
 targetGroups:
 - OPB
 - ADMIN
 sortables: []
-filterGroup:
-  caption: Filtros
-  filters:
-  - name: mercado
-    caption: Mercado
-    fieldType:  java.lang.String
-    required: true
-    dependents: []
-    possibleValues:
-      - "MAV"
-      - "BYMA"
-      - "ROFX"
-  - name: tipo
-    caption: Tipo
-    fieldType:  java.lang.String
-    required: true
-    dependents: []
-    possibleValues:
-      - "CPD/FCE/Pagaré"
-      - "Caución"
-  defaultFilter:
-    mercado: "MAV"
-    tipo: "CPD/FCE/Pagaré"
-scripts:
-- MARGA/ADMINISTRAR_A_MARGA
+filterGroup: []
 selectionScript: |
   #!python3
   import redflagbpm
