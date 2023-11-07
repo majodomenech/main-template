@@ -4,16 +4,16 @@ import os
 import requests
 import sys
 sys.path.append('../backtesting')
-# from data import get_suscription
+from data import get_suscription
+from pass_key import get_pass_key
 
+KEYS = get_pass_key()
 
-def login_apigee():
+def login_apigee(KEYS):
     #payload is url encoded string
     payload = 'grant_type=client_credentials'
     url = "https://sbx.santander.com.ar/oauthv2/token"
-    usrpass = base64.b64encode(
-        "At8tRQKSwSylWDnDjHMFAvCbpSreukE0:jZRT5p5KR2yEknBbacFzBkxGxDxNBl29".encode('ascii')).decode(
-        'ascii')
+    usrpass = base64.b64encode(str(KEYS).encode('ascii')).decode('ascii')
 
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -112,10 +112,10 @@ def get_fund_by_id_rules(auth_headers:dict, fundId):
 # data = {'fundId': 130, 'type': 'share', 'value': 1301.4482, 'paymentMethod': {'type': 'account', 'UBK': '0720099188000037875486'}, 'investmentAccount': 2707138, 'netShare': None, 'shareValue': None, 'netAmount': None, 'dateConcert': None, 'dateLiquid': None, 'transactionId': 59764, 'status': 'FAILED', 'certificateId': None, 'processDate': '2023-10-11', 'externalReference': '2000024'}
 
 
-# headers = login_apigee()
+headers = login_apigee()
 # # resp = search_subscription(headers)
-# resp  =get_fund_by_id(headers, 130)
+resp = get_fund_by_id(headers, 130)
 # resp = get_fund_by_id_rules(headers, 130)
 # resp = get_fund_by_id_details(headers, 130)
 # resp = all_funds(headers)
-# print(resp.text)
+print(resp.text)

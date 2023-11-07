@@ -1,7 +1,6 @@
 #!python3
 import json
-from DB_connect import _get_hg_connection
-from endpoints_santander import login_apigee, get_all_funds, get_fund_by_id, get_fund_by_id_details
+from endpoints_santander import login_apigee, get_all_funds, get_fund_by_id_details
 import redflagbpm
 from redflagbpm import PgUtils
 
@@ -33,8 +32,6 @@ def update_fund_id(bpm, **kwargs):
                                 INSERT INTO public."UNI_ATRIBUTO"("UNIDAD", "ATRIBUTO", "VALOR")
                                 VALUES ((select "UNI_UNIDAD_ID" from "UNI_UNIDAD" where "SUBCODIGO"=%s), %s, %s);
                             """
-            #uso
-            # actualizar('FundId Santander', '14001', '134')
 
             unidad = kwargs['cv_id']
             valor = kwargs['stdr_fund_id']
@@ -57,9 +54,7 @@ def main():
     for i in json.loads(funds_w_cv_code)['results']:
         if i['codigo_cv'] is not None and i['codigo_cv'] != '':
             update_fund_id(bpm, **{'stdr_fund_id': str(i['id']), 'cv_id': str(i['codigo_cv'])})
-            # break
-        # else:
-            # continue
+
 
 
 if __name__ == '__main__':

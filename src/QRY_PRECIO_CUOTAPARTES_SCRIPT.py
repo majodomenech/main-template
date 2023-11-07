@@ -33,7 +33,7 @@ def get_codigo_fci(conn, fundId):
 def main():
     headers = login_apigee()
     response = get_all_funds(headers)
-    all_funds = json.dumps(response.json(), indent=4, sort_keys=True, ensure_ascii=False)at
+    all_funds = json.dumps(response.json(), indent=4, sort_keys=True, ensure_ascii=False)
 
     all_funds = json.loads(all_funds)
     conn = _get_hg_connection('syc')
