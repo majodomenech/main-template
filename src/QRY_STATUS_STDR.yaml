@@ -13,7 +13,7 @@ view: |
     rs.id_rescate,
     null as id_suscri,
     rs.log::character varying,
-    rs.certif_id,
+    rs.certificate_id,
     'Rescate' as tipo
     from fcistdr.rescate_status rs
     union
@@ -29,14 +29,14 @@ view: |
     null as id_rescate,
     ss.id_suscri,
     ss.log::character varying,
-    ss.certif_id,
+    ss.certificate_id,
     'Suscripción' as tipo
     from fcistdr.suscripcion_status ss)
     select * from rescates_nd_suscripciones
         where (?::character varying is null or tipo=?) 
         and (?::bigint is null or id_origen=?)
         and (?::character varying is null or estado is null or estado=?)
-        and (?::bigint is null or certif_id=?)
+        and (?::bigint is null or certificate_id=?)
         and (?::numeric is null or fecha_alta::date>= (timestamp 'epoch' + ?::numeric * interval '1 ms')::date)
         and (?::numeric is null or fecha_alta::date<= (timestamp 'epoch' + ?::numeric * interval '1 ms')::date)
 viewBindings:
@@ -46,8 +46,8 @@ viewBindings:
 - id_origen
 - estado
 - estado
-- certif_id
-- certif_id
+- certificate_id
+- certificate_id
 - fecha_desde
 - fecha_desde
 - fecha_hasta
@@ -56,7 +56,7 @@ columns:
 - name: tipo
   caption: Tipo
   fieldType: java.lang.String
-- name: certif_id
+- name: certificate_id
   caption: Certificate ID
   fieldType: java.lang.Long
   format: "0"
@@ -121,7 +121,7 @@ filterGroup:
     fieldType: java.lang.String
     required: false
     dependents: []
-  - name: certif_id
+  - name: certificate_id
     caption: Certificate ID
     fieldType: java.lang.Integer
     dependents: []

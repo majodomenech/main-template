@@ -61,4 +61,4 @@ selectionScript: |
   bpm = redflagbpm.BPMService()
   bpm.reply("Cantidad seleccionada: " + str(len(bpm.context["selection"])))
 context: {}
-exportable: false
+exportable: true

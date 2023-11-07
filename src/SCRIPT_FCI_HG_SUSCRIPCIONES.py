@@ -82,6 +82,7 @@ def get_stdr_suscripciones(conn):
                 -- Joineo con la tabla de rescates stdr por idOrigen para filtrar los ya procesados
                 left join fcistdr.suscripcion_status st_rs on hg."idOrigen" = st_rs.id_origen
             -- where (st_rs.estado is null or st_rs.estado != 'CONFIRMADO')
+            order by 1 desc
         """
 
     cur.execute(sql,)
