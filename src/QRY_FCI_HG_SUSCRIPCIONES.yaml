@@ -5,8 +5,8 @@ viewBindings: []
 postProcessors:
 - FCISTDR/TEMPLATE_QRY_FCI_HG_SUSCRIPCIONES
 columns:
-- name: moenda
-  caption: Moneda
+- name: moneda
+  caption: Especie/Moneda
   fieldType: java.lang.String
 - name: cantidad
   caption: cantidad
