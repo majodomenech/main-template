@@ -24,9 +24,10 @@ def get_account_data():
     if bpm.service.text("STAGE") == "DEV":
         #suscris
         # account_data['investmentAccount'] = 2707138
+        # account_data['UBK'] = "0720099188000037875486"
         #rescates
         account_data['investmentAccount'] = 41621350
-        account_data['UBK'] = "0720099188000037875486"
+        account_data['UBK'] = "0720247820000008610672"
     else:
         account_data['investmentAccount'] = 47519688
         account_data['UBK'] = "0720247820000008610672"

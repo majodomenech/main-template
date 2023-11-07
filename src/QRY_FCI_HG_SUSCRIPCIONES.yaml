@@ -5,21 +5,24 @@ viewBindings: []
 postProcessors:
 - FCISTDR/TEMPLATE_QRY_FCI_HG_SUSCRIPCIONES
 columns:
-- name: cuit
-  caption: cuit
+- name: moenda
+  caption: Moneda
   fieldType: java.lang.String
 - name: cantidad
   caption: cantidad
   fieldType: java.lang.Double
-- name: cuenta
-  caption: Cuenta
-  fieldType: java.lang.String
 - name: fci
   caption: fci
   fieldType: character varying
 - name: idOrigen
   caption: idOrigen
   fieldType: java.lang.Integer
+- name: solicitud
+  caption: Solicitud
+  fieldType: java.lang.String
+- name: fecha
+  caption: Fecha
+  fieldType: java.lang.String
 - name: template
   caption: Template
   fieldType: java.lang.String

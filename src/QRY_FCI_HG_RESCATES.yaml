@@ -10,9 +10,9 @@ columns:
 - name: cuit
   caption: CUIT
   fieldType: java.lang.String
-- name: cuenta
-  caption: Cuenta
-  fieldType: java.lang.String
+#- name: cuenta
+#  caption: Cuenta
+#  fieldType: java.lang.String
 - name: cantidad_cuotapartes
   caption: Cuotapartes
   fieldType: java.lang.Double
@@ -22,6 +22,12 @@ columns:
 - name: idOrigen
   caption: idOrigen
   fieldType: java.lang.Integer
+- name: solicitud
+  caption: Solicitud
+  fieldType: java.lang.String
+- name: fecha
+  caption: Fecha
+  fieldType: java.lang.String
 - name: template
   caption: Template
   fieldType: java.lang.String

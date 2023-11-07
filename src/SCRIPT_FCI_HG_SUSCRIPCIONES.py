@@ -6,7 +6,7 @@ import psycopg2.extras
 import datetime
 from DB_connect import _get_flw_connection
 
-def get_stdr_rescates(conn):
+def get_stdr_suscripciones(conn):
     sql_connect = "SELECT dblink_connect_u('hg_fci', 'dbname=syc user=consyc password=MTU1NDNjN2ZlZGU4ZDdhNDBhZTM2MjA2')"
     sql_disconnect = "SELECT dblink_disconnect('hg_fci')"
     conn.autocommit = True
@@ -63,7 +63,7 @@ def get_stdr_rescates(conn):
                                 inner join "UNI_UNIDAD" uni on uni."UNI_UNIDAD_ID"=t."UNIDAD"
 							    left join "UNI_ATRIBUTO" fid on fid."UNIDAD"=t."FCI" and fid."ATRIBUTO"=''FundId Santander''
                             where t."CLASS" = ''com.aunesa.irmo.model.acdi.ISolicitudSuscripcionFCI''
-                                and "FECHAFIN"::date = current_date
+                                and t."FECHA"::date = current_date
                                 -- and t."ESTADO" = ''Liquidación pendiente''
                                 -- Filtro la familia santander
                                 -- and cfci."ID" like ''%%SANTANDER RIO ASSET%%''
@@ -97,7 +97,7 @@ def main():
         conn = _get_flw_connection('flowabletest')
     else:
         conn = _get_flw_connection('flowable')
-    qry = get_stdr_rescates(conn)
+    qry = get_stdr_suscripciones(conn)
     print(qry)
     class DateEncoder(json.JSONEncoder):
         def default(self, obj):
