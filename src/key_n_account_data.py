@@ -19,7 +19,12 @@ def get_pass_key():
 
 
 def get_account_data():
+    bpm = redflagbpm.BPMService()
     account_data = {}
-    account_data['investmentAccount'] = 47519688
-    account_data['UBK'] = '0720247820000008610672'
+    if bpm.service.text("STAGE") == "DEV":
+        account_data['investmentAccount'] = 2707138
+        account_data['UBK'] = "0720099188000037875486"
+    else:
+        account_data['investmentAccount'] = 47519688
+        account_data['UBK'] = "0720247820000008610672"
     return account_data

@@ -30,14 +30,14 @@ def main(headers):
         print(suscripcion)
         # #string estado to upper case
         estado = suscripcion['status'].upper()
-        certif_id = suscripcion['certificateId'] if 'certificateId' in suscripcion.keys() else None
+        certificate_id = suscripcion['certificateId'] if 'certificateId' in suscripcion.keys() else None
         id_origen = suscripcion['transactionId']
         fecha_alta = suscripcion['processDate']
         especie = suscripcion['fundId']
         cantidad_cp = suscripcion["netShare"]
         resp_x_id = get_subscription(headers, suscripcion['transactionId'])
         update_suscripcion_status(conn, id_origen, mensaje='Sincronizado con STDR ' + estado, estado=estado,
-                              certif_id=certif_id, fecha_alta=fecha_alta, especie=especie, cantidad_cp=cantidad_cp, id_suscri = suscripcion['transactionId'])
+                              certificate_id=certificate_id, fecha_alta=fecha_alta, especie=especie, cantidad_cp=cantidad_cp, id_suscri = suscripcion['transactionId'])
         print(f'SUSCRIPCIONES:\n{resp_x_id.json()}')
 
     ##########################################################################################
@@ -51,7 +51,7 @@ def main(headers):
     for rescate in resp.json()['result']:
     #     #string estado to upper case
         estado = rescate['status'].upper()
-        certif_id = rescate['certificateId'] if 'certificateId' in rescate.keys() else None
+        certificate_id = rescate['certificateId'] if 'certificateId' in rescate.keys() else None
         id_origen = rescate['externalReference']
     #     id_grupo = rescate['idOrigen']
         fecha_alta = rescate['processDate']
@@ -65,7 +65,7 @@ def main(headers):
         monto = rescate['netAmount'] if 'netAmount' in rescate.keys() else None
         resp_x_id = get_redemption(headers, rescate['transactionId'])
         update_rescate_status(conn, id_origen, mensaje='Sincronizado con STDR ' + estado, estado=estado,
-                              certif_id=certif_id, fecha_alta=fecha_alta, especie=especie, cantidad_cp=cantidad_cp,
+                              certificate_id=certificate_id, fecha_alta=fecha_alta, especie=especie, cantidad_cp=cantidad_cp,
                                id_rescate=rescate['transactionId'])
         print(f'RESCATES:\n{resp_x_id.json()}')
 

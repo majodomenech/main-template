@@ -57,7 +57,8 @@ def suscripcion_simulacion_ingreso(headers, bpm, selection):
         if resp_alta_ok:
             id_suscri_list.append(resp_alta.json()['transactionId'])
             log_suscripcion(conn, id_origen=susi['idOrigen'], mensaje=resp_alta.json()['status'],
-                            id_suscri=resp_alta.json()['transactionId'], estado=resp_alta.json()['status'],
+                            id_suscri=resp_alta.json()['transactionId'], certificate_id=resp_alta.json()['certificateId'],
+                            estado=resp_alta.json()['status'],
                             descripción=resp_alta.text)
 
             # para suscris dadas de alta llamo al endpoint de ingresar
@@ -72,13 +73,16 @@ def suscripcion_simulacion_ingreso(headers, bpm, selection):
                 rta = f"Suscripción {susi['idOrigen']} ingresada"
                 # si el response no arroja errores impacto en la tabla FCISTDR.suscripcion_status
                 log_suscripcion(conn, id_origen=susi['idOrigen'], mensaje='Ingresado',
-                                id_suscri=resp_alta.json()['id'], descripción=resp_confirmar.text)
+                                id_suscri=resp_alta.json()['transactionId'], certificate_id=resp_alta.json()['certificateId'],
+                                estado=resp_alta.json()['status'],
+                                descripción=resp_confirmar.text)
                 alta_ingresar_status_list.append(rta)
             else:
                 rta = f"{susi['idOrigen']}:{msj}"
                 alta_ingresar_status_list.append(rta)
                 log_suscripcion(conn, id_origen=susi['idOrigen'], mensaje=msj,
-                                id_suscri=resp_alta.json()['transactionId'], estado='NO INGRESADO',
+                                id_suscri=resp_alta.json()['transactionId'], certificate_id=resp_alta.json()['certificateId'],
+                                estado='NO INGRESADO',
                                 descripción=resp_confirmar.text)
         else:
             # si el response de alta arroja errores impacto en la tabla FCISTDR.suscripciones_status
