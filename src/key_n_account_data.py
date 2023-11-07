@@ -16,3 +16,10 @@ def get_pass_key():
         # Consumer Secret:
         PRIVATE = "X5XvmVmV9ZpZZfuFquDRtmkhun7zMHWR"
     return str(KEY+":"+PRIVATE)
+
+
+def get_account_data():
+    account_data = {}
+    account_data['investmentAccount'] = 47519688
+    account_data['UBK'] = '0720247820000008610672'
+    return account_data

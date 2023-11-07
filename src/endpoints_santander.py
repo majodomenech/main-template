@@ -5,14 +5,15 @@ import requests
 import sys
 sys.path.append('../backtesting')
 from data import get_suscription
-from pass_key import get_pass_key
+from key_n_account_data import get_pass_key
 
-KEYS = get_pass_key()
 
-def login_apigee(KEYS):
+
+def login_apigee():
     #payload is url encoded string
     payload = 'grant_type=client_credentials'
     url = "https://sbx.santander.com.ar/oauthv2/token"
+    KEYS = get_pass_key()
     usrpass = base64.b64encode(str(KEYS).encode('ascii')).decode('ascii')
 
     headers = {

@@ -3,6 +3,7 @@ import redflagbpm
 import json
 from DB_connect import _get_flw_connection
 from auxiliar import procesar_respuesta
+from key_n_account_data import get_account_data
 # from codigo_emisor import get_codigo_emisor_byma_cuit
 # from endpoints_fci_byma import alta_bilateral_suscripcion, ingresar_bilateral_suscripcion
 
@@ -30,17 +31,19 @@ def suscripcion_simulacion_ingreso(headers, bpm, selection):
     else:
         db = "flowable"
     conn = _get_flw_connection(db)
-
+    investmentAccount = get_account_data()['investmentAccount']
+    UBK = get_account_data()['UBK']
+    print(get_account_data())
     for susi in data:
         #suscripción por monto
         suscr = {
-            "fundId": susi["fund_id"], #no funciona el ID de CV
+            "fundId": susi["fund_id"],
             "type": "amount",
             "value": susi["cantidad"],
-            "investmentAccount": susi["cuenta_id"],
+            "investmentAccount": investmentAccount,
             "paymentMethod": {
                 "type": "ACCOUNT",
-                "UBK": susi['cbu']
+                "UBK": UBK
             }, #no funciona el CBU asociado al ID de CV
             "externalReference": susi['idOrigen']
         }

@@ -6,6 +6,7 @@ from auxiliar import get_fecha_liquidacion, procesar_respuesta, get_id_from_codi
 from codigo_emisor import get_codigo_emisor_byma_cuit
 from endpoints_santander import login_apigee, save_redemption, confirm_redemption
 from write_DB import log_rescate
+from key_n_account_data import get_account_data
 import logging
 import http.client as http_client
 http_client.HTTPConnection.debuglevel = 1
@@ -26,7 +27,9 @@ def rescate_simulacion_ingreso(headers, bpm, selection):
     else:
         db = "flowable"
     conn = _get_flw_connection(db)
-
+    acc_data = get_account_data()
+    investmentAccount =  acc_data['investmentAccount']
+    UBK = acc_data['UBK']
     for reci in data:
         print(reci)
         #calculo la fecha de liquidacion teniendo usando los días hábiles y el plazo de liquidación
@@ -38,10 +41,10 @@ def rescate_simulacion_ingreso(headers, bpm, selection):
                     "fundId": reci['fund_id'],
                     "type": "share",
                     "value": reci['cantidad_cuotapartes'],
-                    "investmentAccount": reci['cuenta_id'],
+                    "investmentAccount": investmentAccount,
                     "paymentMethod": {
                         "type": "account",
-                        "UBK": reci['cbu']
+                        "UBK": UBK
                     },
                     "externalReference": reci['idOrigen']
                 }
