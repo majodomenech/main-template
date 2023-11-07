@@ -59,7 +59,7 @@ def rescate_simulacion_ingreso(headers, bpm, selection):
             id_rescate_list.append(resp_alta.json()['transactionId'])
             log_rescate(conn, id_origen=reci['idOrigen'], mensaje=resp_alta.json()['status'],
                                 id_rescate=resp_alta.json()['transactionId'], certificate_id=resp_alta.json()['certificateId'],
-                                estado=resp_alta.json()['status'],
+                                estado=resp_alta.json()['status'], cantidad_cp = resp_alta.json()['value'],
                                 descripción=resp_alta.text)
 
             # Para cada rescate  llamo al endpoint de confirmar
@@ -72,7 +72,7 @@ def rescate_simulacion_ingreso(headers, bpm, selection):
             if resp_confirmar_ok:
                 rta = f"Rescate {reci['idOrigen']} ingresado"
                 log_rescate(conn, id_origen=reci['idOrigen'], mensaje='Ingresado',
-                            id_rescate=resp_alta.json()['transactionId'], estado=resp_alta.json()['status'],
+                            id_rescate=resp_confirmar.json()['transactionId'], estado=resp_confirmar.json()['status'],
                             certificate_id=resp_alta.json()['certificateId'],
                             descripción=resp_confirmar.text)
                 alta_ingresar_status_list.append(rta)

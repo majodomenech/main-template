@@ -73,7 +73,7 @@ def suscripcion_simulacion_ingreso(headers, bpm, selection):
                 rta = f"Suscripción {susi['idOrigen']} ingresada"
                 # si el response no arroja errores impacto en la tabla FCISTDR.suscripcion_status
                 log_suscripcion(conn, id_origen=susi['idOrigen'], mensaje='Ingresado',
-                                id_suscri=resp_alta.json()['transactionId'], certificate_id=resp_alta.json()['certificateId'],
+                                id_suscri=resp_alta.json()['transactionId'], certificate_id=resp_confirmar.json()['certificateId'],
                                 estado=resp_alta.json()['status'],
                                 descripción=resp_confirmar.text)
                 alta_ingresar_status_list.append(rta)
@@ -81,7 +81,7 @@ def suscripcion_simulacion_ingreso(headers, bpm, selection):
                 rta = f"{susi['idOrigen']}:{msj}"
                 alta_ingresar_status_list.append(rta)
                 log_suscripcion(conn, id_origen=susi['idOrigen'], mensaje=msj,
-                                id_suscri=resp_alta.json()['transactionId'], certificate_id=resp_alta.json()['certificateId'],
+                                id_suscri=resp_alta.json()['transactionId'], certificate_id=resp_confirmar.json()['certificateId'],
                                 estado='NO INGRESADO',
                                 descripción=resp_confirmar.text)
         else:

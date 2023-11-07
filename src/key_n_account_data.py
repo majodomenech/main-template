@@ -22,7 +22,10 @@ def get_account_data():
     bpm = redflagbpm.BPMService()
     account_data = {}
     if bpm.service.text("STAGE") == "DEV":
-        account_data['investmentAccount'] = 2707138
+        #suscris
+        # account_data['investmentAccount'] = 2707138
+        #rescates
+        account_data['investmentAccount'] = 41621350
         account_data['UBK'] = "0720099188000037875486"
     else:
         account_data['investmentAccount'] = 47519688

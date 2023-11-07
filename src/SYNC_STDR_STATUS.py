@@ -31,7 +31,7 @@ def main(headers):
         # #string estado to upper case
         estado = suscripcion['status'].upper()
         certificate_id = suscripcion['certificateId'] if 'certificateId' in suscripcion.keys() else None
-        id_origen = suscripcion['transactionId']
+        id_origen = suscripcion['externalReference']
         fecha_alta = suscripcion['processDate']
         especie = suscripcion['fundId']
         cantidad_cp = suscripcion["netShare"]
