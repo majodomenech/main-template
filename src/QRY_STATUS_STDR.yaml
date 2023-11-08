@@ -50,6 +50,7 @@ view: |
         and (?::bigint is null or certificate_id=?)
         and (?::numeric is null or fecha_alta::date>= (timestamp 'epoch' + ?::numeric * interval '1 ms')::date)
         and (?::numeric is null or fecha_alta::date<= (timestamp 'epoch' + ?::numeric * interval '1 ms')::date)
+    order by fecha_alta desc
 viewBindings:
 - tipo
 - tipo

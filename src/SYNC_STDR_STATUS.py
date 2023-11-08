@@ -27,7 +27,7 @@ def main(headers):
     ############################### RECUPERAR LAS SUSCRIS DE STDR ##############################
     ##########################################################################################
     resp = search_subscription(headers)
-    conn_hg = _get_hg_connection('hg')
+    # conn_hg = _get_hg_connection('hg')
     for suscripcion in resp.json()['result']:
         print(suscripcion)
         # #string estado to upper case

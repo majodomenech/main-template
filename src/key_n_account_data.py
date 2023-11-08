@@ -3,7 +3,7 @@ import redflagbpm
 
 def get_pass_key():
     bpm = redflagbpm.BPMService()
-    if bpm.service.text("STAGE") == "DEV":
+    if bpm.service.text("STAGE") != "DEV":
         # Credenciales Sandbox:
         # Consumer Key:
         KEY = "At8tRQKSwSylWDnDjHMFAvCbpSreukE0"
@@ -21,14 +21,14 @@ def get_pass_key():
 def get_account_data():
     bpm = redflagbpm.BPMService()
     account_data = {}
-    if bpm.service.text("STAGE") == "DEV":
-        #suscris
+    # if bpm.service.text("STAGE") == "DEV":
+        #suscris test
         # account_data['investmentAccount'] = 2707138
         # account_data['UBK'] = "0720099188000037875486"
-        #rescates
-        account_data['investmentAccount'] = 41621350
-        account_data['UBK'] = "0720247820000008610672"
-    else:
-        account_data['investmentAccount'] = 47519688
-        account_data['UBK'] = "0720247820000008610672"
+        #rescates test
+        # account_data['investmentAccount'] = 41621350
+        # account_data['UBK'] = "0720247820000008610672"
+    # else:
+    account_data['investmentAccount'] = 47519688
+    account_data['UBK'] = "0720247820000008610672"
     return account_data

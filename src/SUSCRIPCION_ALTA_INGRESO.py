@@ -55,7 +55,6 @@ def suscripcion_simulacion_ingreso(headers, bpm, selection):
 
         # con el id del response del endpoint de alta llamo al endpoint de ingresar
         if resp_alta_ok:
-            break
             id_suscri_list.append(resp_alta.json()['transactionId'])
             log_suscripcion(conn, id_origen=susi['idOrigen'], mensaje=resp_alta.json()['status'],
                             id_suscri=resp_alta.json()['transactionId'], certificate_id=resp_alta.json()['certificateId'],

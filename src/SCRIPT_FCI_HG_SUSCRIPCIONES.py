@@ -64,9 +64,9 @@ def get_stdr_suscripciones(conn):
 							    left join "UNI_ATRIBUTO" fid on fid."UNIDAD"=t."FCI" and fid."ATRIBUTO"=''FundId Santander''
                             where t."CLASS" = ''com.aunesa.irmo.model.acdi.ISolicitudSuscripcionFCI''
                                 and t."FECHA"::date = current_date
-                                -- and t."ESTADO" = ''Liquidación pendiente''
+                                and t."ESTADO" = ''Liquidación pendiente''
                                 -- Filtro la familia santander
-                                -- and cfci."ID" like ''%%SANTANDER RIO ASSET%%''
+                                and cfci."ID" like ''%%SANTANDER RIO ASSET%%''
                                           )
                     select * from suscri_fci')as f("idOrigen" bigint, codigo_fci bigint, fci character varying, fund_id bigint, 
                         cuit character varying, cuenta_id bigint, cuenta character varying, 
