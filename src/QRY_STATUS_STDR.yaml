@@ -1,7 +1,17 @@
 name: FCISTDR/QRY_STATUS_STDR
 caption: FCI STDR - Status Fondos
-view: |
-    with rescates_nd_suscripciones as (select 
+view: | 
+    with consulta_dblink as (
+        SELECT fci, fund_id
+        FROM dblink('dbname=syc user=consyc password=MTU1NDNjN2ZlZGU4ZDdhNDBhZTM2MjA2',
+          'select
+        	''['' ||unf."CODIGO" || ''] '' || unf."NOMBRE" as fci,
+            fid."VALOR" as fund_id
+           from "UNI_UNIDAD" unf 
+             inner join "UNI_ATRIBUTO" as fid on fid."UNIDAD"= unf."UNI_UNIDAD_ID" and fid."ATRIBUTO"=''FundId Santander''
+          ') AS t(fci varchar,fund_id bigint)
+    ),
+    rescates_nd_suscripciones as (select 
     rs.cantidad_cp::real as cantidad_cp,
     rs."descripción" as descripcion,
     rs.distribucion,
@@ -32,7 +42,8 @@ view: |
     ss.certificate_id,
     'Suscripción' as tipo
     from fcistdr.suscripcion_status ss)
-    select * from rescates_nd_suscripciones
+    select * from rescates_nd_suscripciones rns
+    inner join consulta_dblink db on db.fund_id = rns.especie
         where (?::character varying is null or tipo=?) 
         and (?::bigint is null or id_origen=?)
         and (?::character varying is null or estado is null or estado=?)
@@ -63,10 +74,9 @@ columns:
 - name: estado
   caption: Estado
   fieldType: java.lang.String
-- name: especie
-  caption: Especie
-  fieldType: java.lang.Long
-  format: "0"
+- name: fci
+  caption: FCI
+  fieldType: java.lang.String
 - name: cantidad_cp
   caption: Cantidad Cuotapartes
   fieldType: java.lang.Double
@@ -137,7 +147,7 @@ filterGroup:
     dependents: [ ]
   subgroups: []
   defaultFilter:
-    fecha_desde: ;new java.lang.Long(Date.now()- 4*24*60*60*1000);
+    fecha_desde: ;new java.lang.Long(Date.now()- 24*60*60*1000);
     fecha_hasta: ;new java.lang.Long(Date.now());
   uniqueItems: false
 dataSource: FLW

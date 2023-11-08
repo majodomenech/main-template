@@ -127,3 +127,21 @@ def get_id_from_codigo_cv(headers, codigo_cv):
         cod_mapping[resp.json()["CVCode"]] = fci['id']
     return cod_mapping[codigo_cv]
 
+def get_codigo_cv_from_id(conn, id):
+
+    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+
+    sql = """
+        select
+        '[' ||unf."CODIGO" || '] ' || unf."NOMBRE" as fci
+        from "UNI_UNIDAD" unf 
+        inner join "UNI_ATRIBUTO" as fid on fid."UNIDAD"= unf."UNI_UNIDAD_ID" and fid."ATRIBUTO"='FundId Santander'
+        where fid."VALOR" = %s
+    """
+
+    cur.execute(sql,(id,))
+    qry = cur.fetchall()
+    cur.close()
+    conn.close()
+    return qry[0]['fci']
+

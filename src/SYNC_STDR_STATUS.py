@@ -1,11 +1,12 @@
 #!python3
 import json
-from DB_connect import _get_flw_connection
+from DB_connect import _get_flw_connection, _get_hg_connection
 from endpoints_santander import login_apigee, search_subscription, get_subscription, get_redemption, search_redemption
 import datetime
 from auxiliar import get_b_day
 from write_DB import update_rescate_status, update_suscripcion_status
 import redflagbpm
+
 
 #today in format YYYY-MM-DD
 today = datetime.date.today().strftime("%Y-%m-%d")
@@ -26,6 +27,7 @@ def main(headers):
     ############################### RECUPERAR LAS SUSCRIS DE STDR ##############################
     ##########################################################################################
     resp = search_subscription(headers)
+    conn_hg = _get_hg_connection('hg')
     for suscripcion in resp.json()['result']:
         print(suscripcion)
         # #string estado to upper case
@@ -33,11 +35,11 @@ def main(headers):
         certificate_id = suscripcion['certificateId'] if 'certificateId' in suscripcion.keys() else None
         id_origen = suscripcion['externalReference']
         fecha_alta = suscripcion['processDate']
-        especie = suscripcion['fundId']
+        fundId = suscripcion['fundId']
         cantidad_cp = suscripcion["netShare"]
         resp_x_id = get_subscription(headers, suscripcion['transactionId'])
         update_suscripcion_status(conn, id_origen, mensaje='Sincronizado con STDR ' + estado, estado=estado,
-                              certificate_id=certificate_id, fecha_alta=fecha_alta, especie=especie, cantidad_cp=cantidad_cp, id_suscri = suscripcion['transactionId'])
+                              certificate_id=certificate_id, fecha_alta=fecha_alta, especie=fundId, cantidad_cp=cantidad_cp, id_suscri = suscripcion['transactionId'])
         print(f'SUSCRIPCIONES:\n{resp_x_id.json()}')
 
     ##########################################################################################
@@ -55,8 +57,8 @@ def main(headers):
         id_origen = rescate['externalReference']
     #     id_grupo = rescate['idOrigen']
         fecha_alta = rescate['processDate']
-        especie = rescate['fundId']
-        cantidad_cp = rescate["netShare"]
+        fundId = rescate['fundId']
+        # cantidad_cp = rescate["netShare"]
         try:
             cantidad_cp = rescate["netShare"]
         except KeyError:
@@ -65,7 +67,7 @@ def main(headers):
         monto = rescate['netAmount'] if 'netAmount' in rescate.keys() else None
         resp_x_id = get_redemption(headers, rescate['transactionId'])
         update_rescate_status(conn, id_origen, mensaje='Sincronizado con STDR ' + estado, estado=estado,
-                              certificate_id=certificate_id, fecha_alta=fecha_alta, especie=especie, cantidad_cp=cantidad_cp,
+                              certificate_id=certificate_id, fecha_alta=fecha_alta, especie=fundId, cantidad_cp=cantidad_cp,
                                id_rescate=rescate['transactionId'])
         print(f'RESCATES:\n{resp_x_id.json()}')
 
