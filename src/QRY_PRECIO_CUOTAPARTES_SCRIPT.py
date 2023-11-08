@@ -11,9 +11,7 @@ def get_codigo_fci(conn, fundId):
 
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     sql = """
-        
-        select uni."CODIGO"
-        -- 		uni."NOMBRE", 
+        select uni."CODIGO", '['|| uni."CODIGO" ||'] ' || uni."NOMBRE" as fci
         --        atr."VALOR" as fund_id
         from "UNI_UNIDAD" uni
             inner join "UNI_ATRIBUTO" atr on atr."UNIDAD"=uni."UNI_UNIDAD_ID" and atr."ATRIBUTO" = 'FundId Santander'
@@ -22,7 +20,7 @@ def get_codigo_fci(conn, fundId):
     cur.execute(sql, (fundId,))
     row = cur.fetchone()
     if row:
-        return row['CODIGO']
+        return row
     else:
         return None
     cur.close()
@@ -34,7 +32,6 @@ def main():
     headers = login_apigee()
     response = get_all_funds(headers)
     all_funds = json.dumps(response.json(), indent=4, sort_keys=True, ensure_ascii=False)
-
     all_funds = json.loads(all_funds)
     conn = _get_hg_connection('syc')
     for fund in all_funds['results']:
@@ -44,7 +41,13 @@ def main():
         fund['precio_cp'] = response_by_id['currentShareValue']
         fund['status_precio'] = response_by_id['status']
         fund['fecha_valuacion'] = response_by_id['valueDate']
-        fund['codigo_fci'] = get_codigo_fci(conn, str(fund['id']))
+        try:
+            fund['codigo_fci'] = get_codigo_fci(conn, str(fund['id']))['CODIGO']
+            fund['name'] = get_codigo_fci(conn, str(fund['id']))['fci']
+        except TypeError:
+            fund['codigo_fci'] = None
+            fund['name'] = None
+
 
     #pretty print all_funds
     all_funds_results = json.dumps(all_funds['results'], indent=4, sort_keys=True, ensure_ascii=False)

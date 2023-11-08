@@ -2,9 +2,9 @@ name: FCISTDR/QRY_PRECIO_CUOTAPARTES
 caption: FCI STDR - Precio Cuotapartes
 dataSource: "run:FCISTDR/QRY_PRECIO_CUOTAPARTES_SCRIPT"
 columns:
-- name: codigo_fci
-  caption: Tipo
-  fieldType: java.lang.String
+#- name: codigo_fci
+#  caption: ID
+#  fieldType: java.lang.String
 - name: name
   caption: FCI
   fieldType: java.lang.String
@@ -30,7 +30,7 @@ filterGroup:
     possibleValues:
       - "CONFIRMADO"
       - "PROVISORIO"
-  defaultFilter:
-    mercado: "CONFIRMADO"
+#  defaultFilter:
+#    status: "CONFIRMADO"
 sortables: []
 exportable: false

@@ -67,6 +67,7 @@ def get_stdr_suscripciones(conn):
                                 and t."ESTADO" = ''Liquidación pendiente''
                                 -- Filtro la familia santander
                                 and cfci."ID" like ''%%SANTANDER RIO ASSET%%''
+                                and unf."CODIGO" ~''^[0-9\\.]+$''
                                           )
                     select * from suscri_fci')as f("idOrigen" bigint, codigo_fci bigint, fci character varying, fund_id bigint, 
                         cuit character varying, cuenta_id bigint, cuenta character varying, 
@@ -80,8 +81,8 @@ def get_stdr_suscripciones(conn):
                         template character varying))
             select * from hg
                 -- Joineo con la tabla de rescates stdr por idOrigen para filtrar los ya procesados
-                left join fcistdr.suscripcion_status st_rs on hg."idOrigen" = st_rs.id_origen
-            -- where (st_rs.estado is null or st_rs.estado != 'CONFIRMADO')
+                inner join fcistdr.suscripcion_status st_rs on hg."idOrigen" = st_rs.id_origen
+            where (st_rs.estado is null or st_rs.estado != 'CONFIRMED')
             order by 1 desc
         """
 
@@ -94,7 +95,7 @@ def get_stdr_suscripciones(conn):
 
 def main():
     bpm = redflagbpm.BPMService()
-    if bpm.service.text("STAGE") == "DEV":
+    if bpm.service.text("STAGE") == 'DEV':
         conn = _get_flw_connection('flowabletest')
     else:
         conn = _get_flw_connection('flowable')

@@ -18,7 +18,7 @@ last_business_days = get_b_day(fecha_alta_hasta, 1)
 def main(headers):
     bpm = redflagbpm.BPMService()
     # conecto a la DB
-    if bpm.service.text("STAGE") == "DEV":
+    if bpm.service.text("STAGE") == 'DEV':
         db = "flowabletest"
     else:
         db = "flowable"
@@ -38,8 +38,9 @@ def main(headers):
         fundId = suscripcion['fundId']
         cantidad_cp = suscripcion["netShare"]
         resp_x_id = get_subscription(headers, suscripcion['transactionId'])
+        monto = suscripcion['netAmount'] if 'netAmount' in suscripcion.keys() else None
         update_suscripcion_status(conn, id_origen, mensaje='Sincronizado con STDR ' + estado, estado=estado,
-                              certificate_id=certificate_id, fecha_alta=fecha_alta, especie=fundId, cantidad_cp=cantidad_cp, id_suscri = suscripcion['transactionId'])
+                              certificate_id=certificate_id, fecha_alta=fecha_alta, especie=fundId, monto=monto, id_suscri = suscripcion['transactionId'])
         print(f'SUSCRIPCIONES:\n{resp_x_id.json()}')
 
     ##########################################################################################
@@ -68,6 +69,7 @@ def main(headers):
         resp_x_id = get_redemption(headers, rescate['transactionId'])
         update_rescate_status(conn, id_origen, mensaje='Sincronizado con STDR ' + estado, estado=estado,
                               certificate_id=certificate_id, fecha_alta=fecha_alta, especie=fundId, cantidad_cp=cantidad_cp,
+                              monto = monto, precio = precio,
                                id_rescate=rescate['transactionId'])
         print(f'RESCATES:\n{resp_x_id.json()}')
 

@@ -33,7 +33,7 @@ def rescate_simulacion_ingreso(headers, bpm, selection):
     for reci in data:
         print(reci)
         #calculo la fecha de liquidacion teniendo usando los días hábiles y el plazo de liquidación
-        fecha_liquidacion = get_fecha_liquidacion(reci['plazo_liq'])
+        # fecha_liquidacion = get_fecha_liquidacion(reci['plazo_liq'])
         # fundId = get_id_from_codigo_cv(headers, reci['codigo_fci'])
         # print(fundId)
         #rescate por cuotapartes
@@ -53,14 +53,14 @@ def rescate_simulacion_ingreso(headers, bpm, selection):
         resp_alta = save_redemption(headers, resc)
         print(3*'ALTA\n', resp_alta.json())
         # chequeo el estado del response
-        resp_alta_ok, msj = procesar_respuesta(resp_alta, error_list, None, 'Rescate: Alta')
+        resp_alta_ok, mje = procesar_respuesta(resp_alta, error_list, None, 'Rescate: Alta')
         # con el id del response del endpoint de alta llamo al endpoint de ingresar
         if resp_alta_ok:
             id_rescate_list.append(resp_alta.json()['transactionId'])
             log_rescate(conn, id_origen=reci['idOrigen'], mensaje=resp_alta.json()['status'],
                                 id_rescate=resp_alta.json()['transactionId'], certificate_id=resp_alta.json()['certificateId'],
                                 estado=resp_alta.json()['status'], cantidad_cp = resp_alta.json()['value'],
-                                descripción=resp_alta.text)
+                                descripción=resp_alta.text, usr_message="Ingresado")
 
             # Para cada rescate  llamo al endpoint de confirmar
             resp_confirmar = confirm_redemption(headers, resp_alta.json()['transactionId'])
@@ -72,21 +72,23 @@ def rescate_simulacion_ingreso(headers, bpm, selection):
             if resp_confirmar_ok:
                 rta = f"Rescate {reci['idOrigen']} ingresado"
                 log_rescate(conn, id_origen=reci['idOrigen'], mensaje='Ingresado',
-                            id_rescate=resp_confirmar.json()['transactionId'], estado=resp_confirmar.json()['status'],
+                            id_rescate=resp_confirmar.json()['transactionId'],
                             certificate_id=resp_alta.json()['certificateId'],
-                            descripción=resp_confirmar.text)
+                            estado=resp_confirmar.json()['status'],
+                            descripción=resp_confirmar.text, usr_message=resp_confirmar.json()['status'])
                 alta_ingresar_status_list.append(rta)
             else:
                 rta = f"{reci['idOrigen']}:{msj}"
                 log_rescate(conn, id_origen=reci['idOrigen'], mensaje=msj,
                             id_rescate=resp_alta.json()['transactionId'], certificate_id=resp_alta.json()['certificateId'],
-                            estado='NO INGRESADO', descripción=resp_confirmar.text)
+                            estado='NO CONFIRMADO', descripción=resp_confirmar.text, usr_message=msj)
                 alta_ingresar_status_list.append(rta)
         else:
             # si el response de alta arroja errores impacto en la tabla fcistdr.rescates_status
-            rta = f"{reci['idOrigen']}:{msj}"
+            rta = f"{reci['idOrigen']}:{mje}"
             alta_ingresar_status_list.append(rta)
-            log_rescate(conn, id_origen=reci['idOrigen'], mensaje=msj)
+            log_rescate(conn, id_origen=reci['idOrigen'], mensaje=mje, estado=f"Alta Error: {mje}",
+                        usr_message=f"Alta Error: {mje}")
 
     html="""<div align="left">Resultado: <ul>"""
     for x in alta_ingresar_status_list:

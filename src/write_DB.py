@@ -128,6 +128,7 @@ def log_suscripcion(conn, id_origen, mensaje, **kwargs):
     cur.execute(insert_on_conflict, params)
 
     cur.close()
+    # print(insert_on_conflict)
 
 def update_suscripcion_status(conn, id_origen, mensaje, **kwargs):
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)

@@ -14,7 +14,6 @@ view: |
     rescates_nd_suscripciones as (select 
     rs.cantidad_cp::real as cantidad_cp,
     rs."descripción" as descripcion,
-    rs.distribucion,
     rs.especie,
     rs.estado,
     rs.fecha_alta,
@@ -30,7 +29,6 @@ view: |
     select 
     ss.cantidad_cp::real as cantidad_cp,
     ss."descripción" as descripcion,
-    null as distribucion,
     ss.especie,
     ss.estado,
     ss.fecha_alta,
@@ -81,6 +79,9 @@ columns:
 - name: cantidad_cp
   caption: Cantidad Cuotapartes
   fieldType: java.lang.Double
+- name: monto
+  caption: Monto
+  fieldType: java.lang.Double
 - name: fecha_alta
   caption: Fecha Alta
   fieldType: java.sql.Date
@@ -123,10 +124,10 @@ filterGroup:
     required: false
     dependents: []
     possibleValues:
+      - "PENDING"
       - "CONFIRMED"
       - "FAILED"
       - "NO INGRESADO"
-      - "PENDING"
   - name: especie
     caption: Especie
     fieldType: java.lang.String
@@ -157,8 +158,8 @@ details: []
 reports: []
 services: []
 initContextScript: #!run:FCISTDR/SYNC_STDR_STATUS
-scripts:
-- FCISTDR/QRY_STATUS_STDR_DETAIL
+#scripts:
+#- FCISTDR/QRY_STATUS_STDR_DETAIL
 selectionScript: |
     #!python3
     import redflagbpm

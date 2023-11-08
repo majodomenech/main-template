@@ -23,6 +23,9 @@ columns:
 - name: fecha
   caption: Fecha
   fieldType: java.lang.String
+- name: usr_message
+  caption: Mensaje
+  fieldType: java.lang.String
 - name: template
   caption: Template
   fieldType: java.lang.String

@@ -65,11 +65,12 @@ def get_stdr_rescates(conn, plazo_liq):
                             inner join "UNI_UNIDAD" uni on uni."UNI_UNIDAD_ID"=unf."MONEDA"
                             left join "UNI_ATRIBUTO" fid on fid."UNIDAD"=t."FCI" and fid."ATRIBUTO"=''FundId Santander''
                         where t."CLASS" = ''com.aunesa.irmo.model.acdi.ISolicitudRescateFCI''
-                            -- and t."ESTADO" = ''Liquidación pendiente''
+                            and t."ESTADO" = ''Liquidación pendiente''
                             and (unf."PLAZOLIQUDACIONRESCATE" = 0) = ('%s'= ''T+0'')
                             and "FECHA"::date = current_date
                             -- Filtro la familia santander
-                            -- and cfci."ID" like ''%%SANTANDER RIO ASSET%%''
+                            and cfci."ID" like ''%%SANTANDER RIO ASSET%%''
+                            and unf."CODIGO" ~''^[0-9\\.]+$''
                             order by 1
                         )
                     select * from resc_fci')as f("idOrigen" bigint, codigo_fci bigint, fci character varying, fund_id bigint, 
@@ -85,8 +86,8 @@ def get_stdr_rescates(conn, plazo_liq):
             select * 
             from hg 
                 -- Joineo con la tabla de rescates stdr por idOrigen para filtrar los ya procesados
-                left join fcistdr.rescate_status st_rs on hg."idOrigen" = st_rs.id_origen
-            where (st_rs.estado is null or st_rs.estado != 'CONFIRMADO')
+                inner join fcistdr.rescate_status st_rs on hg."idOrigen" = st_rs.id_origen
+            where (st_rs.estado is null or st_rs.estado != 'CONFIRMED')
             order by 1 desc
         """
 
@@ -99,7 +100,7 @@ def get_stdr_rescates(conn, plazo_liq):
 
 def main():
     bpm = redflagbpm.BPMService()
-    if bpm.service.text("STAGE") == "DEV":
+    if bpm.service.text("STAGE") == 'DEV':
         conn = _get_flw_connection('flowabletest')
     else:
         conn = _get_flw_connection('flowable')

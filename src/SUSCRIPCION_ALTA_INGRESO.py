@@ -22,7 +22,6 @@ requests_log.propagate = True
 
 def suscripcion_simulacion_ingreso(headers, bpm, selection):
     data = selection
-    print(data)
     alta_ingresar_status_list = []
     error_list = []
     id_suscri_list = []
@@ -58,9 +57,9 @@ def suscripcion_simulacion_ingreso(headers, bpm, selection):
             id_suscri_list.append(resp_alta.json()['transactionId'])
             log_suscripcion(conn, id_origen=susi['idOrigen'], mensaje=resp_alta.json()['status'],
                             id_suscri=resp_alta.json()['transactionId'], certificate_id=resp_alta.json()['certificateId'],
-                            estado=resp_alta.json()['status'],
-                            descripción=resp_alta.text)
-
+                            estado=resp_alta.json()['status'], monto = susi['cantidad'],
+                            descripción=resp_alta.text, usr_message="Ingresado")
+            # break
             # para suscris dadas de alta llamo al endpoint de ingresar
             resp_confirmar = confirm_suscription(headers, resp_alta.json()['transactionId'])
             print(3*'CONFIRMACIÓN\n', resp_confirmar.json())
@@ -74,21 +73,23 @@ def suscripcion_simulacion_ingreso(headers, bpm, selection):
                 # si el response no arroja errores impacto en la tabla FCISTDR.suscripcion_status
                 log_suscripcion(conn, id_origen=susi['idOrigen'], mensaje='Ingresado',
                                 id_suscri=resp_alta.json()['transactionId'], certificate_id=resp_confirmar.json()['certificateId'],
-                                estado=resp_alta.json()['status'],
-                                descripción=resp_confirmar.text)
+                                estado=resp_confirmar.json()['status'],
+                                descripción=resp_confirmar.text, usr_message=resp_confirmar.json()['status'])
                 alta_ingresar_status_list.append(rta)
             else:
                 rta = f"{susi['idOrigen']}:{msj}"
                 alta_ingresar_status_list.append(rta)
                 log_suscripcion(conn, id_origen=susi['idOrigen'], mensaje=msj,
-                                id_suscri=resp_alta.json()['transactionId'], certificate_id=resp_confirmar.json()['certificateId'],
-                                estado='NO INGRESADO',
-                                descripción=resp_confirmar.text)
+                                id_suscri=resp_alta.json()['transactionId'],
+                                # certificate_id=resp_confirmar.json()['certificateId'],
+                                estado='NO CONFIRMADO',
+                                descripción=resp_confirmar.text, usr_message=msj)
         else:
             # si el response de alta arroja errores impacto en la tabla FCISTDR.suscripciones_status
             rta = f"{susi['idOrigen']}:{mje}"
             alta_ingresar_status_list.append(rta)
-            log_suscripcion(conn, id_origen=susi['idOrigen'], mensaje=mje)
+            log_suscripcion(conn, id_origen=susi['idOrigen'], mensaje=mje, estado=f"Alta Error: {mje}",
+                            usr_message=f"Alta Error: {mje}")
 
     html="""<div align="left">Resultado: <ul>"""
     for x in alta_ingresar_status_list:

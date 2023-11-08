@@ -8,30 +8,20 @@ bpm = redflagbpm.BPMService()
 str_reply = ''
 try:
     tipo = bpm.context['tipo']
-    certif_id = bpm.context['certif_id'] if bpm.context['certif_id'] is not None else ''
+    certificate_id = bpm.context['certificate_id'] if bpm.context['certificate_id'] is not None else ''
     especie = bpm.context['especie']
     estado = bpm.context['estado']
     cantidad_cp = bpm.context['cantidad_cp']
     fecha_alta = bpm.context['fecha_alta']
     id_origen = bpm.context['id_origen']
     str_reply+= f"""Tipo: {tipo}
-                    Certificate ID: {certif_id}
+                    Certificate ID: {certificate_id}
                     Especie: {especie}
                     Estado: {estado}
                     Cantidad Cuotapartes: {cantidad_cp}
                     Fecha alta: {fecha_alta}
                     Id HG: {id_origen}\n\n"""
 
-    try:
-        distribucion = json.loads(bpm.context['distribucion'])
-        print(distribucion)
-        for i in distribucion:
-            for k, v in i.items():
-                str_reply += k + ': '
-                str_reply += str(v) + '\t'
-            str_reply += '\n'
-    except:
-        distribucion = None
 
     try:
         descripcion = json.loads(bpm.context['descripcion'])
@@ -42,17 +32,6 @@ try:
             str_reply += '\n'
     except:
         descripcion = None
-
-
-    def crearDistri(distribucion):
-        if distribucion != None:
-            ret = "<table class=\"tg\">"
-            ret += "<tr><th class=\"tg-0lax center bold gray\">COMITENTE</th><th class=\"tg-0lax center bold gray\">CANTIDAD</th></tr>"
-            for distr in distribucion:
-                ret += f"<tr><td class=\"tg-0lax center\">{distr['comitente']}</td><td class=\"tg-0lax center\">{distr['cantidad']}</td></tr>"
-            ret +="</table>"
-
-            return ret
 
     def crearDesc(descripcion):
         if descripcion != None:
@@ -86,7 +65,7 @@ try:
             </tr>
             <tr>
                 <td class="tg-0lax bold gray leftp">Certificate ID</td>
-                <td class="tg-0lax center"><span style="font-weight:400;font-style:normal">{certif_id}</span></td>
+                <td class="tg-0lax center"><span style="font-weight:400;font-style:normal">{certificate_id}</span></td>
             </tr>
             <tr>
                 <td class="tg-0lax bold gray leftp">ESPECIE</td>
@@ -110,14 +89,6 @@ try:
             </tr>
             </tbody>
             </table>
-            <br>
-            <div>
-            {crearDistri(distribucion)}
-            </div>
-            <br>
-             <div>
-            {crearDesc(descripcion)}
-            </div>
 </div>
     """
 
