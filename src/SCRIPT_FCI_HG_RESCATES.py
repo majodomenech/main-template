@@ -5,7 +5,7 @@ import psycopg2
 import psycopg2.extras
 from DB_connect import _get_flw_connection
 import datetime
-
+from decimal import Decimal
 def get_stdr_rescates(conn, plazo_liq):
     sql_connect = "SELECT dblink_connect_u('hg_fci', 'dbname=syc user=consyc password=MTU1NDNjN2ZlZGU4ZDdhNDBhZTM2MjA2')"
     sql_disconnect = "SELECT dblink_disconnect('hg_fci')"
@@ -108,13 +108,15 @@ def main():
     # if len(qry) == 0:
 
     print(qry)
-    class DateEncoder(json.JSONEncoder):
+    class Encoder(json.JSONEncoder):
         def default(self, obj):
             if isinstance(obj, (datetime.date, datetime.datetime)):
                 return obj.isoformat()
+            if isinstance(obj, Decimal):
+                return float(obj)
             return super().default(obj)
 
-    qry = json.dumps(qry, cls=DateEncoder)
+    qry = json.dumps(qry, cls=Encoder)
     qry = json.loads(qry)
     with open('/tmp/qry_rescates.json', 'w') as f:
         json.dump(qry, f)

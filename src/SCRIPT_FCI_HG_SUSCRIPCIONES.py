@@ -5,6 +5,7 @@ import psycopg2
 import psycopg2.extras
 import datetime
 from DB_connect import _get_flw_connection
+from decimal import Decimal
 
 def get_stdr_suscripciones(conn):
     sql_connect = "SELECT dblink_connect_u('hg_fci', 'dbname=syc user=consyc password=MTU1NDNjN2ZlZGU4ZDdhNDBhZTM2MjA2')"
@@ -63,8 +64,8 @@ def get_stdr_suscripciones(conn):
                                 inner join "UNI_UNIDAD" uni on uni."UNI_UNIDAD_ID"=t."UNIDAD"
 							    left join "UNI_ATRIBUTO" fid on fid."UNIDAD"=t."FCI" and fid."ATRIBUTO"=''FundId Santander''
                             where t."CLASS" = ''com.aunesa.irmo.model.acdi.ISolicitudSuscripcionFCI''
-                                and t."FECHA"::date = current_date
-                                and t."ESTADO" = ''Liquidación pendiente''
+                                -- and t."FECHA"::date = current_date
+                                -- and t."ESTADO" = ''Liquidación pendiente''
                                 -- Filtro la familia santander
                                 and cfci."ID" like ''%%SANTANDER RIO ASSET%%''
                                 and unf."CODIGO" ~''^[0-9\\.]+$''
@@ -81,8 +82,8 @@ def get_stdr_suscripciones(conn):
                         template character varying))
             select * from hg
                 -- Joineo con la tabla de rescates stdr por idOrigen para filtrar los ya procesados
-                inner join fcistdr.suscripcion_status st_rs on hg."idOrigen" = st_rs.id_origen
-            where (st_rs.estado is null or st_rs.estado != 'CONFIRMED')
+                right join fcistdr.suscripcion_status st_rs on hg."idOrigen" = st_rs.id_origen
+            -- where (st_rs.estado is null or st_rs.estado != 'CONFIRMED')
             order by 1 desc
         """
 
@@ -101,13 +102,15 @@ def main():
         conn = _get_flw_connection('flowable')
     qry = get_stdr_suscripciones(conn)
     print(qry)
-    class DateEncoder(json.JSONEncoder):
+    class Encoder(json.JSONEncoder):
         def default(self, obj):
             if isinstance(obj, (datetime.date, datetime.datetime)):
                 return obj.isoformat()
+            if isinstance(obj, Decimal):
+                return float(obj)
             return super().default(obj)
 
-    qry = json.dumps(qry, cls=DateEncoder)
+    qry = json.dumps(qry, cls=Encoder)
     qry = json.loads(qry)
 
 

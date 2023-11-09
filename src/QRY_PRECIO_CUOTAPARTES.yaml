@@ -11,7 +11,7 @@ columns:
 - name: precio_cp
   caption: Precio cuotaparte
   fieldType: java.math.BigDecimal
-  format: "0.00"
+  format: "0.000000"
 - name: status
   caption: Status
   fieldType: java.lang.String
