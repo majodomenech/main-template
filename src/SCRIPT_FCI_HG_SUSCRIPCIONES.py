@@ -64,8 +64,8 @@ def get_stdr_suscripciones(conn):
                                 inner join "UNI_UNIDAD" uni on uni."UNI_UNIDAD_ID"=t."UNIDAD"
 							    left join "UNI_ATRIBUTO" fid on fid."UNIDAD"=t."FCI" and fid."ATRIBUTO"=''FundId Santander''
                             where t."CLASS" = ''com.aunesa.irmo.model.acdi.ISolicitudSuscripcionFCI''
-                                -- and t."FECHA"::date = current_date
-                                -- and t."ESTADO" = ''Liquidación pendiente''
+                                and t."FECHA"::date = current_date
+                                and t."ESTADO" = ''Liquidación pendiente''
                                 -- Filtro la familia santander
                                 and cfci."ID" like ''%%SANTANDER RIO ASSET%%''
                                 and unf."CODIGO" ~''^[0-9\\.]+$''
@@ -82,8 +82,8 @@ def get_stdr_suscripciones(conn):
                         template character varying))
             select * from hg
                 -- Joineo con la tabla de rescates stdr por idOrigen para filtrar los ya procesados
-                right join fcistdr.suscripcion_status st_rs on hg."idOrigen" = st_rs.id_origen
-            -- where (st_rs.estado is null or st_rs.estado != 'CONFIRMED')
+                inner join fcistdr.suscripcion_status st_rs on hg."idOrigen" = st_rs.id_origen
+            where (st_rs.estado is null or st_rs.estado != 'CONFIRMED')
             order by 1 desc
         """
 
@@ -110,12 +110,8 @@ def main():
                 return float(obj)
             return super().default(obj)
 
-    qry = json.dumps(qry, cls=Encoder)
-    qry = json.loads(qry)
-
-
     with open('/tmp/qry_suscris.json', 'w') as f:
-        json.dump(qry, f)
+        json.dump(qry, f, cls=Encoder)
 
     _responseHeaders = bpm.context.json._responseHeaders
     _responseHeaders['status'] = '200'

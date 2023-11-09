@@ -32,7 +32,7 @@ def main(headers):
         print(suscripcion)
         # #string estado to upper case
         estado = suscripcion['status'].upper()
-        certificate_id = suscripcion['certificateId'] if 'certificateId' in suscripcion.keys() else None
+        certificate_id = suscripcion['certifica teId'] if 'certificateId' in suscripcion.keys() else None
         id_origen = suscripcion['externalReference']
         fecha_alta = suscripcion['processDate']
         fundId = suscripcion['fundId']

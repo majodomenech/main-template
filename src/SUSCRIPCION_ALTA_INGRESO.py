@@ -88,7 +88,7 @@ def suscripcion_simulacion_ingreso(headers, bpm, selection):
             # si el response de alta arroja errores impacto en la tabla FCISTDR.suscripciones_status
             rta = f"{susi['idOrigen']}:{mje}"
             alta_ingresar_status_list.append(rta)
-            log_suscripcion(conn, id_origen=susi['idOrigen'], mensaje=mje, estado=f"Alta Error: {mje}",
+            log_suscripcion(conn, id_origen=susi['idOrigen'], mensaje=mje, estado=f"ALTA ERROR",
                             usr_message=f"Alta Error: {mje}")
 
     html="""<div align="left">Resultado: <ul>"""

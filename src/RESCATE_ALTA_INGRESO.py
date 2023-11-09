@@ -87,7 +87,7 @@ def rescate_simulacion_ingreso(headers, bpm, selection):
             # si el response de alta arroja errores impacto en la tabla fcistdr.rescates_status
             rta = f"{reci['idOrigen']}:{mje}"
             alta_ingresar_status_list.append(rta)
-            log_rescate(conn, id_origen=reci['idOrigen'], mensaje=mje, estado=f"Alta Error: {mje}",
+            log_rescate(conn, id_origen=reci['idOrigen'], mensaje=mje, estado=f"ALTA ERROR",
                         usr_message=f"Alta Error: {mje}")
 
     html="""<div align="left">Resultado: <ul>"""

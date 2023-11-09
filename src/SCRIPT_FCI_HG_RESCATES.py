@@ -67,9 +67,9 @@ def get_stdr_rescates(conn, plazo_liq):
                         where t."CLASS" = ''com.aunesa.irmo.model.acdi.ISolicitudRescateFCI''
                             and t."ESTADO" = ''Liquidación pendiente''
                             and (unf."PLAZOLIQUDACIONRESCATE" = 0) = ('%s'= ''T+0'')
-                            -- and "FECHA"::date = current_date
+                            and "FECHA"::date = current_date
                             -- Filtro la familia santander
-                            -- and cfci."ID" like ''%%SANTANDER RIO ASSET%%''
+                            and cfci."ID" like ''%%SANTANDER RIO ASSET%%''
                             and unf."CODIGO" ~''^[0-9\\.]+$''
                             order by 1
                         )
@@ -86,8 +86,8 @@ def get_stdr_rescates(conn, plazo_liq):
             select * 
             from hg 
                 -- Joineo con la tabla de rescates stdr por idOrigen para filtrar los ya procesados
-                right join fcistdr.rescate_status st_rs on hg."idOrigen" = st_rs.id_origen
-            -- where (st_rs.estado is null or st_rs.estado != 'CONFIRMED')
+                inner join fcistdr.rescate_status st_rs on hg."idOrigen" = st_rs.id_origen
+            where (st_rs.estado is null or st_rs.estado != 'CONFIRMED')
             order by 1 desc
         """
 
@@ -105,7 +105,7 @@ def main():
     else:
         conn = _get_flw_connection('flowable')
     qry = get_stdr_rescates(conn, bpm.context['plazo_liq'])
-    # if len(qry) == 0:
+
 
     print(qry)
     class Encoder(json.JSONEncoder):
@@ -116,10 +116,8 @@ def main():
                 return float(obj)
             return super().default(obj)
 
-    qry = json.dumps(qry, cls=Encoder)
-    qry = json.loads(qry)
     with open('/tmp/qry_rescates.json', 'w') as f:
-        json.dump(qry, f)
+        json.dump(qry, f, cls=Encoder)
 
     _responseHeaders = bpm.context.json._responseHeaders
     _responseHeaders['status'] = '200'
