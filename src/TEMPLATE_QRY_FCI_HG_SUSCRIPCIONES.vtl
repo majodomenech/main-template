@@ -1,0 +1,31 @@
+<style>
+    .cell{border-radius: var(--lumo-border-radius); background-color: var(--lumo-contrast-10pct);padding:0.2em;}
+    .cell2{border-radius: var(--lumo-border-radius); background-color: var(--lumo-primary-10pct);padding:0.2em;}
+    .comment{border-radius: var(--lumo-border-radius); background-color: var(--lumo-contrast-10pct);padding:0.2em;margin:0.2em 0 0 0;}
+    .ok{border-radius: var(--lumo-border-radius); background-color: var(--lumo-success-color-50pct);padding:0.2em;margin:0.2em 0 0 0;}
+    .datos{display: grid;  grid-template-columns: repeat(2, minmax(15em, 1fr));  grid-gap: 0.2em;}
+    .datos2{display: grid;  grid-template-columns: repeat(2, minmax(30em, 1fr));  grid-gap: 0.2em;}
+    .datos_detalle{display: grid;  grid-template-columns: repeat(2, minmax(15em, 1fr));  grid-gap: 0.2em;margin-bottom: 0.5em;}
+    .error{background: var(--lumo-error-color); color: var(--lumo-error-contrast-color);}
+    .attn{background:#f4cccc;}
+    .titulo{background:#adbce6;color:black;}
+    .subtitulo{background-color: var(--lumo-contrast-30pct); font-weight:bold;margin:0.5em 0 0 0;}
+    .wrapper{display: grid;  grid-template-columns: repeat(2, minmax(30em, 1fr));  grid-gap: 0.2em;margin-bottom: 0.5em;}
+    .col1{grid-column: 1 / 2;}
+    .col2 {grid-column: 2 / 2;}
+    </style>
+    <div style="margin-bottom:0.5em">
+        <div class="cell subtitulo">
+            <div class="cell"><b>ID HG: </b> $!{idOrigen}</div>
+        </div>
+        <div class="datos2">
+            <div class="cell"><b>FCI: </b> $!{fci}</div>
+            <div class="cell"><b>Solicitud: </b> $!{solicitud}</div>
+            <div class="cell"><b>Especie/Moneda: </b> $!{moneda}</div>
+            <div class="cell"><b>Monto: </b> ${String.format($Locale_ES,"%.0f",$cantidad)}</div>
+            <div class="cell"><b>Fecha: </b> $!{fecha}</div>
+            <div class="cell"><b>Estado: </b> $!{estado}</div>
+            <div class="cell"><b>Mensaje: </b> $!{usr_message}</div>
+        </div>
+        </div>
+</div>

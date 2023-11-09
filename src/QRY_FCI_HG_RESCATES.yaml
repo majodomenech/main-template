@@ -1,0 +1,70 @@
+name: FCISTDR/QRY_FCI_HG_RESCATES
+caption: FCI STDR - Solicitud de Rescates
+dataSource: "run:FCISTDR/SCRIPT_FCI_HG_RESCATES"
+postProcessors:
+- FCISTDR/TEMPLATE_QRY_FCI_HG_RESCATES
+columns:
+- name: plazo_liq
+  caption: Plazo de liquidación
+  fieldType: java.lang.Integer
+- name: cuit
+  caption: CUIT
+  fieldType: java.lang.String
+- name: especie_moneda
+  caption: Especie/Moneda
+  fieldType: java.lang.String
+- name: cantidad_cuotapartes
+  caption: Cuotapartes
+  fieldType: java.lang.Double
+- name: fci
+  caption: FCI
+  fieldType: java.lang.String
+- name: idOrigen
+  caption: idOrigen
+  fieldType: java.lang.Integer
+- name: solicitud
+  caption: Solicitud
+  fieldType: java.lang.String
+- name: fecha
+  caption: Fecha
+  fieldType: java.lang.String
+- name: usr_message
+  caption: Mensaje
+  fieldType: java.lang.String
+- name: estado
+  caption: Estado
+  fieldType: java.lang.String
+- name: template
+  caption: Template
+  fieldType: java.lang.String
+template: |
+  <div inner-h-t-m-l="[[item.template]]"></div>
+sortables: []
+targetUsers: []
+targetGroups:
+- ADMIN
+- OPB
+filterGroup:
+  caption: Filtros
+  filters:
+  - name: plazo_liq
+    caption: Plazo de liquidación
+    fieldType: java.lang.Boolean
+    required: true
+    dependents: []
+    possibleValues:
+      - "T+0"
+      - "T++"
+  subgroups: []
+dataSourceOptions: {}
+reports: []
+services: []
+scripts:
+- FCISTDR/RESCATE_ALTA_INGRESO
+selectionScript: |
+  #!python3
+  import redflagbpm
+  bpm = redflagbpm.BPMService()
+  bpm.reply("Cantidad seleccionada: " + str(len(bpm.context["selection"])))
+context: {}
+exportable: true
