@@ -6,4 +6,4 @@ if [[ ! $BPM_HOME ]]; then
   BPM_HOME=ubuntu@bpmtest.sycinversiones.com:/home/ubuntu/bpmtest/files/BpmApp
 fi
 
-BMP_PROJECT_DIR=repos/fci-stdr
+BMP_PROJECT_DIR=repos/DETING
