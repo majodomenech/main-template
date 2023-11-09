@@ -67,9 +67,9 @@ def get_stdr_rescates(conn, plazo_liq):
                         where t."CLASS" = ''com.aunesa.irmo.model.acdi.ISolicitudRescateFCI''
                             and t."ESTADO" = ''Liquidación pendiente''
                             and (unf."PLAZOLIQUDACIONRESCATE" = 0) = ('%s'= ''T+0'')
-                            and "FECHA"::date = current_date
+                            -- and "FECHA"::date = current_date
                             -- Filtro la familia santander
-                            and cfci."ID" like ''%%SANTANDER RIO ASSET%%''
+                            -- and cfci."ID" like ''%%SANTANDER RIO ASSET%%''
                             and unf."CODIGO" ~''^[0-9\\.]+$''
                             order by 1
                         )
@@ -86,8 +86,8 @@ def get_stdr_rescates(conn, plazo_liq):
             select * 
             from hg 
                 -- Joineo con la tabla de rescates stdr por idOrigen para filtrar los ya procesados
-                inner join fcistdr.rescate_status st_rs on hg."idOrigen" = st_rs.id_origen
-            where (st_rs.estado is null or st_rs.estado != 'CONFIRMED')
+                right join fcistdr.rescate_status st_rs on hg."idOrigen" = st_rs.id_origen
+            -- where (st_rs.estado is null or st_rs.estado != 'CONFIRMED')
             order by 1 desc
         """
 
