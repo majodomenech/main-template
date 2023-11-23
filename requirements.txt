@@ -4,5 +4,4 @@ pandas
 XlsxWriter
 openpyxl
 psycopg2-binary
-requests
 
