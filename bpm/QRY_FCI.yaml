@@ -1,18 +1,19 @@
 name: QRY_FCI
 caption: representacion_FCI
 view: |
-  select uu."REPRESENTACION" as denominacion, uu."UNI_UNIDAD_ID" as id
+  select uu."UNI_UNIDAD_ID"::character varying as id, uu."REPRESENTACION" as denominacion
   from "UNI_UNIDAD" uu
   inner join "UNI_TIPO_TITULO" utt on uu."TIPOTITULO" = utt."UNI_TIPO_TITULO_ID"
   where utt."NOMBRE" like 'Fondos de Inversión'
 columns:
 - name: id
-  caption: ID
-  type: integer
-- name: denominacion
+  caption: Id
+  fieldType: java.lang.String
+- name: caption
   caption: Denominación
-  type: string
-keys: id
+  fieldType: java.lang.String
+keys:
+- id
 targetUsers:
 - INTERNAL
 dataSource: SYC

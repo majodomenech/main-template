@@ -36,11 +36,11 @@ properties:
     type: string
     hints:
       valueProvider: "INSTFCI/QRY_FCI"
-  especie_moneda:
-    title: Especie/Moneda
-    type: string
-    hints:
-      valueProvider: "ID_ESPECIE??"
+#  especie_moneda:
+#    title: Especie/Moneda
+#    type: string
+#    hints:
+#      valueProvider: "ID_ESPECIE??"
   cantidad:
     title: Cantidad
     type: number
