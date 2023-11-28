@@ -1,0 +1,19 @@
+name: FCI
+caption: ID + Denominación FCI
+view: |
+  select uu."REPRESENTACION" as denominacion, uu."UNI_UNIDAD_ID" as id
+  from "UNI_UNIDAD" uu
+  inner join "UNI_TIPO_TITULO" utt on uu."TIPOTITULO" = utt."UNI_TIPO_TITULO_ID"
+  where utt."NOMBRE" like 'Fondos de Inversión'
+columns:
+- name: id
+  caption: ID
+  type: integer
+- name: denominacion
+  caption: Denominación
+  type: string
+keys: id
+targetUsers:
+- INTERNAL
+dataSource: SYC
+exportable: false

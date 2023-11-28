@@ -1,0 +1,50 @@
+type:  object
+title: Solicitar Suscripción
+hints:
+  outcomes:
+    - guardar: "Guardar"
+    - finalizar: "Finalizar"
+  outcomeVariable: tipoResultado
+  fieldOrder:
+    - fecha
+    - cuenta
+    - fondo
+    - especie_moneda
+    - cantidad_cp
+    - dinero
+properties:
+  fecha:
+    title: Fecha
+    type: integer
+    hints:
+      subtype: timestamp
+      readOnly: true
+      rowStart: true
+      rowEnd: true
+    default: now
+  cuenta:
+    title: Cuenta
+    type: string
+    hints:
+      colspan: 2
+      subtype: comitente
+      rowStart: true
+      rowEnd: true
+      valueProvider: "ID_CLIENTE_COM_FULL"
+  fondo:
+    title: Fondo
+    type: string
+    hints:
+      valueProvider: "ID_FONDO??"
+  especie_moneda:
+    title: Especie/Moneda
+    type: string
+    hints:
+      valueProvider: "ID_ESPECIE??"
+  cantidad_cp:
+    title: Cuotapartes
+    type: number
+  dinero:
+    title: Integra Comitente
+    type: boolean
+    default: false
