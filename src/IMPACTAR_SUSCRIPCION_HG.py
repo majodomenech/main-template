@@ -2,4 +2,5 @@
 import redflagbpm
 
 bpm = redflagbpm.BPMService()
-idProcessInstance = bpm.execution.getProcessInstanceId()
+cuenta = bpm.context['cuenta']
+

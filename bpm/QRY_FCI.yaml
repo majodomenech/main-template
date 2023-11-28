@@ -1,5 +1,5 @@
-name: FCI
-caption: ID + Denominación FCI
+name: QRY_FCI
+caption: representacion_FCI
 view: |
   select uu."REPRESENTACION" as denominacion, uu."UNI_UNIDAD_ID" as id
   from "UNI_UNIDAD" uu

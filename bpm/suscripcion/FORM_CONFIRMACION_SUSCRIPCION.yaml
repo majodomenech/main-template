@@ -1,26 +1,27 @@
 type:  object
-title: Solicitar Suscripción
+title: Confirmar Suscripción
 hints:
   outcomes:
-    - guardar: "Guardar"
-    - finalizar: "Finalizar"
+    - corregir: "Corregir"
+    - confirmar: "Confirmar"
   outcomeVariable: tipoResultado
   fieldOrder:
     - fecha
     - cuenta
     - fondo
     - especie_moneda
-    - cantidad_cp
-    - dinero
+    - cantidad
+    - integra_comitente
+  callToAction: Guardar
 properties:
   fecha:
     title: Fecha
     type: integer
     hints:
       subtype: timestamp
-      readOnly: true
       rowStart: true
       rowEnd: true
+      readOnly: true
     default: now
   cuenta:
     title: Cuenta
@@ -31,20 +32,27 @@ properties:
       rowStart: true
       rowEnd: true
       valueProvider: "ID_CLIENTE_COM_FULL"
+      readOnly: true
   fondo:
     title: Fondo
     type: string
     hints:
       valueProvider: "INSTFCI/QRY_FCI"
+      readOnly: true
   especie_moneda:
     title: Especie/Moneda
     type: string
     hints:
       valueProvider: "ID_ESPECIE??"
-  cantidad_cp:
-    title: Cuotapartes
+      readOnly: true
+  cantidad:
+    title: Cantidad
     type: number
-  dinero:
+    hints:
+      readOnly: true
+  integra_comitente:
     title: Integra Comitente
     type: boolean
     default: false
+    hints:
+      readOnly: true
