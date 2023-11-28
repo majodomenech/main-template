@@ -9,10 +9,14 @@ hints:
     - fecha
     - cuenta
     - fondo
-    - especie_moneda
     - cantidad
     - integra_comitente
-  callToAction: Guardar
+required:
+- fecha
+- cuenta
+- fondo
+- cantidad
+- integra_comitente
 properties:
   fecha:
     title: Fecha

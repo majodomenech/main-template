@@ -39,12 +39,12 @@ properties:
     hints:
       valueProvider: "INSTFCI/QRY_FCI"
       readOnly: true
-  especie_moneda:
-    title: Especie/Moneda
-    type: string
-    hints:
-      valueProvider: "ID_ESPECIE??"
-      readOnly: true
+#  especie_moneda:
+#    title: Especie/Moneda
+#    type: string
+#    hints:
+#      valueProvider: "ID_ESPECIE??"
+#      readOnly: true
   cantidad:
     title: Cantidad
     type: number
