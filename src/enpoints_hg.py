@@ -35,7 +35,7 @@ def login(bpm, url_base):
     return response.text  # Return the response body as a string
 
 
-def suscripcion_fci(bpm, url_base):
+def suscripcion_fci(bpm, url_base, data):
     url = f'{url_base}fondos/suscripcionFCI'
     TOKEN = bpm.service.text('TOKEN_WS')
     headers = {
@@ -44,27 +44,27 @@ def suscripcion_fci(bpm, url_base):
     }
 
 
-    data = {
-        "contexto": {
-            "modalidad": "BILATERAL",
-            "origen": "S&C",
-            "acdi": "57"
-        },
-        "solicitud": {
-            "fechaSolicitud": "03/01/2023 15:52:50",
-            "cuentaComitente": "5006687",
-            "fondo": "14961",
-            "especieMoneda": "ARS",
-            "cantidad": 100000,
-            "integraComitente": False,
-            "aceptaReglamento": True
-        }
-    }
+    # data = {
+    #     "contexto": {
+    #         "modalidad": "BILATERAL",
+    #         "origen": "S&C",
+    #         "acdi": "57"
+    #     },
+    #     "solicitud": {
+    #         "fechaSolicitud": "03/01/2023 15:52:50",
+    #         "cuentaComitente": "5006687",
+    #         "fondo": "14961",
+    #         "especieMoneda": "ARS",
+    #         "cantidad": 100000,
+    #         "integraComitente": False,
+    #         "aceptaReglamento": True
+    #     }
+    # }
 
     response = requests.post(url, headers=headers, data=json.dumps(data))
     return response.text
 
-def rescate_fci(bpm, url_base):
+def rescate_fci(bpm, url_base, data):
     url = f'{url_base}fondos/rescateFCI'
     TOKEN = bpm.service.text('TOKEN_WS')
     headers = {
@@ -73,32 +73,32 @@ def rescate_fci(bpm, url_base):
     }
 
 
-    data = {
-        "contexto": {
-            "modalidad": "BILATERAL",
-            "origen": "S&C",
-            "acdi": "57"
-        },
-        "solicitud": {
-            "fechaSolicitud": "03/01/2023 15:52:50",
-            "cuentaComitente": "5006687",
-            "fondo": "14961",
-            "especieMoneda": "ARS",
-            "cantidad": 100000,
-            "rescateDinero": True,
-            "aceptaReglamento": True
-        }
-    }
+    # data = {
+    #     "contexto": {
+    #         "modalidad": "BILATERAL",
+    #         "origen": "S&C",
+    #         "acdi": "57"
+    #     },
+    #     "solicitud": {
+    #         "fechaSolicitud": "03/01/2023 15:52:50",
+    #         "cuentaComitente": "5006687",
+    #         "fondo": "14961",
+    #         "especieMoneda": "ARS",
+    #         "cantidad": 100000,
+    #         "rescateDinero": True,
+    #         "aceptaReglamento": True
+    #     }
+    # }
 
     response = requests.post(url, headers=headers, data=json.dumps(data))
     return response.text
 
-def main():
-    bpm = redflagbpm.BPMService()
-    url_base = f'https://demo-4.aunesa.dev:10064/Irmo/api/'
-    response_body = login(bpm, url_base)
-    response_body_s = suscripcion_fci(bpm, url_base)
-
-
-if __name__ == "__main__":
-    main()
+# def main():
+#     bpm = redflagbpm.BPMService()
+#     url_base = f'https://demo-4.aunesa.dev:10064/Irmo/api/'
+#     response_body = login(bpm, url_base)
+#     response = suscripcion_fci(bpm, url_base, data)
+#
+#
+# if __name__ == "__main__":
+#     main()
