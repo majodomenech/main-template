@@ -32,12 +32,14 @@ def login(bpm, url_base):
         "password": TOKEN
     }
     response = requests.post(url, headers=headers, data=json.dumps(data))
-    return response.text  # Return the response body as a string
+    esp = response.json()
+    token = resp['token']
+    return token
 
 
-def suscripcion_fci(bpm, url_base, data):
+def suscripcion_fci(token, url_base, data):
     url = f'{url_base}fondos/suscripcionFCI'
-    TOKEN = bpm.service.text('TOKEN_WS')
+    TOKEN = token
     headers = {
         'Authorization': 'Bearer '+TOKEN,  # Replace 'la_clavecita' with your actual token
         'Content-Type': 'application/json'

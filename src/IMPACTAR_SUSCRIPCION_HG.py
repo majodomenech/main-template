@@ -7,7 +7,7 @@ cuenta = bpm.context['cuenta']
 
 bpm = redflagbpm.BPMService()
 url_base = f'https://demo-4.aunesa.dev:10064/Irmo/api/'
-response_body = login(bpm, url_base)
+token = login(bpm, url_base)
 
 cuenta = bpm.context['cuenta']
 fecha = bpm.context['fecha']
@@ -33,5 +33,5 @@ data = {
 }
 
 
-response = suscripcion_fci(bpm, url_base, data)
+response = suscripcion_fci(token, url_base, data)
 
