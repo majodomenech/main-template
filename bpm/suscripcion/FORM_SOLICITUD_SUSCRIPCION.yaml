@@ -9,16 +9,18 @@ hints:
     - fecha
     - cuenta
     - fondo
+    - moneda
     - cantidad
     - integra_comitente
+  feedback:
+    "__MonedaDefault": "run:INSTFCI/COMPLETAR_MONEDA"
 required:
 - fecha
 - cuenta
 - fondo
+- moneda
 - cantidad
 - integra_comitente
-feedback:
-  "__MonedaDefault": "run:INSTFCI/COMPLETAR_MONEDA"
 properties:
   fecha:
     title: Fecha
@@ -42,12 +44,11 @@ properties:
     type: string
     hints:
       valueProvider: "INSTFCI/QRY_FCI"
+      dependents:
+        - "@__MonedaDefault"
   moneda:
     title: Moneda
     type: string
-    hints:
-      dependents:
-        - "@__MonedaDefault"
     enum:
       - ARS
       - USD
