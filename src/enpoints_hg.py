@@ -46,25 +46,6 @@ def suscripcion_fci(token, url_base, data):
         'Authorization': 'Bearer '+TOKEN,
         'Content-Type': 'application/json'
     }
-
-
-    # data = {
-    #     "contexto": {
-    #         "modalidad": "BILATERAL",
-    #         "origen": "S&C",
-    #         "acdi": "57"
-    #     },
-    #     "solicitud": {
-    #         "fechaSolicitud": "03/01/2023 15:52:50",
-    #         "cuentaComitente": "5006687",
-    #         "fondo": "14961",
-    #         "especieMoneda": "ARS",
-    #         "cantidad": 100000,
-    #         "integraComitente": False,
-    #         "aceptaReglamento": True
-    #     }
-    # }
-
     response = requests.post(url, headers=headers, data=json.dumps(data))
     return response.text
 
@@ -72,7 +53,7 @@ def rescate_fci(bpm, url_base, data):
     url = f'{url_base}fondos/rescateFCI'
     TOKEN = bpm.service.text('TOKEN_WS')
     headers = {
-        'Authorization': 'Bearer '+TOKEN,  # Replace 'la_clavecita' with your actual token
+        'Authorization': 'Bearer '+TOKEN,
         'Content-Type': 'application/json'
     }
 

@@ -32,7 +32,7 @@ data = {
       "contexto": {
             "modalidad": "BILATERAL",
             "origen": "S&C",
-            "acdi": "57"
+            "acdi": "000"
       },
       "solicitud": {
             "fechaSolicitud": "04/12/2023 15:52:50",
