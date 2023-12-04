@@ -1,7 +1,7 @@
 #!/bin/bash
 
-export cuenta='5006687'
-export fecha="03/01/2023 15:52:50"
-export fondo="14961"
+export cuenta='02597'
+export fecha="04/12/2023 15:52:50"
+export fondo="14325"
 export cantidad=10000
 export integraComitente=false

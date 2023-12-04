@@ -35,12 +35,12 @@ data = {
             "acdi": "57"
       },
       "solicitud": {
-            "fechaSolicitud": fecha,
-            "cuentaComitente": cuenta,
-            "fondo": fondo,
+            "fechaSolicitud": "04/12/2023 15:52:50",
+            "cuentaComitente": "02597",
+            "fondo": "14325",
             "especieMoneda": "ARS",
-            "cantidad": cantidad,
-            "integraComitente": integraComitente,
+            "cantidad": 100000,
+            "integraComitente": False,
             "aceptaReglamento": True
       }
 }

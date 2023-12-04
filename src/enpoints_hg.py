@@ -24,8 +24,8 @@ def call_json_endpoint(curl, auth_headers):
 def login(bpm, url_base):
     url = f'{url_base}login'
     headers = {'Content-Type': 'application/json'}
-    USR_NAME = "syc"
-    PWD = "qqq"
+    USR_NAME = "USER_FCI"
+    PWD = "USER_FCI"
 
     data = {
         "clientId": "SYC",

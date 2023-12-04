@@ -9,8 +9,8 @@ data_sus = {
       },
       "solicitud": {
             "fechaSolicitud": "03/01/2023 15:52:50",
-            "cuentaComitente": "5006687",
-            "fondo": "14961",
+            "cuentaComitente": "02597",
+            "fondo": "14325",
             "especieMoneda": "ARS",
             "cantidad": 100000,
             "integraComitente": False,
