@@ -24,16 +24,18 @@ def call_json_endpoint(curl, auth_headers):
 def login(bpm, url_base):
     url = f'{url_base}login'
     headers = {'Content-Type': 'application/json'}
-    TOKEN = bpm.service.text('TOKEN_WS')
-    USR_NAME = "wstesoreria"
+    USR_NAME = "syc"
+    PWD = "qqq"
+
     data = {
         "clientId": "SYC",
         "username": USR_NAME,
-        "password": TOKEN
+        "password": PWD
     }
     response = requests.post(url, headers=headers, data=json.dumps(data))
-    esp = response.json()
+    resp = response.json()
     token = resp['token']
+    print(token)
     return token
 
 
@@ -41,7 +43,7 @@ def suscripcion_fci(token, url_base, data):
     url = f'{url_base}fondos/suscripcionFCI'
     TOKEN = token
     headers = {
-        'Authorization': 'Bearer '+TOKEN,  # Replace 'la_clavecita' with your actual token
+        'Authorization': 'Bearer '+TOKEN,
         'Content-Type': 'application/json'
     }
 
@@ -97,7 +99,7 @@ def rescate_fci(bpm, url_base, data):
 
 # def main():
 #     bpm = redflagbpm.BPMService()
-#     url_base = f'https://demo-4.aunesa.dev:10064/Irmo/api/'
+#     url_base = f'https://demo.aunesa.dev:10017/Irmo/api/'
 #     response_body = login(bpm, url_base)
 #     response = suscripcion_fci(bpm, url_base, data)
 #
