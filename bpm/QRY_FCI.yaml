@@ -1,7 +1,8 @@
 name: QRY_FCI
 caption: representacion_FCI
 view: |
-  select uu."UNI_UNIDAD_ID"::character varying as id, uu."REPRESENTACION" as caption
+  select uu."UNI_UNIDAD_ID"::character varying as id, 
+  uu."REPRESENTACION" as caption
   from "UNI_UNIDAD" uu
   inner join "UNI_TIPO_TITULO" utt on uu."TIPOTITULO" = utt."UNI_TIPO_TITULO_ID"
   where utt."NOMBRE" like 'Fondos de Inversión'

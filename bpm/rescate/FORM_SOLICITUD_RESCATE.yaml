@@ -36,11 +36,6 @@ properties:
     type: string
     hints:
       valueProvider: "INSTFCI/QRY_FCI"
-  especie_moneda:
-    title: Especie/Moneda
-    type: string
-    hints:
-      valueProvider: "ID_ESPECIE??"
   cantidad_cp:
     title: Cuotapartes
     type: number

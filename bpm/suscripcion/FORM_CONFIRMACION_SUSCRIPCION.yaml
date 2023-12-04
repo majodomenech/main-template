@@ -39,12 +39,16 @@ properties:
     hints:
       valueProvider: "INSTFCI/QRY_FCI"
       readOnly: true
-#  especie_moneda:
-#    title: Especie/Moneda
-#    type: string
-#    hints:
-#      valueProvider: "ID_ESPECIE??"
-#      readOnly: true
+  moneda:
+    title: Moneda
+    type: string
+    hints:
+      dependents:
+        - "@__MonedaDefault"
+    enum:
+      - ARS
+      - USD
+      - USDC
   cantidad:
     title: Cantidad
     type: number
