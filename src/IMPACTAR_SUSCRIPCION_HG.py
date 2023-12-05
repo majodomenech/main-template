@@ -25,7 +25,7 @@ if __name__ == '__main__':
     fecha = bpm.context['fecha']
     fondo = bpm.context['fondo']
     cantidad = bpm.context['cantidad']
-    integraComitente = bpm.context['integraComitente']
+    integraComitente = bpm.context['integra_comitente']
 
     data = {
         "contexto": {
@@ -46,6 +46,9 @@ if __name__ == '__main__':
 
 
     response = suscripcion_fci(token, url_base, data)
+
+    print(response)
     resp_alta_ok, mje = procesar_respuesta(response, 'Suscripcion: Alta')
     if not resp_alta_ok:
-        bpm.context.input['error'] = mje
+        bpm.execution.setVariable("error", mje)
+

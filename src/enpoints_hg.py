@@ -5,20 +5,20 @@ from io import BytesIO
 import redflagbpm
 import requests
 
-def call_json_endpoint(curl, auth_headers):
-    buffer = BytesIO()
-    c = pycurl.Curl()
-    c.setopt(c.URL, curl)
-    c.setopt(pycurl.HTTPHEADER, auth_headers)
-    c.setopt(c.WRITEDATA, buffer)
-
-    c.perform()
-    # response = c.getinfo(pycurl.RESPONSE_CODE)
-    c.close()
-
-    body = buffer.getvalue()
-    resp = json.loads(body.decode('UTF-8'))
-    return resp
+# def call_json_endpoint(curl, auth_headers):
+#     buffer = BytesIO()
+#     c = pycurl.Curl()
+#     c.setopt(c.URL, curl)
+#     c.setopt(pycurl.HTTPHEADER, auth_headers)
+#     c.setopt(c.WRITEDATA, buffer)
+#
+#     c.perform()
+#     resp_code = c.getinfo(pycurl.RESPONSE_CODE)
+#     c.close()
+#
+#     body = buffer.getvalue()
+#     resp = json.loads(body.decode('UTF-8'))
+#     return resp, resp_code
 
 
 def login(bpm, url_base):
@@ -47,7 +47,8 @@ def suscripcion_fci(token, url_base, data):
         'Content-Type': 'application/json'
     }
     response = requests.post(url, headers=headers, data=json.dumps(data))
-    return response.text
+
+    return response
 
 def rescate_fci(bpm, url_base, data):
     url = f'{url_base}fondos/rescateFCI'
@@ -76,6 +77,8 @@ def rescate_fci(bpm, url_base, data):
     # }
 
     response = requests.post(url, headers=headers, data=json.dumps(data))
+
+    status_code = response.status_code
     return response.text
 
 # def main():
