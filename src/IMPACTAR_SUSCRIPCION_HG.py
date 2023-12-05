@@ -22,6 +22,7 @@ if __name__ == '__main__':
     token = login(bpm, url_base)
 
     fecha = bpm.context['fecha']
+    print(10*f'fecha: {fecha}')
     cuenta = bpm.context['cuenta']
     fondo = bpm.context['fondo']
     moneda = bpm.context['moneda']
@@ -48,8 +49,8 @@ if __name__ == '__main__':
 
     response = suscripcion_fci(token, url_base, data)
 
-    print(response)
-    resp_alta_ok, mje = procesar_respuesta(response, 'Suscripcion: Alta')
+    # print(response)
+    resp_alta_ok, mje = procesar_respuesta(response, 'Suscripcion Alta:')
     if not resp_alta_ok:
         bpm.execution.setVariable("errors", mje)
 
