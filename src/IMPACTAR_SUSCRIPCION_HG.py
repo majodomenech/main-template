@@ -3,7 +3,7 @@ import json
 
 import redflagbpm
 from enpoints_hg import login, suscripcion_fci
-
+from auxiliar import procesar_respuesta
 
 import logging
 import http.client as http_client
@@ -15,26 +15,25 @@ requests_log = logging.getLogger("requests.packages.urllib3")
 requests_log.setLevel(logging.DEBUG)
 requests_log.propagate = True
 
-bpm = redflagbpm.BPMService()
-cuenta = bpm.context['cuenta']
 
-bpm = redflagbpm.BPMService()
-url_base = f'https://demo.aunesa.dev:10017/Irmo/api/'
-token = login(bpm, url_base)
+if __name__ == '__main__':
+    bpm = redflagbpm.BPMService()
+    url_base = f'https://demo.aunesa.dev:10017/Irmo/api/'
+    token = login(bpm, url_base)
 
-cuenta = bpm.context['cuenta']
-fecha = bpm.context['fecha']
-fondo = bpm.context['fondo']
-cantidad = bpm.context['cantidad']
-integraComitente = bpm.context['integraComitente']
+    cuenta = bpm.context['cuenta']
+    fecha = bpm.context['fecha']
+    fondo = bpm.context['fondo']
+    cantidad = bpm.context['cantidad']
+    integraComitente = bpm.context['integraComitente']
 
-data = {
-      "contexto": {
+    data = {
+        "contexto": {
             "modalidad": "BILATERAL",
             "origen": "S&C",
             "acdi": "000"
-      },
-      "solicitud": {
+        },
+        "solicitud": {
             "fechaSolicitud": "04/12/2023 15:52:50",
             "cuentaComitente": "02597",
             "fondo": "14325",
@@ -42,14 +41,11 @@ data = {
             "cantidad": 100000,
             "integraComitente": False,
             "aceptaReglamento": True
-      }
-}
+        }
+    }
 
 
-response = suscripcion_fci(token, url_base, data)
-response = json.loads(response)
-print(response)
-try:
-      print(response.json())
-except:
-      print(response["errors"])
+    response = suscripcion_fci(token, url_base, data)
+    resp_alta_ok, mje = procesar_respuesta(response, 'Suscripcion: Alta')
+    if not resp_alta_ok:
+        bpm.context.input['error'] = mje

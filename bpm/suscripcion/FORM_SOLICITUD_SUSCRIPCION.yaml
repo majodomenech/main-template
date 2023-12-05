@@ -60,3 +60,17 @@ properties:
     title: Integra Comitente
     type: boolean
     default: false
+  ____expr____error:
+    type: string
+    title: Error
+    hints:
+      rowStart: true
+      rowEnd: true
+      subtype: expression
+      value: |
+        #!vtl
+        #if ($error_list.size() != 0)
+          #foreach ($i in $error_list)
+        Error ${i}
+          #end 
+        #end
