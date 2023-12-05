@@ -31,7 +31,7 @@
       </extensionElements>
     </userTask>
     <sequenceFlow id="sid-5A2716DB-76F7-422B-BA28-EB39B2BEEEBB" sourceRef="sid-65EC28E5-007E-4062-9F59-67CFE8919E3E" targetRef="sid-7D07330A-8DF1-4A47-BD1F-87751593A5FD"></sequenceFlow>
-    <scriptTask id="sid-7D95A7E8-6928-4E6F-A2D3-D62AEF19A6B4" name="Impactar suscripción en HG" flowable:async="true" flowable:exclusive="false" default="sid-AF5BA30E-7BD3-4746-8E6A-4936D0254D68" scriptFormat="code" flowable:autoStoreVariables="false">
+    <scriptTask id="sid-7D95A7E8-6928-4E6F-A2D3-D62AEF19A6B4" name="Impactar suscripción en HG" default="sid-AF5BA30E-7BD3-4746-8E6A-4936D0254D68" scriptFormat="code" flowable:autoStoreVariables="false">
       <script><![CDATA[INSTFCI/IMPACTAR_SUSCRIPCION_HG]]></script>
     </scriptTask>
     <endEvent id="sid-0D8F1CBA-E9F5-4EBF-A88A-42AF558A3704"></endEvent>
