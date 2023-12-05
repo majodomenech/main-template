@@ -21,7 +21,10 @@ requests_log.propagate = True
 def convertir_milisegundos_a_fecha_hora(milisegundos):
     # Convertir milisegundos a segundos
     segundos = float(milisegundos) / 1000.0
-
+    print(80*'##')
+    print(milisegundos)
+    print(float(milisegundos))
+    print(80 * '##')
     # Crear un objeto datetime a partir de los segundos
     fecha_hora = datetime.fromtimestamp(segundos)
 
