@@ -12,8 +12,8 @@ hints:
     - moneda
     - cantidad
     - integra_comitente
-feedback:
-  "__MonedaDefault": "run:INSTFCI/COMPLETAR_MONEDA"
+  feedback:
+    "__MonedaDefault": "run:INSTFCI/COMPLETAR_MONEDA"
 required:
 - fecha
 - cuenta
