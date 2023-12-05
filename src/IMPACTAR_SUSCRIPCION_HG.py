@@ -35,12 +35,12 @@ if __name__ == '__main__':
             "acdi": "000"
         },
         "solicitud": {
-            "fechaSolicitud": "04/12/2023 15:52:50",
+            "fechaSolicitud": fecha,
             "cuentaComitente": "02597",
             "fondo": "14325",
             "especieMoneda": "ARS",
-            "cantidad": 100000,
-            "integraComitente": False,
+            "cantidad": cantidad,
+            "integraComitente": integraComitente,
             "aceptaReglamento": True
         }
     }
