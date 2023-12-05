@@ -38,10 +38,10 @@
     <exclusiveGateway id="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA"></exclusiveGateway>
     <sequenceFlow id="sid-23613DDD-241E-4A86-8A35-39B9242ACA1A" sourceRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA" targetRef="sid-AA341290-7481-4584-A200-9367E3C301D6"></sequenceFlow>
     <sequenceFlow id="sid-AF5BA30E-7BD3-4746-8E6A-4936D0254D68" sourceRef="sid-7D95A7E8-6928-4E6F-A2D3-D62AEF19A6B4" targetRef="sid-0D8F1CBA-E9F5-4EBF-A88A-42AF558A3704"></sequenceFlow>
-    <sequenceFlow id="sid-ACA65652-0E4E-438C-8292-F34E7E21D217" sourceRef="sid-7D95A7E8-6928-4E6F-A2D3-D62AEF19A6B4" targetRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${execution.getVariable("error")!=null}]]></conditionExpression>
-    </sequenceFlow>
     <sequenceFlow id="sid-6F00B4D0-4ED3-4977-AE7D-5B25B154328F" sourceRef="sid-7D07330A-8DF1-4A47-BD1F-87751593A5FD" targetRef="sid-7D95A7E8-6928-4E6F-A2D3-D62AEF19A6B4"></sequenceFlow>
+    <sequenceFlow id="sid-ACA65652-0E4E-438C-8292-F34E7E21D217" sourceRef="sid-7D95A7E8-6928-4E6F-A2D3-D62AEF19A6B4" targetRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${execution.getVariable("errors")!=null}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_INSTFCISU">
     <bpmndi:BPMNPlane bpmnElement="INSTFCISU" id="BPMNPlane_INSTFCISU">
