@@ -18,29 +18,20 @@ requests_log.propagate = True
 
 
 
-def convertir_milisegundos_a_fecha_hora(milisegundos):
-    # Convertir milisegundos a segundos
-    segundos = float(milisegundos) / 1000.0
-    print(80*'##')
-    print(milisegundos)
-    print(float(milisegundos))
-    print(80 * '##')
-    # Crear un objeto datetime a partir de los segundos
-    fecha_hora = datetime.fromtimestamp(segundos)
-
-    # Formatear la fecha y hora según tus necesidades
-    formato = "%d/%m/%Y %H:%M:%S"
-    fecha_hora_formateada = fecha_hora.strftime(formato)
-
-    return fecha_hora_formateada
+def formatear(fecha):
+    #leer el formato original
+    fecha_hora = datetime.strptime(fecha, "%a %b %d %H:%M:%S %Z %Y")
+    # Formatear la fecha y hora
+    nuevo_formato = "%d/%m/%Y %H:%M:%S"
+    fecha_formateada = fecha_hora.strftime(nuevo_formato)
+    return fecha_formateada
 
 if __name__ == '__main__':
     bpm = redflagbpm.BPMService()
     url_base = f'https://demo.aunesa.dev:10017/Irmo/api/'
     token = login(bpm, url_base)
 
-    milisegundos = bpm.context['fecha']
-    fecha = convertir_milisegundos_a_fecha_hora(milisegundos)
+    fecha = formatear(bpm.context['fecha'])
     cuenta = bpm.context['cuenta']
     fondo = bpm.context['fondo']
     moneda = bpm.context['moneda']
