@@ -12,7 +12,6 @@ hints:
     - especie_moneda
     - cantidad
     - integra_comitente
-  callToAction: Guardar
 properties:
   fecha:
     title: Fecha

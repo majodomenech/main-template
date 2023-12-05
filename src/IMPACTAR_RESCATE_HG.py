@@ -40,7 +40,7 @@ if __name__ == '__main__':
             "fondo": "14300",
             "especieMoneda": "14300",
             "cantidad": 100000,
-            "rescateDinero": True,
+            "rescateDinero": False,
             "aceptaReglamento": True
         }
     }
