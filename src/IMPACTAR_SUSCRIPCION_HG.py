@@ -21,9 +21,10 @@ if __name__ == '__main__':
     url_base = f'https://demo.aunesa.dev:10017/Irmo/api/'
     token = login(bpm, url_base)
 
-    cuenta = bpm.context['cuenta']
     fecha = bpm.context['fecha']
+    cuenta = bpm.context['cuenta']
     fondo = bpm.context['fondo']
+    moneda = bpm.context['moneda']
     cantidad = bpm.context['cantidad']
     integraComitente = bpm.context['integra_comitente']
 
@@ -50,5 +51,5 @@ if __name__ == '__main__':
     print(response)
     resp_alta_ok, mje = procesar_respuesta(response, 'Suscripcion: Alta')
     if not resp_alta_ok:
-        bpm.execution.setVariable("error", mje)
+        bpm.execution.setVariable("errors", mje)
 

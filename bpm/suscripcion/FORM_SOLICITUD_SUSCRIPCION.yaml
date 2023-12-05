@@ -70,4 +70,4 @@ properties:
       subtype: expression
       value: |
         #!vtl
-        Error $!{error}
+        $!{errors}
