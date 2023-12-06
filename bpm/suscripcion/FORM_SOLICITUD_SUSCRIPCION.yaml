@@ -8,20 +8,12 @@ hints:
   fieldOrder:
     - fecha
     - cuenta
-    - fondo
-    - moneda
-    - cantidad
-    - integra_comitente
-    - ____expr____error
+    - array_solicitud_pendiente
   feedback:
     "__MonedaDefault": "run:INSTFCI/COMPLETAR_MONEDA"
 required:
 - fecha
 - cuenta
-- fondo
-- moneda
-- cantidad
-- integra_comitente
 properties:
   fecha:
     title: Fecha
@@ -40,34 +32,45 @@ properties:
       rowStart: true
       rowEnd: true
       valueProvider: "ID_CLIENTE_COM"
-  fondo:
-    title: Fondo
-    type: string
-    hints:
-      valueProvider: "INSTFCI/QRY_FCI"
-      dependents:
-        - "@__MonedaDefault"
-  moneda:
-    title: Moneda
-    type: string
-    enum:
-      - ARS
-      - USD
-      - USDC
-  cantidad:
-    title: Cantidad
-    type: number
-  integra_comitente:
-    title: Integra Comitente
-    type: boolean
-    default: false
-  ____expr____error:
-    type: string
-    title: Error
-    hints:
-      rowStart: true
-      rowEnd: true
-      subtype: expression
-      value: |
-        #!vtl
-        $!{errors}
+  array_solicitud_pendiente:
+    type: array
+    items:
+      type: object
+      hints:
+        fieldOrder:
+          - fondo
+          - moneda
+          - cantidad
+          - integra_comitente
+          - error
+        titlePlural: Solicitudes Pendientes
+      title: Solicitud Pendiente de Suscripción
+      properties:
+        fondo:
+          title: Fondo
+          type: string
+          hints:
+            valueProvider: "INSTFCI/QRY_FCI"
+            dependents:
+              - "@__MonedaDefault"
+        moneda:
+          title: Moneda
+          type: string
+          enum:
+            - ARS
+            - USD
+            - USDC
+        cantidad:
+          title: Cantidad
+          type: number
+        integra_comitente:
+          title: Integra Comitente
+          type: boolean
+          default: false
+        error:
+          type: string
+          title: Error
+          hints:
+            rowStart: true
+            rowEnd: true
+            subtype: expression

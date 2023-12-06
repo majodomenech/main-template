@@ -36,33 +36,50 @@ if __name__ == '__main__':
     # el form manda la fecha en milisegundos al proceso
     # y el proceso la guarda como fecha de java
     # -> uso .getTime() para obtener los milisegundos
+
     fecha = formatear(bpm.context['fecha.getTime()'])
     cuenta = bpm.context['cuenta']
-    fondo = bpm.context['fondo']
-    moneda = bpm.context['moneda']
-    cantidad = bpm.context['cantidad']
-    integraComitente = bpm.context['integra_comitente']
+    array_solicitudes_pendientes = bpm.context['array_solicitud_pendiente']
+    try:
+        array_solicitudes_confirmadas = bpm.context['array_solicitud_confirmada']
+    except:
+        array_solicitudes_confirmadas = []
 
-    data = {
-        "contexto": {
-            "modalidad": "BILATERAL",
-            "origen": "S&C",
-            "acdi": "000"
-        },
-        "solicitud": {
-            "fechaSolicitud": fecha,
-            "cuentaComitente": "141390",
-            "fondo": "14325",
-            "especieMoneda": "ARS",
-            "cantidad": cantidad,
-            "integraComitente": integraComitente,
-            "aceptaReglamento": True
+    for solicitud in array_solicitudes_pendientes:
+        fondo = solicitud['fondo']
+        moneda = solicitud['moneda']
+        cantidad = solicitud['cantidad']
+        integraComitente = solicitud['integra_comitente']
+
+        data = {
+            "contexto": {
+                "modalidad": "BILATERAL",
+                "origen": "S&C",
+                "acdi": "000"
+            },
+            "solicitud": {
+                "fechaSolicitud": fecha,
+                "cuentaComitente": "141390",
+                "fondo": "14325",
+                "especieMoneda": "ARS",
+                "cantidad": cantidad,
+                "integraComitente": integraComitente,
+                "aceptaReglamento": True
+            }
         }
-    }
 
-    response = suscripcion_fci(token, url_base, data)
+        response = suscripcion_fci(token, url_base, data)
 
-    resp_alta_ok, mje = procesar_respuesta(response, 'Suscripcion Alta:')
-    if not resp_alta_ok:
-        bpm.execution.setVariable("errors", mje)
+        resp_alta_ok, mje = procesar_respuesta(response, 'Suscripcion Alta:')
+        if not resp_alta_ok:
+            solicitud["error"] = mje
+        else:
+            array_solicitudes_pendientes.remove(solicitud)
+            array_solicitudes_confirmadas.append(solicitud)
 
+    if len(array_solicitudes_pendientes) == 0:
+        bpm.execution.setVariable('terminado', True)
+    else:
+        bpm.execution.setVariable('terminado', False)
+    bpm.execution.setVariable('array_solicitud_pendiente', array_solicitudes_pendientes)
+    bpm.execution.setVariable('array_solicitud_confirmada', array_solicitudes_confirmadas)
