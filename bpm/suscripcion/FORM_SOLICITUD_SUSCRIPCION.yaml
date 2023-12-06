@@ -45,6 +45,10 @@ properties:
           - integra_comitente
           - error
         titlePlural: Solicitudes Pendientes
+      required:
+        - fondo
+        - moneda
+        - cantidad
       title: Solicitud Pendiente de Suscripción
       properties:
         fondo:

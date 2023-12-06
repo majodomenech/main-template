@@ -32,7 +32,10 @@
                       <td style="text-align:left">$!{solicitud.fondo}</td>
                       <td style="text-align:right">$!{String.format($Locale_ES,"%,.2f",${solicitud.cantidad.doubleValue()})}</td>
                       <td style="text-align:right">$!{solicitud.moneda}</td>
-                      <td style="text-align:right">$!{solicitud.integra_comitente}</td>
+                      #if(${solicitud.integra_comitente})
+                          <td style="text-align:right">Si </td>
+                      #else
+                          <td style="text-align:right">No </td>
                     </tr>
                 #end
             </table>
