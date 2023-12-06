@@ -9,6 +9,7 @@ hints:
     - fecha
     - cuenta
     - array_solicitud_pendiente
+  validation: "run:INSTFCI/VALIDAR"
 #  feedback:
 #    "__MonedaDefault": "run:INSTFCI/COMPLETAR_MONEDA"
 required:
