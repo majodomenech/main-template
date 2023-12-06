@@ -2,12 +2,13 @@
 import redflagbpm
 
 bpm = redflagbpm.BPMService()
+error = '[[[No hay solicitudes pendientes]]]'
 try:
     array_solicitud_pendiente = bpm.context.input['array_solicitud_pendiente']
     if array_solicitud_pendiente is None:
-        bpm.reply('No hay solicitudes pendientes')
+        bpm.fail(error)
 except:
-    bpm.reply('No hay solicitudes pendientes')
+    bpm.fail(error)
 
 if len(array_solicitud_pendiente) == 0:
-    bpm.reply('No hay solicitudes pendientes')
+    bpm.fail(error)
