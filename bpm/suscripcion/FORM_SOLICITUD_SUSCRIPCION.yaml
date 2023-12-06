@@ -9,8 +9,8 @@ hints:
     - fecha
     - cuenta
     - array_solicitud_pendiente
-  feedback:
-    "__MonedaDefault": "run:INSTFCI/COMPLETAR_MONEDA"
+#  feedback:
+#    "__MonedaDefault": "run:INSTFCI/COMPLETAR_MONEDA"
 required:
 - fecha
 - cuenta
@@ -51,8 +51,8 @@ properties:
           type: string
           hints:
             valueProvider: "INSTFCI/QRY_FCI"
-            dependents:
-              - "@__MonedaDefault"
+#            dependents:
+#              - "@__MonedaDefault"
         moneda:
           title: Moneda
           type: string

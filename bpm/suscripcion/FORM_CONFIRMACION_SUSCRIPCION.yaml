@@ -15,6 +15,4 @@ properties:
       rowStart: true
       rowEnd: true
       subtype: expression
-      value: |
-        #!vtl
-        calculos
+      value: "#!run:INSTFCI/TEMPLATE_CONFIRMACION_SUSCRIPCION"
