@@ -75,3 +75,11 @@ properties:
             rowStart: true
             rowEnd: true
             subtype: expression
+  ___expr____solicitud_confirmada:
+    type: string
+    title: Solicitud Confirmada
+    hints:
+      rowStart: true
+      rowEnd: true
+      subtype: expression
+      value: "#!run:INSTFCI/TEMPLATE_SOLICITUD_CONFIRMADA"
