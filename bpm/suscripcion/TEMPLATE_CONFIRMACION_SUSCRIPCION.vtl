@@ -22,18 +22,20 @@ table {width: 100%;}
         <div><b>Cuenta:</b> ${cuenta}</div>
         <table>
             <tr>
-            <th style="text-align:left;width:55%">Especie</th>
+            <th style="text-align:left;width:55%">Fondo</th>
             <th style="text-align:right;width:15%">Cantidad</th>
-            <th style="text-align:right;width:15%">Precio</th>
-            <th style="text-align:right;width:15%">Valuación</th>
+            <th style="text-align:right;width:15%">Moneda</th>
+            <th style="text-align:right;width:15%">Integra comitente</th>
             </tr>
             #foreach($solicitud in $array_solicitud_pendiente.getList())
             #set($i=$solicitud.getMap())
             <tr>
+              <td style="text-align:right">$!{solicitud.fondo})}</td>
               <td style="text-align:right">$!{String.format($Locale_ES,"%,.2f",${solicitud.cantidad.doubleValue()})}</td>
               <td style="text-align:right">$!{solicitud.moneda}</td>
-              <td style="text-align:right">$!{solicitud.fondo})}</td>
               <td style="text-align:right">$!{solicitud.integra_comitente})}</td>
             </tr>
             #end
         </table>
+    </div>
+</div>
