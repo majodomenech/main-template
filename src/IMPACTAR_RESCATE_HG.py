@@ -43,9 +43,9 @@ if __name__ == '__main__':
             array_solicitudes_confirmadas = []
 
         for solicitud in array_solicitudes_pendientes:
-            fondo = bpm.context['fondo']
-            rescateDinero = bpm.context['rescate_dinero']
-            cantidadImporte = bpm.context['cantidad_importe']
+            fondo = solicitud['fondo']
+            rescateDinero = solicitud['rescate_dinero']
+            cantidadImporte = solicitud['cantidad_importe']
 
 
             data_res = {

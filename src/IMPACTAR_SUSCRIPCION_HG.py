@@ -26,8 +26,9 @@ def formatear(milisegundos):
     return fecha_formateada
 
 if __name__ == '__main__':
+    bpm = redflagbpm.BPMService()
     try:
-        bpm = redflagbpm.BPMService()
+
         if bpm.service.text("STAGE") == 'DEV':
             url_base = f'https://demo.aunesa.dev:10017/Irmo/api/'
         else:
