@@ -6,8 +6,9 @@ import requests
 
 sys.path.append('../backtesting')
 sys.path.append('../src')
+print(sys.path)
 
-from backtest_data import data_sus, data_res
+from backtest_data import get_suscripcion, get_rescate
 from endpoints_hg import login, ingresar_bilateral_suscripcion, alta_bilateral_suscripcion
 
 import logging
@@ -20,7 +21,8 @@ requests_log = logging.getLogger("requests.packages.urllib3")
 requests_log.setLevel(logging.DEBUG)
 requests_log.propagate = True
 
-def login(url_base):
+url_base = f'https://demo.aunesa.dev:10017/Irmo/api/'
+def login():
     url = f'{url_base}login'
     headers = {'Content-Type': 'application/json'}
     USR_NAME = "USER_FCI"
@@ -38,7 +40,7 @@ def login(url_base):
     print(token)
     return token
 
-url_base = "https://hs-fci.sba.com.ar"
+
 class bcolors:
     HEADER = '\033[95m'
     BLUE = '\033[94m'
@@ -77,11 +79,10 @@ class Tests(unittest.TestCase):
         # Preparación global, se ejecuta una vez antes de ejecutar cualquier caso de prueba
         print(f"Inicializando recursos globales")
         # suscription backtesting dat
-        cls.suscripcion = get_suscription()
+        cls.suscripcion = get_suscripcion()
         cls.id_suscri = None
-        cls.rescate = get_redemption()
+        cls.rescate = get_rescate()
         cls.id_rescate = None
-        cls.distribution = get_distribution_participantes()
 
     @classmethod
     def tearDownClass(cls):
