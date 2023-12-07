@@ -35,3 +35,10 @@ def get_rescate():
             }
         }
     return data_res
+
+def get_backtesting_data(bpm):
+    bpm.context.array_solicitudes_pendientes = [{"fondo": "[14221] CAFCI747-1638 - Galileo Income - Clase A", "cantidad" : 1, "integraComitente" : "false"}]
+    bpm.context.cuenta = "[5003436] LALA"
+    bpm.context.initiator = "lbessone"
+    bpm.context.processInstanceId = '1'
+    bpm.context.fecha = '123250111100000'

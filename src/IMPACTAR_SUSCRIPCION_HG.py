@@ -6,6 +6,10 @@ from auxiliar import procesar_respuesta
 from datetime import datetime
 import logging
 import http.client as http_client
+import re
+import sys
+sys.path.append('../backtesting')
+from backtest_data import get_backtesting_data
 import pytz
 http_client.HTTPConnection.debuglevel = 1
 #initialize logging
@@ -38,7 +42,7 @@ if __name__ == '__main__':
         # el form manda la fecha en milisegundos al proceso
         # y el proceso la guarda como fecha de java
         # -> uso .getTime() para obtener los milisegundos
-
+        get_backtesting_data(bpm)
         fecha = formatear(bpm.context['fecha.getTime()'])
         cuenta = bpm.context['cuenta']
         array_solicitudes_pendientes = bpm.context['array_solicitud_pendiente']
@@ -47,8 +51,14 @@ if __name__ == '__main__':
         except:
             array_solicitudes_confirmadas = []
 
+        print(array_solicitudes_pendientes)
+
         for solicitud in array_solicitudes_pendientes:
-            fondo = solicitud['fondo']
+            fondo_deno = solicitud['fondo']
+            fondo_id = re.search(r'([\d]+)', fondo_deno).group(1)
+            print(40*'/')
+            print(40 * fondo_id)
+            break
             moneda = solicitud['moneda']
             cantidad = solicitud['cantidad']
             integraComitente = solicitud['integra_comitente']

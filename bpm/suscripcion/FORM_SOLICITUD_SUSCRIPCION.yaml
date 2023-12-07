@@ -45,6 +45,7 @@ properties:
           - integra_comitente
           - error
         titlePlural: Solicitudes Pendientes
+      title: ""
       required:
         - fondo
         - moneda
