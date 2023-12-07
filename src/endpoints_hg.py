@@ -36,9 +36,9 @@ def suscripcion_fci(token, url_base, data):
 
     return response
 
-def rescate_fci(bpm, url_base, data):
+def rescate_fci(token, url_base, data):
     url = f'{url_base}fondos/rescateFCI'
-    TOKEN = bpm.service.text('TOKEN_WS')
+    TOKEN = token
     headers = {
         'Authorization': 'Bearer '+TOKEN,
         'Content-Type': 'application/json'
@@ -46,8 +46,7 @@ def rescate_fci(bpm, url_base, data):
 
     response = requests.post(url, headers=headers, data=json.dumps(data))
 
-    status_code = response.status_code
-    return response.text
+    return response
 
 # def main():
 #     bpm = redflagbpm.BPMService()

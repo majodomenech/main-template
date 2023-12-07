@@ -1,7 +1,7 @@
 #!python3
 
 import redflagbpm
-from enpoints_hg import login, suscripcion_fci
+from endpoints_hg import login, suscripcion_fci
 from auxiliar import procesar_respuesta
 from datetime import datetime
 import logging

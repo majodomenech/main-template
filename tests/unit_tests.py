@@ -3,13 +3,13 @@ import os
 import unittest
 import sys
 import requests
-
+import json
 sys.path.append('../backtesting')
 sys.path.append('../src')
-print(sys.path)
+
 
 from backtest_data import get_suscripcion, get_rescate
-from endpoints_hg import login, ingresar_bilateral_suscripcion, alta_bilateral_suscripcion
+from endpoints_hg import login, suscripcion_fci, rescate_fci
 
 import logging
 import http.client as http_client
@@ -95,20 +95,39 @@ class Tests(unittest.TestCase):
     def test_case_000(self):
         print_test_header("000: Login")
         print_call_header()
-        Tests.headers = login()
+        Tests.token = login()
         print_call_footer()
-        print_test_output(Tests.headers)
+        print_test_output(Tests.token)
 
-    @unittest.skip
+    # @unittest.skip
     def test_case_001(self):
         print_test_header("001: Dar de alta suscripción")
 
         print_test_input(f"{Tests.suscripcion}")
 
         print_call_header()
-        response = alta_bilateral_suscripcion(Tests.headers, Tests.suscripcion)
+        response = suscripcion_fci(Tests.token, url_base, Tests.suscripcion)
         print_call_footer()
 
-        if response.status_code in [200, 201]:
-            Tests.id_suscri = response.json()['id']
+        # if response.status_code in [200, 201]:
+            # Tests.id_suscri = response.json()['id']
         print_response(response)
+
+    # @unittest.skip
+    def test_case_002(self):
+        print_test_header("002: Dar de alta rescate por cp")
+
+        print_test_input(f"{Tests.rescate}")
+
+        print_call_header()
+        response = rescate_fci(Tests.token, url_base, Tests.rescate)
+        print_call_footer()
+
+        # if response.status_code in [200, 201]:
+        #     Tests.id_rescate = response.json()['id']
+        print_response(response)
+
+if __name__ == '__main__':
+    # Change to source dir, to avoid resources conflicts (with templates, images, etc.)
+    os.chdir('../src')
+    unittest.main()

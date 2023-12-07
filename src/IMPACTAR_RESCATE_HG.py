@@ -2,7 +2,7 @@
 import json
 
 import redflagbpm
-from enpoints_hg import login, suscripcion_fci
+from endpoints_hg import login, suscripcion_fci
 from auxiliar import procesar_respuesta
 
 import logging
@@ -32,21 +32,19 @@ if __name__ == '__main__':
         "contexto": {
             "modalidad": "BILATERAL",
             "origen": "S&C",
-            "acdi": "57"
+            "acdi": "000"
         },
         "solicitud": {
             "fechaSolicitud": fecha,
-            "cuentaComitente": "[145196] JUAN AUNE",
+            "cuentaComitente": "145196",
             "fondo": "14300",
-            "especieMoneda": "14300",
-            "cantidad": 100000,
             "rescateDinero": False,
-            "aceptaReglamento": True
+            "cantidadImporte": 1000
         }
     }
 
 
-    response = suscripcion_fci(token, url_base, data)
+    response = suscripcion_fci(token, url_base, data_res)
 
     print(response)
     resp_alta_ok, mje = procesar_respuesta(response, 'Rescate: Alta')

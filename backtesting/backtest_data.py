@@ -27,10 +27,10 @@ def get_rescate():
                 "acdi": "000"
             },
             "solicitud": {
-                "fechaSolicitud": "03/01/2023 15:52:50",
-                "cuentaComitente": "5002837",
-                "fondo": "14006",
-                "rescateDinero": True,
+                "fechaSolicitud": "07/12/2023 15:52:50",
+                "cuentaComitente": "145196",
+                "fondo": "14300",
+                "rescateDinero": False,
                 "cantidadImporte": 1000
             }
         }
