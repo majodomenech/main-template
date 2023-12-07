@@ -1,17 +1,18 @@
 type:  object
-title: Solicitar Suscripción
+title: Solicitar Rescate
 hints:
   outcomes:
     - guardar: "Guardar"
-    - finalizar: "Finalizar"
+    - finalizar: "Cancelar"
   outcomeVariable: tipoResultado
   fieldOrder:
     - fecha
     - cuenta
-    - fondo
-    - especie_moneda
-    - cantidad_cp
-    - dinero
+    - array_solicitud_pendiente
+  validation: "run:INSTFCI/VALIDAR"
+required:
+- fecha
+- cuenta
 properties:
   fecha:
     title: Fecha
@@ -31,15 +32,46 @@ properties:
       rowStart: true
       rowEnd: true
       valueProvider: "ID_CLIENTE_COM_FULL"
-  fondo:
-    title: Fondo
-    type: string
-    hints:
-      valueProvider: "INSTFCI/QRY_FCI"
-  cantidad_cp:
-    title: Cuotapartes
-    type: number
-  dinero:
-    title: Integra Comitente
+  array_solicitud_pendiente:
+    type: array
+    items:
+      type: object
+      hints:
+        fieldOrder:
+          - fondo
+          - cantidad_importe
+          - rescate_dinero
+          - error
+        titlePlural: Solicitudes Pendientes
+      required:
+        - fondo
+        - cantidad_importe
+      properties:
+        fondo:
+          title: Fondo
+          type: string
+          hints:
+            valueProvider: "INSTFCI/QRY_FCI"
+        cantidad_importe:
+          title: Cuotapartes
+          type: number
+        rescate_dinero:
+          title: Rescate en Dinero
+          type: boolean
+          default: false
+        error:
+          title: Error
+          type: string
+          hints:
+            rowStart: true
+            rowEnd: true
+            subtype: expression
+  ___expr____solicitud_confirmada:
     type: boolean
+    title: Solicitud Confirmada
     default: false
+    hints:
+      subtype: expression
+      rowStart: true
+      rowEnd: true
+      value: "#!run:INSTFCI/TEMPLATE_RESCATE_CONFIRMADO"

@@ -3,7 +3,7 @@ title: Solicitar Suscripción
 hints:
   outcomes:
     - guardar: "Guardar"
-    - finalizar: "Finalizar"
+    - finalizar: "Cancelar"
   outcomeVariable: tipoResultado
   fieldOrder:
     - fecha
@@ -49,7 +49,6 @@ properties:
         - fondo
         - moneda
         - cantidad
-      title: Solicitud Pendiente de Suscripción
       properties:
         fondo:
           title: Fondo
@@ -83,7 +82,7 @@ properties:
     type: string
     title: Solicitud Confirmada
     hints:
+      subtype: expression
       rowStart: true
       rowEnd: true
-      subtype: expression
-      value: "#!run:INSTFCI/TEMPLATE_SOLICITUD_CONFIRMADA"
+      value: "#!run:INSTFCI/TEMPLATE_SUSCRIPCION_CONFIRMADA"

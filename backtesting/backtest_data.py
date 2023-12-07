@@ -9,7 +9,7 @@ def get_suscripcion():
           },
           "solicitud": {
                 "fechaSolicitud": "03/01/2023 15:52:50",
-                "cuentaComitente": "02597",
+                "cuentaComitente": "141390",
                 "fondo": "14325",
                 "especieMoneda": "ARS",
                 "cantidad": 100000,
@@ -31,7 +31,7 @@ def get_rescate():
                 "cuentaComitente": "145196",
                 "fondo": "14300",
                 "rescateDinero": False,
-                "cantidadImporte": 1000
+                "cantidadImporte": 1
             }
         }
     return data_res
