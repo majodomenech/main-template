@@ -19,6 +19,7 @@ def login(url_base):
     }
     response = requests.post(url, headers=headers, data=json.dumps(data))
     resp = response.json()
+    print(resp)
     token = resp['token']
     print(token)
     return token
