@@ -25,7 +25,7 @@
     <sequenceFlow id="sid-09A01D42-B533-4D81-8CC5-905C7DAC15B0" sourceRef="sid-FB8FEC43-DFF6-46C9-9AF2-1A14BDF1D41D" targetRef="sid-65EC28E5-007E-4062-9F59-67CFE8919E3E">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${tipoResultado=="guardar"}]]></conditionExpression>
     </sequenceFlow>
-    <userTask id="sid-7D07330A-8DF1-4A47-BD1F-87751593A5FD" name="Confirmar instrucción" default="sid-6F00B4D0-4ED3-4977-AE7D-5B25B154328F" flowable:assignee="${initiator}" flowable:formKey="INSTFCI/FORM_CONFIRMACION_RESCATE" flowable:formFieldValidation="true">
+    <userTask id="sid-7D07330A-8DF1-4A47-BD1F-87751593A5FD" name="Confirmar instrucción" flowable:assignee="${initiator}" flowable:formKey="INSTFCI/FORM_CONFIRMACION_RESCATE" flowable:formFieldValidation="true">
       <extensionElements>
         <modeler:activiti-idm-initiator xmlns:modeler="http://flowable.org/modeler"><![CDATA[true]]></modeler:activiti-idm-initiator>
       </extensionElements>
@@ -38,13 +38,13 @@
     <exclusiveGateway id="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA"></exclusiveGateway>
     <sequenceFlow id="sid-23613DDD-241E-4A86-8A35-39B9242ACA1A" sourceRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA" targetRef="sid-AA341290-7481-4584-A200-9367E3C301D6"></sequenceFlow>
     <sequenceFlow id="sid-AF5BA30E-7BD3-4746-8E6A-4936D0254D68" sourceRef="sid-7D95A7E8-6928-4E6F-A2D3-D62AEF19A6B4" targetRef="sid-0D8F1CBA-E9F5-4EBF-A88A-42AF558A3704"></sequenceFlow>
-    <sequenceFlow id="sid-6F00B4D0-4ED3-4977-AE7D-5B25B154328F" sourceRef="sid-7D07330A-8DF1-4A47-BD1F-87751593A5FD" targetRef="sid-7D95A7E8-6928-4E6F-A2D3-D62AEF19A6B4"></sequenceFlow>
-    <sequenceFlow id="sid-ACA65652-0E4E-438C-8292-F34E7E21D217" sourceRef="sid-7D95A7E8-6928-4E6F-A2D3-D62AEF19A6B4" targetRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${execution.getVariable("errors")!=null}]]></conditionExpression>
-    </sequenceFlow>
     <sequenceFlow id="sid-1EF88971-A295-4F82-8EF5-35D5E5445512" sourceRef="sid-7D07330A-8DF1-4A47-BD1F-87751593A5FD" targetRef="sid-AA341290-7481-4584-A200-9367E3C301D6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${execution.getVariable("tipoResultado")=="corregir"}]]></conditionExpression>
     </sequenceFlow>
+    <sequenceFlow id="sid-ACA65652-0E4E-438C-8292-F34E7E21D217" sourceRef="sid-7D95A7E8-6928-4E6F-A2D3-D62AEF19A6B4" targetRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${terminado==false}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-6F00B4D0-4ED3-4977-AE7D-5B25B154328F" sourceRef="sid-7D07330A-8DF1-4A47-BD1F-87751593A5FD" targetRef="sid-7D95A7E8-6928-4E6F-A2D3-D62AEF19A6B4"></sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_INSTFCIRE">
     <bpmndi:BPMNPlane bpmnElement="INSTFCIRE" id="BPMNPlane_INSTFCIRE">
