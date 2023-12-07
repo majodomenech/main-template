@@ -1,0 +1,44 @@
+<style>
+.cell{border-radius: var(--lumo-border-radius); background-color: var(--lumo-contrast-10pct);padding:0.2em;margin:0.2em;}
+.cell2{border-radius: var(--lumo-border-radius); background-color: var(--lumo-primary-10pct);padding:0.2em;}
+.comment{border-radius: var(--lumo-border-radius); background-color: var(--lumo-contrast-10pct);padding:0.2em;margin:0.2em 0 0 0;}
+.ok{border-radius: var(--lumo-border-radius); background-color: var(--lumo-success-color-50pct);padding:0.2em;margin:0.2em 0 0 0;}
+.datos{display: grid;  grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));  grid-gap: 0.2em;}
+.datos2{display: grid;  grid-template-columns: repeat(auto-fill, minmax(50em, 1fr));  grid-gap: 0.2em;}
+.error{background: var(--lumo-error-color); color: var(--lumo-error-contrast-color);}
+.attn{background:#f4cccc;}
+.Compra{background:#38761d;color:white;}
+.Venta{background:#990000;color:white;}
+.tipoOrden{background:#bf9000;color:white;}
+.vn-porVN{background:#bf9000;color:white;}
+.mt-porMonto{background:#bf9000;color:white;}
+</style>
+<div>
+    <b>Resumen orden:</b><br/>
+    <div class="datos2">
+        <div class="cell"><b>Fecha solicitud:</b> ${fecha}</div>
+        <div class="cell"><b>Cuenta:</b> ${cuenta}</div>
+    </div>
+    <div class="datos2">
+            <table>
+                <tr>
+                <th style="text-align:left;width:25%">Fondo</th>
+                <th style="text-align:right;width:25%">Cantidad</th>
+                <th style="text-align:right;width:25%">Moneda</th>
+                <th style="text-align:right;width:25%">Integra comitente</th>
+                </tr>
+                #foreach($solicitud in $array_solicitud_pendiente.getList())
+                    <tr>
+                      <td style="text-align:left">$!{solicitud.fondo}</td>
+                      <td style="text-align:right">$!{String.format($Locale_ES,"%,.2f",${solicitud.cantidad.doubleValue()})}</td>
+                      <td style="text-align:right">$!{solicitud.moneda}</td>
+                      #if(${solicitud.integra_comitente})
+                          <td style="text-align:right">Si </td>
+                      #else
+                          <td style="text-align:right">No </td>
+                      #end
+                    </tr>
+                #end
+            </table>
+    </div>
+</div>

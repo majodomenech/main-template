@@ -1,52 +1,18 @@
 type:  object
-title: Confirmar Rescate
+title: Confirmar Suscripción
 hints:
   outcomes:
     - corregir: "Corregir"
     - confirmar: "Confirmar"
   outcomeVariable: tipoResultado
   fieldOrder:
-    - fecha
-    - cuenta
-    - fondo
-    - especie_moneda
-    - cantidad
-    - integra_comitente
-  callToAction: Guardar
+    - ____expr____confirmacion
 properties:
-  fecha:
-    title: Fecha
-    type: integer
+  ____expr____confirmacion:
+    type: string
+    title: Confirmación
     hints:
-      subtype: timestamp
       rowStart: true
       rowEnd: true
-      readOnly: true
-    default: now
-  cuenta:
-    title: Cuenta
-    type: string
-    hints:
-      colspan: 2
-      subtype: comitente
-      rowStart: true
-      rowEnd: true
-      valueProvider: "ID_CLIENTE_COM_FULL"
-      readOnly: true
-  fondo:
-    title: Fondo
-    type: string
-    hints:
-      valueProvider: "INSTFCI/QRY_FCI"
-      readOnly: true
-  cantidad:
-    title: Cantidad
-    type: number
-    hints:
-      readOnly: true
-  integra_comitente:
-    title: Integra Comitente
-    type: boolean
-    default: false
-    hints:
-      readOnly: true
+      subtype: expression
+      value: "#!run:INSTFCI/TEMPLATE_CONFIRMACION_RESCATE"
