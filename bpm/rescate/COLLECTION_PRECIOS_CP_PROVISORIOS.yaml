@@ -1,0 +1,22 @@
+type: object
+title: Teams Comerciales
+hints:
+  fieldOrder:
+  - area_name
+  - team_name
+  - coordinadores
+  - participantes
+  - llamadas_diarias
+  - status
+  idExpression: .team_name
+properties:
+  fci_codigo:
+    type: string
+    title: FCI
+    hints:
+      rowStart: true
+      rowEnd: true
+      valueProvider: "INSTFCI/QRY_FCI"
+  precio_cp_provisorio:
+    type: string
+    title: Nombre del Área

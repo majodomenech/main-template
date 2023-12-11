@@ -10,7 +10,7 @@ hints:
     - cuenta
     - array_solicitud_pendiente
   feedback:
-    "Calcular": "run:INSTFCI/CALCULAR_CP"
+    "Calcular": "run:INSTFCI/CALCULAR_MONTO"
   validation: "run:INSTFCI/VALIDAR"
 required:
 - fecha
@@ -62,6 +62,14 @@ properties:
           title: Rescate en Dinero
           type: boolean
           default: false
+          readOnly: true
+        calculos:
+          type: string
+          title: Cálculos
+          hints:
+            rowStart: true
+            rowEnd: true
+            subtype: expression
         error:
           title: Error
           type: string
@@ -69,14 +77,6 @@ properties:
             rowStart: true
             rowEnd: true
             subtype: expression
-  ____expr____calculos:
-    type: string
-    title: Cálculos
-    hints:
-      rowStart: true
-      rowEnd: true
-      subtype: expression
-      value: "#!run:INSTFCI/TEMPLATE_CALCULAR_CP"
   ___expr____solicitud_confirmada:
     type: boolean
     title: Solicitud Confirmada
