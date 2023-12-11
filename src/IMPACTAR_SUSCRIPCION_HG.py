@@ -58,7 +58,7 @@ if __name__ == '__main__':
             fondo_id = re.search(r'([\d]+)', fondo_deno).group(1)
             print(40*'/')
             print(40 * fondo_id)
-            break
+
             moneda = solicitud['moneda']
             cantidad = solicitud['cantidad']
             integraComitente = solicitud['integra_comitente']

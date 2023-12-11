@@ -8,7 +8,7 @@ sys.path.append('../backtesting')
 sys.path.append('../src')
 
 
-from backtest_data import get_suscripcion, get_rescate
+from backtest_data import get_uni_suscripcion, get_uni_rescate
 from endpoints_hg import login, suscripcion_fci, rescate_fci
 
 import logging
@@ -79,9 +79,9 @@ class Tests(unittest.TestCase):
         # Preparación global, se ejecuta una vez antes de ejecutar cualquier caso de prueba
         print(f"Inicializando recursos globales")
         # suscription backtesting dat
-        cls.suscripcion = get_suscripcion()
+        cls.suscripcion = get_uni_suscripcion()
         cls.id_suscri = None
-        cls.rescate = get_rescate()
+        cls.rescate = get_uni_rescate()
         cls.id_rescate = None
 
     @classmethod

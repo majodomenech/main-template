@@ -1,6 +1,6 @@
 #!python3
 
-def get_suscripcion():
+def get_uni_suscripcion():
     data_sus = {
           "contexto": {
                 "modalidad": "BILATERAL",
@@ -19,7 +19,7 @@ def get_suscripcion():
     }
     return data_sus
 
-def get_rescate():
+def get_uni_rescate():
     data_res = {
             "contexto": {
                 "modalidad": "BILATERAL",

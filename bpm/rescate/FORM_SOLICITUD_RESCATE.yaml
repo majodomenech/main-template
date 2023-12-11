@@ -9,6 +9,8 @@ hints:
     - fecha
     - cuenta
     - array_solicitud_pendiente
+  feedback:
+    "Calcular": "run:INSTFCI/CALCULAR_CP"
   validation: "run:INSTFCI/VALIDAR"
 required:
 - fecha
@@ -67,6 +69,14 @@ properties:
             rowStart: true
             rowEnd: true
             subtype: expression
+  ____expr____calculos:
+    type: string
+    title: Cálculos
+    hints:
+      rowStart: true
+      rowEnd: true
+      subtype: expression
+      value: "#!run:INSTFCI/TEMPLATE_CALCULAR_CP"
   ___expr____solicitud_confirmada:
     type: boolean
     title: Solicitud Confirmada
