@@ -45,4 +45,4 @@ if __name__ == "__main__":
     cuenta_id = bpm.context['cuenta']
     cuenta_denominacion = get_caption(cuenta_id)
 
-    bpm.execution.setVariable(idProcessInstance, 'cuenta_denominacion', cuenta_denominacion)
+    bpm.execution.setVariable('cuenta_denominacion', cuenta_denominacion)

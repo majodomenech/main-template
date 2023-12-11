@@ -24,8 +24,6 @@ requests_log.setLevel(logging.DEBUG)
 requests_log.propagate = True
 
 
-
-
 def formatear(milisegundos):
     #leer el formato original
     segundos = milisegundos / 1000.0
@@ -109,7 +107,7 @@ if __name__ == '__main__':
 
         if len(array_solicitudes_pendientes) == 0:
             print(len(array_solicitudes_pendientes))
-            bpm.execution.setVariable('terminado', True)
+            # bpm.execution.setVariable('terminado', True)
         # else:
         #     bpm.execution.setVariable('terminado', False)
         # bpm.execution.setVariable('array_solicitud_pendiente', array_solicitudes_pendientes)

@@ -41,16 +41,16 @@ def get_backtesting_subscription_data(bpm):
                                              {"fondo": "[14298] CAFCI1018 - FCI MAF PESOS PLUS CL.A", "moneda": "ARS","cantidad" : 2, "integra_comitente" : False},
                                              {"fondo": "[14305] CAFCI550-1113 - FCI MAF ACCIONES ARGENTINAS B.", "moneda": "ARS","cantidad" : 3, "integra_comitente" : False}
                                              ]
-    bpm.context.cuenta = "[141390] DIAZ, JUAN o Simpson, Kraken "
+    bpm.context.cuenta = "141390"
     bpm.context.initiator = "lbessone"
     bpm.context.processInstanceId = '1'
     bpm.context['fecha.getTime()'] = 1702263600000
 
 def get_backtesting_redemption_data(bpm):
     bpm.context.array_solicitud_pendiente = [{"fondo": " [14325] CAFCI461-887 - Cohen Abierto Pymes - Clase A.",
-                                              "moneda": "ARS", "cantidad": 1, "integra_comitente": false}
+                                              "moneda": "ARS", "cantidad": 1, "integra_comitente": False}
                                              ]
-    bpm.context.cuenta = "[145196] JUAN AUNE"
+    bpm.context.cuenta = "145196"
     bpm.context.initiator = "lbessone"
     bpm.context.processInstanceId = '1'
     bpm.context['fecha.getTime()'] = 1702263600000
