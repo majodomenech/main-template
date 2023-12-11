@@ -36,22 +36,21 @@ def get_rescate():
         }
     return data_res
 
-def get_backtesting_data(bpm):
-    bpm.context.array_solicitud_pendiente = [{"fondo": "[14221] CAFCI747-1638 - Galileo Income - Clase A", "moneda": "ARS","cantidad" : 1, "integra_comitente" : "false"},
-                                             {"fondo": "[14221] CAFCI747-1638 - Galileo Income - Clase A", "moneda": "ARS","cantidad" : 1, "integra_comitente" : "false"},
-                                             {"fondo": "[14221] CAFCI747-1638 - Galileo Income - Clase A", "moneda": "ARS","cantidad" : 1, "integra_comitente" : "false"},
-                                             {"fondo": "[14221] CAFCI747-1638 - Galileo Income - Clase A", "moneda": "ARS","cantidad" : 1, "integra_comitente" : "false"},
-                                             {"fondo": "[14221] CAFCI747-1638 - Galileo Income - Clase A",
-                                              "moneda": "ARS", "cantidad": 1, "integra_comitente": "false"},
-                                             {"fondo": "[14221] CAFCI747-1638 - Galileo Income - Clase A",
-                                              "moneda": "ARS", "cantidad": 1, "integra_comitente": "false"},
-                                             {"fondo": "[14221] CAFCI747-1638 - Galileo Income - Clase A",
-                                              "moneda": "ARS", "cantidad": 1, "integra_comitente": "false"},
-                                             {"fondo": "[14221] CAFCI747-1638 - Galileo Income - Clase A",
-                                              "moneda": "ARS", "cantidad": 1, "integra_comitente": "false"}
+def get_backtesting_subscription_data(bpm):
+    bpm.context.array_solicitud_pendiente = [{"fondo": " [14325] CAFCI461-887 - Cohen Abierto Pymes - Clase A.", "moneda": "ARS","cantidad" : 1, "integra_comitente" : "false"},
+                                             {"fondo": "[14298] CAFCI1018 - FCI MAF PESOS PLUS CL.A", "moneda": "ARS","cantidad" : 2, "integra_comitente" : "false"},
+                                             {"fondo": "[14305] CAFCI550-1113 - FCI MAF ACCIONES ARGENTINAS B.", "moneda": "ARS","cantidad" : 3, "integra_comitente" : "false"}
                                              ]
-    bpm.context.cuenta = "[5003436] LALA"
+    bpm.context.cuenta = "[141390] DIAZ, JUAN o Simpson, Kraken "
     bpm.context.initiator = "lbessone"
     bpm.context.processInstanceId = '1'
     bpm.context['fecha.getTime()'] = 123250111100000
-    # bpm.context.moneda = 'ARS'
+
+def get_backtesting_redemption_data(bpm):
+    bpm.context.array_solicitud_pendiente = [{"fondo": " [14325] CAFCI461-887 - Cohen Abierto Pymes - Clase A.",
+                                              "moneda": "ARS", "cantidad": 1, "integra_comitente": "false"}
+                                             ]
+    bpm.context.cuenta = "[145196] JUAN AUNE"
+    bpm.context.initiator = "lbessone"
+    bpm.context.processInstanceId = '1'
+    bpm.context['fecha.getTime()'] = 1702303422337

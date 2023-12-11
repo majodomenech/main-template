@@ -9,7 +9,7 @@ import http.client as http_client
 import re
 import sys
 sys.path.append('../backtesting')
-from backtest_data import get_backtesting_data
+from backtest_data import get_backtesting_subscription_data
 import pytz
 http_client.HTTPConnection.debuglevel = 1
 #initialize logging
@@ -42,7 +42,7 @@ if __name__ == '__main__':
         # el form manda la fecha en milisegundos al proceso
         # y el proceso la guarda como fecha de java
         # -> uso .getTime() para obtener los milisegundos
-        get_backtesting_data(bpm)
+        get_backtesting_subscription_data(bpm)
         fecha = formatear(bpm.context['fecha.getTime()'])
         cuenta = bpm.context['cuenta']
         array_solicitudes_pendientes = bpm.context['array_solicitud_pendiente']
