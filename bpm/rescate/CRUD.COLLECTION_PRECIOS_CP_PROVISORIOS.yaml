@@ -2,10 +2,10 @@ name: CRUD.INSTFCI/COLLECTION_PRECIOS_CP_PROVISORIOS
 caption: Precios CP Provisorios
 viewBindings: []
 columns:
-- name: participantes
-  caption: Participantes
+- name: fci_codigo
+  caption: FCI
   fieldType: java.lang.String
-- name: llamadas_diarias
+- name: precio_cp_provisorio
   caption: Llamadas diarias
   fieldType: java.math.BigInteger
 keys:
@@ -15,11 +15,10 @@ targetUsers: []
 targetGroups:
 - ADMIN
 dataSourceOptions:
-  collection: CRMCTO/TEAM_COMERCIALES
+  collection: INSTFCI/TEAM_COMERCIALES
 details: []
 reports: []
 services: []
 scripts: []
 context: {}
 exportable: false
-

@@ -1,14 +1,10 @@
 type: object
-title: Teams Comerciales
+title: Precios CP Provisorios
 hints:
   fieldOrder:
-  - area_name
-  - team_name
-  - coordinadores
-  - participantes
-  - llamadas_diarias
-  - status
-  idExpression: .team_name
+  - fci_codigo
+  - precio_cp_provisorio
+  idExpression: .fci_codigo
 properties:
   fci_codigo:
     type: string
@@ -18,5 +14,5 @@ properties:
       rowEnd: true
       valueProvider: "INSTFCI/QRY_FCI"
   precio_cp_provisorio:
-    type: string
+    type: number
     title: Nombre del Área
