@@ -2,17 +2,15 @@ type: object
 title: Precios CP Provisorios
 hints:
   fieldOrder:
-  - fci_codigo
+  - fci_deno
   - precio_cp_provisorio
   idExpression: .fci_codigo
 properties:
-  fci_codigo:
+  fci_deno:
     type: string
     title: FCI
     hints:
-      rowStart: true
-      rowEnd: true
       valueProvider: "INSTFCI/QRY_FCI"
   precio_cp_provisorio:
     type: number
-    title: Nombre del Área
+    title: Precio CP Provisorio

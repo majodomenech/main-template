@@ -5,7 +5,7 @@ view: |
     uu."REPRESENTACION" as caption
   from "UNI_UNIDAD" uu
     inner join "UNI_TIPO_TITULO" utt on uu."TIPOTITULO" = utt."UNI_TIPO_TITULO_ID"
-  where utt."NOMBRE" like 'Fondos de Inversión'
+  where uu."CLASS" like '%UFondoComunInversion'
 columns:
 - name: id
   caption: Id
