@@ -53,14 +53,23 @@ def get_cotizacion_cafci(fci_id, class_id):
 
 def get_cotizacion_provisoria(conn, id_fondo):
     sql = """
-        select cotizacion from ds.fondos where id_fondo = %s
+        with cp_collection as (
+            select 
+                SUBSTRING(id FROM POSITION('[' IN id) + 1 FOR POSITION(']' IN id) - POSITION('[' IN id) - 1) AS fondo_id,
+                body#>>'{precio_cp_provisorio}' as vcp_provisorio
+            from document.document
+            where collection like 'INSTFCI/COLLECTION_PRECIOS_CP_PROVISORIOS'
+        )
+        select * 
+        from cp_collection
+        where fondo_id = %s
     """
 
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     cur.execute(sql, (id_fondo,))
-    cotizacion = cur.fetchone()['cotizacion']
+    qry = cur.fetchone()
     cur.close()
-    return cotizacion
+    return qry['fecha'], qry['vcp_provisorio']
 
 
 if __name__ == '__main__':
@@ -85,5 +94,4 @@ if __name__ == '__main__':
     else:
         conn = _get_flw_connection('flowable')
 
-    fecha, precio_cp = get_cotizacion_provisoria(conn, id_fondo)
-    print(fecha)
+    fecha, vcp_provisorio = get_cotizacion_provisoria(conn, id_fondo)
