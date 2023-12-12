@@ -2,7 +2,7 @@ name: CRUD.INSTFCI/COLLECTION_PRECIOS_CP_PROVISORIOS
 caption: Precios CP Provisorios
 viewBindings: []
 columns:
-- name: fci_deno
+- name: codigo_fci
   caption: FCI
   fieldType: java.lang.String
 - name: precio_cp_provisorio
@@ -16,7 +16,7 @@ targetUsers: []
 targetGroups:
 - OPB
 dataSourceOptions:
-  collection: INSTFCI/TEAM_COMERCIALES
+  collection: INSTFCI/COLLECTION_PRECIOS_CP_PROVISORIOS
 details: []
 reports: []
 services: []

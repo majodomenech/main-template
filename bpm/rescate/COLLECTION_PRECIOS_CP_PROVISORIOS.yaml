@@ -2,11 +2,11 @@ type: object
 title: Precios CP Provisorios
 hints:
   fieldOrder:
-  - fci_deno
+  - codigo_fci
   - precio_cp_provisorio
-  idExpression: .fci_codigo
+  idExpression: .codigo_fci
 properties:
-  fci_deno:
+  codigo_fci:
     type: string
     title: FCI
     hints:
