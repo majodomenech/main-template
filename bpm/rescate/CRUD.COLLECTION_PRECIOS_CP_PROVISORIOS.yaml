@@ -9,6 +9,10 @@ columns:
   caption: Precio CP Provisorio
   fieldType: java.math.BigDecimal
   format: "0.000000"
+- name: tiempo_actualización
+  caption: Tiempo de actualización
+  fieldType: java.util.Date
+  format: HH:mm:ss
 keys:
 - id
 sortables: []

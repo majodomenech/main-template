@@ -42,7 +42,7 @@ if __name__ == '__main__':
         # el form manda la fecha en milisegundos al proceso
         # y el proceso la guarda como fecha de java
         # -> uso .getTime() para obtener los milisegundos
-        get_backtesting_subscription_data(bpm)
+        # get_backtesting_subscription_data(bpm)
         fecha = formatear(bpm.context['fecha.getTime()'])
         cuenta = bpm.context['cuenta']
         array_solicitudes_pendientes = bpm.context['array_solicitud_pendiente']
@@ -54,10 +54,10 @@ if __name__ == '__main__':
         print(array_solicitudes_pendientes)
 
         for solicitud in array_solicitudes_pendientes:
-            fondo_deno = solicitud['fondo']
-            fondo_id = re.search(r'([\d]+)', fondo_deno).group(1)
-            print(40*'/')
-            print(40 * fondo_id)
+            fondo_id = solicitud['fondo']
+            # fondo_id = re.search(r'([\d]+)', fondo_deno).group(1)
+            # print(40*'/')
+            # print(40 * fondo_id)
 
             moneda = solicitud['moneda']
             cantidad = solicitud['cantidad']

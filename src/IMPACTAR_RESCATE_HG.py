@@ -44,10 +44,10 @@ if __name__ == '__main__':
             array_solicitudes_confirmadas = []
 
         for solicitud in array_solicitudes_pendientes:
-            fondo_deno = solicitud['fondo']
-            fondo_id = re.search(r'([\d]+)', fondo_deno).group(1)
-            print(40*'/')
-            print(40 * fondo_id)
+            fondo_id = solicitud['fondo']
+            # fondo_id = re.search(r'([\d]+)', fondo_deno).group(1)
+            # print(40*'/')
+            # print(40 * fondo_id)
 
             rescateDinero = solicitud['rescate_dinero']
             cantidadImporte = solicitud['cantidad_importe']

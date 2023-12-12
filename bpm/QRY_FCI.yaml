@@ -14,7 +14,7 @@ columns:
   caption: Denominación
   fieldType: java.lang.String
 keys:
-- caption
+- id
 targetUsers:
 - INTERNAL
 dataSource: SYC
