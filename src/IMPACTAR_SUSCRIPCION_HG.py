@@ -54,10 +54,10 @@ if __name__ == '__main__':
         print(array_solicitudes_pendientes)
 
         for solicitud in array_solicitudes_pendientes:
-            fondo_id = solicitud['fondo']
-            # fondo_id = re.search(r'([\d]+)', fondo_deno).group(1)
-            # print(40*'/')
-            # print(40 * fondo_id)
+            fondo_deno = solicitud['fondo']
+            fondo_id = re.search(r'([\d]+)', fondo_deno).group(1)
+            print(40*'/')
+            print(40 * fondo_id)
 
             moneda = solicitud['moneda']
             cantidad = solicitud['cantidad']
