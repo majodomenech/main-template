@@ -6,21 +6,26 @@ hints:
   - precio_cp_provisorio
   - fecha_cotizacion
   idExpression: .codigo_fci
+  feedback:
+    "__up_date": "run:INSTFCI/COLLECTION_UP_DATE"
 properties:
   codigo_fci:
     type: string
     title: FCI
     hints:
       valueProvider: "INSTFCI/QRY_FCI"
+      readonly: true
   precio_cp_provisorio:
     type: number
     title: Precio CP Provisorio
+    hints:
+      dependents:
+      - "@__up_date"
   fecha_cotizacion:
     title: Fecha cotización
     type: integer
     hints:
       subtype: timestamp
-      readOnly: true
       rowStart: true
       rowEnd: true
     default: now
