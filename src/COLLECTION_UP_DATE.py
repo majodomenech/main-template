@@ -1,4 +1,4 @@
-#!python3https://meet.google.com/zvu-xjqc-psd?authuser=3
+#!python3
 from datetime import datetime
 import time
 import redflagbpm
