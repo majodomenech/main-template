@@ -5,14 +5,15 @@ columns:
 - name: codigo_fci
   caption: FCI
   fieldType: java.lang.String
+  width: 2
 - name: precio_cp_provisorio
   caption: Precio CP Provisorio
   fieldType: java.math.BigDecimal
   format: "0.000000"
-- name: tiempo_actualización
-  caption: Tiempo de actualización
+- name: fecha_cotizacion
+  caption: Fecha de cotización
   fieldType: java.util.Date
-  format: HH:mm:ss
+  format: dd/MM/yyyy HH:mm:ss
 keys:
 - id
 sortables: []

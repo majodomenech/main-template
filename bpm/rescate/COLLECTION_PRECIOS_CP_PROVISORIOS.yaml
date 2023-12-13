@@ -4,6 +4,7 @@ hints:
   fieldOrder:
   - codigo_fci
   - precio_cp_provisorio
+  - fecha_cotizacion
   idExpression: .codigo_fci
 properties:
   codigo_fci:
@@ -14,8 +15,8 @@ properties:
   precio_cp_provisorio:
     type: number
     title: Precio CP Provisorio
-  tiempo_actualización:
-    title: Tiempo de actualización
+  fecha_cotizacion:
+    title: Fecha cotización
     type: integer
     hints:
       subtype: timestamp
