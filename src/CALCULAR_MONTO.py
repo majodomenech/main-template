@@ -4,7 +4,7 @@ import redflagbpm
 import sys
 sys.path.append('../backtesting')
 from backtest_data import get_backtesting_redemption_data
-from GET_COTIZACIONES import get_cotizacion_cafci, get_cotizacion_provisoria, get_fci_simbolo_local
+from GET_COTIZACIONES import get_cotizacion_cafci, get_cotizacion_provisoria
 import re
 from DB import _get_hg_connection, _get_flw_connection
 
@@ -45,7 +45,7 @@ def get_cotiz_dict(fondo_deno):
         cotiz_dict['precio'] = manual_cotiz['vcp_provisorio']
     else:
         cotiz_dict['fecha_cotizacion'] = cafci_dict['fecha_cotizacion']
-        cotiz_dict['precio'] = cafci_dict['vcpUnitario']
+        cotiz_dict['precio'] = float(cafci_dict['vcpUnitario'])
 
     return cotiz_dict
 
@@ -53,9 +53,19 @@ def get_cotiz_dict(fondo_deno):
 def crearDistri(cotiz_dict):
     if cotiz_dict != None:
         ret = "<table class=\"tg\">"
-        ret += "<tr><th class=\"tg-0lax center bold gray\">COMITENTE</th><th class=\"tg-0lax center bold gray\">CANTIDAD</th></tr>"
-        # for c in cotiz_dict.items():
-        ret += f"<tr><td class=\"tg-0lax center\">{cotiz_dict['fecha_cotizacion']}</td><td class=\"tg-0lax center\">{cotiz_dict['monto']}</td></tr>"
+        ret += (
+            "<tr>"
+                "<th class=\"tg-0lax center bold gray\">Fecha cotización</th>"
+                "<th class=\"tg-0lax center bold gray\">Cotización CP</th>"
+                "<th class=\"tg-0lax center bold gray\">Monto</th>"
+            "</tr>"
+                )
+
+        ret += (f"<tr>"
+                f"<td class=\"tg-0lax center\">{cotiz_dict['fecha_cotizacion']}</td>"
+                f"<td class=\"tg-0lax center\">{cotiz_dict['precio']}</td>"
+                f"<td class=\"tg-0lax center\">{cotiz_dict['monto']}</td>"
+                f"</tr>")
         ret += "</table>"
 
         return ret
@@ -76,9 +86,23 @@ if __name__ == '__main__':
         cotiz_dict['monto'] = monto
 
 
+        html = """
+        <div>
+            <style type="text/css">
+            .tg  {border-collapse:collapse;border-spacing:0;margin:0px auto; width:100%;}
+            .tg td{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;
+              overflow:hidden;padding:10px 5px;word-break:normal;}
+            .tg th{border-color:black;border-style:solid;border-width:1px;font-family:Arial, sans-serif;font-size:14px;overflow:hidden;padding:10px 5px;word-break:normal;}
+            .tg .tg-0lax{text-align:left;vertical-align:top;}
+            .center{text-align:center !important;}
+            .bold{font-weight:700;}
+            .gray{background-color: lightgray;}
+            .fiftyw{width:52.5%;}
+            .leftp{padding-left: 30px !important;}
+            </style> """+f"""{crearDistri(cotiz_dict)}
+        </div>
+        """
 
-    html = f"""
-        {crearDistri(cotiz_dict)}
-    """
+        solicitud['calculos'] = html
 
-    array_solicitud_pendiente['calculos'] = html
+    bpm.context.input['array_solicitud_pendiente'] = array_solicitud_pendiente

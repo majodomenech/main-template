@@ -43,6 +43,7 @@ properties:
           - fondo
           - cantidad_importe
           - rescate_dinero
+          - calculos
           - error
         titlePlural: Solicitudes Pendientes
       title: ""
