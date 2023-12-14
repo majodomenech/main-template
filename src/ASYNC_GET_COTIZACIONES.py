@@ -1,8 +1,8 @@
 #!python3
 import asyncio
 import json
-import requests
-import requests
+import requests_async as requests
+# import requests
 import json
 import redflagbpm
 import re
@@ -25,13 +25,14 @@ def get_fci_simbolo_local(conn, id_fondo):
     cur.close()
     conn.close()
     return qry["simbolo_local"]
+
 async def get_cotizacion_cafci(fci_id, class_id):
     url_base = "https://api.cafci.org.ar/fondo"
     url = f"{url_base}/{fci_id}/clase/{class_id}/ficha"
     headers = {
         'Accept': 'application/json, text/plain, */*'
     }
-    response = requests.get(url, headers=headers)
+    response = await requests.get(url, headers=headers)
     data = json.loads(response.content)['data']['info']['diaria']['actual']
 
     return data
