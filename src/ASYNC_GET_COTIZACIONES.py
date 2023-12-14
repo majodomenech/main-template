@@ -76,7 +76,8 @@ async def main(fci, clase, id_fondo):
         conn = _get_flw_connection('flowabletest')
     else:
         conn = _get_flw_connection('flowable')
-    await asyncio.gather(get_cotizaciones_1(fci, clase), get_cotizaciones_2(conn, id_fondo))
+    res = await asyncio.gather(get_cotizaciones_1(fci, clase), get_cotizaciones_2(conn, id_fondo))
+    return res
 
 
 if __name__ == '__main__':
