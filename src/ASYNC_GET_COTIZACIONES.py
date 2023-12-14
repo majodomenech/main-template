@@ -1,4 +1,7 @@
 #!python3
+import asyncio
+import json
+import requests
 import requests
 import json
 import redflagbpm
@@ -21,7 +24,6 @@ def get_fci_simbolo_local(conn, id_fondo):
     cur.close()
     conn.close()
     return qry["simbolo_local"]
-
 async def get_cotizacion_cafci(fci_id, class_id):
     url_base = "https://api.cafci.org.ar/fondo"
     url = f"{url_base}/{fci_id}/clase/{class_id}/ficha"
@@ -55,50 +57,26 @@ async def get_cotizacion_provisoria(conn, id_fondo):
     cur.close()
     return qry
 
+async def get_cotizaciones_1(fci_id, class_id):
+    cotizacion = await get_cotizacion_cafci(fci_id=fci_id, class_id=class_id)
+    return cotizacion
+
+async def get_cotizaciones_2(conn, id_fondo):
+    cotizacion = await get_cotizacion_provisoria(conn=conn, id_fondo=id_fondo)
+    return cotizacion
+
+async def main(fci, clase, id_fondo):
+    await asyncio.gather(get_cotizaciones_1(fci, clase), get_cotizaciones_2(1, 2))
+
 
 if __name__ == '__main__':
-    bpm = redflagbpm.BPMService()
-    # id_fondo = bpm.context['id_fondo']
-    id_fondo = '14410'
     conn = _get_hg_connection('syc')
-    #BUSCO COTIZACION CAFCI#####
+    id_fondo = '14410'
     # Busco el simbolo local en DB HG usando el codigo CV
     simbolo_local = get_fci_simbolo_local(conn, id_fondo)
     # extraigo el codigo de fci y clase
     matches = re.search(r'CAFCI(\d+)-(\d+)', simbolo_local)
     fci = matches.group(1)
     clase = matches.group(2)
-    # obtengo la cotizacion de la API de CAFCI
-    cafci_dict = dict(get_cotizacion_cafci(fci, clase))
 
-    # agrego manualmente hora a la fecha en formato dd/MM/yyyy HH:mm:ss
-    cafci_dict['fecha_cotizacion'] = cafci_dict['fecha'] + ' 23:59:59'
-    print('CAFCI: \n', cafci_dict)
-
-    ##########################
-
-
-    ###BUSCO COTIZACION PROVISORIA#####
-    if bpm.service.text("STAGE") == 'DEV':
-        conn = _get_flw_connection('flowabletest')
-    else:
-        conn = _get_flw_connection('flowable')
-    #read from get_cotizacion_provisoria and recover values
-    manual_cotiz = get_cotizacion_provisoria(conn, id_fondo)
-    print('COTIZ MANUALES: \n', manual_cotiz)
-
-    ###COMPARO LAS COTIZ EN BASE A LA FECHA######
-    cotiz_dict = {}
-    if manual_cotiz['fecha_cotizacion_manual'] > cafci_dict['fecha_cotizacion']:
-       cotiz_dict['fecha_cotizacion'] = manual_cotiz['fecha_cotizacion_manual']
-       cotiz_dict['precio'] = manual_cotiz['vcp_provisorio']
-    else:
-       cotiz_dict['fecha_cotizacion'] = cafci_dict['fecha_cotizacion']
-       cotiz_dict['precio'] = cafci_dict['vcpUnitario']
-
-    print(cotiz_dict)
-
-
-
-
-
+    asyncio.run(main(fci , clase, id_fondo))
