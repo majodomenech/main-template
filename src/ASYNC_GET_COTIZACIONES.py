@@ -9,6 +9,7 @@ import re
 import psycopg2, psycopg2.extras
 from auxiliar import formatear
 from DB import _get_hg_connection, _get_flw_connection
+import time
 
 def get_fci_simbolo_local(conn, id_fondo):
     sql = """
@@ -58,18 +59,28 @@ async def get_cotizacion_provisoria(conn, id_fondo):
     return qry
 
 async def get_cotizaciones_1(fci_id, class_id):
+    print("Antes de CAFCI")
     cotizacion = await get_cotizacion_cafci(fci_id=fci_id, class_id=class_id)
+    print("Después de CAFCI")
     return cotizacion
 
 async def get_cotizaciones_2(conn, id_fondo):
+    print("Antes de PROVISORIA")
     cotizacion = await get_cotizacion_provisoria(conn=conn, id_fondo=id_fondo)
+    print("Después de PROVISORIA")
     return cotizacion
 
 async def main(fci, clase, id_fondo):
-    await asyncio.gather(get_cotizaciones_1(fci, clase), get_cotizaciones_2(1, 2))
+    bpm = redflagbpm.BPMService()
+    if bpm.service.text("STAGE") == 'DEV':
+        conn = _get_flw_connection('flowabletest')
+    else:
+        conn = _get_flw_connection('flowable')
+    await asyncio.gather(get_cotizaciones_1(fci, clase), get_cotizaciones_2(conn, id_fondo))
 
 
 if __name__ == '__main__':
+    start = time.perf_counter()
     conn = _get_hg_connection('syc')
     id_fondo = '14410'
     # Busco el simbolo local en DB HG usando el codigo CV
@@ -78,5 +89,8 @@ if __name__ == '__main__':
     matches = re.search(r'CAFCI(\d+)-(\d+)', simbolo_local)
     fci = matches.group(1)
     clase = matches.group(2)
+    args = [fci, clase, id_fondo]
 
-    asyncio.run(main(fci , clase, id_fondo))
+    cafci, provisoria = asyncio.run(main(*args))
+    end = time.perf_counter() - start
+    print(f"Program finished in {end:0.2f} seconds.")

@@ -6,6 +6,7 @@ import re
 import psycopg2, psycopg2.extras
 from auxiliar import formatear
 from DB import _get_hg_connection, _get_flw_connection
+import time
 
 def get_fci_simbolo_local(conn, id_fondo):
     sql = """
@@ -22,7 +23,7 @@ def get_fci_simbolo_local(conn, id_fondo):
     conn.close()
     return qry["simbolo_local"]
 
-async def get_cotizacion_cafci(fci_id, class_id):
+def get_cotizacion_cafci(fci_id, class_id):
     url_base = "https://api.cafci.org.ar/fondo"
     url = f"{url_base}/{fci_id}/clase/{class_id}/ficha"
     headers = {
@@ -33,7 +34,7 @@ async def get_cotizacion_cafci(fci_id, class_id):
 
     return data
 
-async def get_cotizacion_provisoria(conn, id_fondo):
+def get_cotizacion_provisoria(conn, id_fondo):
     sql = """
         with cp_collection as (
             select 
@@ -57,6 +58,7 @@ async def get_cotizacion_provisoria(conn, id_fondo):
 
 
 if __name__ == '__main__':
+    start = time.perf_counter()
     bpm = redflagbpm.BPMService()
     # id_fondo = bpm.context['id_fondo']
     id_fondo = '14410'
@@ -96,7 +98,12 @@ if __name__ == '__main__':
        cotiz_dict['fecha_cotizacion'] = cafci_dict['fecha_cotizacion']
        cotiz_dict['precio'] = cafci_dict['vcpUnitario']
 
+
     print(cotiz_dict)
+    end = time.perf_counter() - start
+    print(f"Program finished in {end:0.2f} seconds.")
+
+
 
 
 
