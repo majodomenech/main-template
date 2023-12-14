@@ -4,10 +4,12 @@ import re
 
 import redflagbpm
 from endpoints_hg import login, rescate_fci
-from auxiliar import procesar_respuesta
+from auxiliar import procesar_respuesta, formatear
 from datetime import datetime
 import logging
 import http.client as http_client
+
+
 http_client.HTTPConnection.debuglevel = 1
 #initialize logging
 logging.basicConfig()
@@ -16,14 +18,7 @@ requests_log = logging.getLogger("requests.packages.urllib3")
 requests_log.setLevel(logging.DEBUG)
 requests_log.propagate = True
 
-def formatear(milisegundos):
-    #leer el formato original
-    segundos = milisegundos / 1000.0
-    fecha_hora = datetime.fromtimestamp(segundos)
 
-    nuevo_formato = "%d/%m/%Y %H:%M:%S"
-    fecha_formateada = fecha_hora.strftime(nuevo_formato)
-    return fecha_formateada
 
 if __name__ == '__main__':
     bpm = redflagbpm.BPMService()
