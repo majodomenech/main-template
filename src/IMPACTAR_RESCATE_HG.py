@@ -1,7 +1,9 @@
 #!python3
 import json
 import re
-
+import sys
+sys.path.append('../backtesting')
+from backtest_data import get_backtesting_redemption_data
 import redflagbpm
 from endpoints_hg import login, rescate_fci
 from auxiliar import procesar_respuesta, formatear
@@ -28,8 +30,9 @@ if __name__ == '__main__':
         else:
             url_base = f''
         token = login(url_base)
-
-        fecha = bpm.context['fecha']
+        #todo unncoment in local tests only
+        get_backtesting_redemption_data(bpm)
+        fecha = formatear(bpm.context['fecha.getTime()'])
         cuenta = bpm.context['cuenta']
 
         array_solicitudes_pendientes = bpm.context['array_solicitud_pendiente']
@@ -41,30 +44,43 @@ if __name__ == '__main__':
         for solicitud in array_solicitudes_pendientes:
             fondo_deno = solicitud['fondo']
             fondo_id = re.search(r'([\d]+)', fondo_deno).group(1)
-            print(40*'/')
-            print(40 * fondo_id)
 
             rescateDinero = solicitud['rescate_dinero']
             cantidadImporte = solicitud['cantidad_importe']
 
+            if bpm.service.text("STAGE") == 'DEV':
 
-            data_res = {
-                "contexto": {
-                    "modalidad": "BILATERAL",
-                    "origen": "S&C",
-                    "acdi": "000"
-                },
-                "solicitud": {
-                    "fechaSolicitud": fecha,
-                    "cuentaComitente": "145196",
-                    "fondo": "14300",
-                    "rescateDinero": rescateDinero,
-                    "cantidadImporte": cantidadImporte
+                data_res = {
+                    "contexto": {
+                        "modalidad": "BILATERAL",
+                        "origen": "S&C",
+                        "acdi": "000"
+                    },
+                    "solicitud": {
+                        "fechaSolicitud": fecha,
+                        "cuentaComitente": "145196",
+                        "fondo": "14300",
+                        "rescateDinero": rescateDinero,
+                        "cantidadImporte": cantidadImporte
+                    }
                 }
-            }
+            else:
+                data_res = {
+                    "contexto": {
+                        "modalidad": "BILATERAL",
+                        "origen": "S&C",
+                        "acdi": "000"
+                    },
+                    "solicitud": {
+                        "fechaSolicitud": fecha,
+                        "cuentaComitente": cuenta,
+                        "fondo": fondo_id,
+                        "rescateDinero": rescateDinero,
+                        "cantidadImporte": cantidadImporte
+                    }
+                }
 
-
-            response = rescate_fci(url_base, token, data_res)
+            response = rescate_fci(token=token, url_base=url_base, data=data_res)
 
             resp_alta_ok, mje = procesar_respuesta(response, 'Rescate: Alta')
             if not resp_alta_ok:
@@ -75,10 +91,11 @@ if __name__ == '__main__':
 
 
         if len(array_solicitudes_pendientes) == 0:
-            bpm.execution.setVariable('terminado', True)
-        else:
-            bpm.execution.setVariable('terminado', False)
-        bpm.execution.setVariable('array_solicitud_pendiente', array_solicitudes_pendientes)
-        bpm.execution.setVariable('array_solicitud_confirmada', array_solicitudes_confirmadas)
+            pass
+        #     bpm.execution.setVariable('terminado', True)
+        # else:
+        #     bpm.execution.setVariable('terminado', False)
+        # bpm.execution.setVariable('array_solicitud_pendiente', array_solicitudes_pendientes)
+        # bpm.execution.setVariable('array_solicitud_confirmada', array_solicitudes_confirmadas)
     except:
         bpm.fail()

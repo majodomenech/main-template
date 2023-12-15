@@ -41,6 +41,7 @@ def suscribir(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_soli
     cantidad = solicitud['cantidad']
     integraComitente = solicitud['integra_comitente']
 
+
     data = {
         "contexto": {
             "modalidad": "BILATERAL",
@@ -51,12 +52,13 @@ def suscribir(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_soli
             "fechaSolicitud": fecha,
             "cuentaComitente": cuenta,
             "fondo": fondo_id,
-            "especieMoneda": "ARS",
+            "especieMoneda": moneda,
             "cantidad": cantidad,
             "integraComitente": integraComitente,
             "aceptaReglamento": True
         }
     }
+
     logging.info('Thread %s: starting', name)
     response = suscripcion_fci(token, url_base, data)
     time.sleep(5)
@@ -80,9 +82,9 @@ if __name__ == '__main__':
             url_base = f''
 
         token = login(url_base)
+        #todo unncoment in local tests only
+        # get_backtesting_subscription_data(bpm)
 
-        # en pruebas locales uso backtesting data
-        get_backtesting_subscription_data(bpm)
         # el form manda la fecha en milisegundos al proceso
         # y el proceso la guarda como fecha de java
         # -> uso .getTime() para obtener los milisegundos
@@ -107,10 +109,11 @@ if __name__ == '__main__':
 
         if len(array_solicitudes_pendientes) == 0:
             print(len(array_solicitudes_pendientes))
-            # bpm.execution.setVariable('terminado', True)
-        # else:
-        #     bpm.execution.setVariable('terminado', False)
-        # bpm.execution.setVariable('array_solicitud_pendiente', array_solicitudes_pendientes)
-        # bpm.execution.setVariable('array_solicitud_confirmada', array_solicitudes_confirmadas)
+            # todo coment in local tests only
+            bpm.execution.setVariable('terminado', True)
+        else:
+            bpm.execution.setVariable('terminado', False)
+        bpm.execution.setVariable('array_solicitud_pendiente', array_solicitudes_pendientes)
+        bpm.execution.setVariable('array_solicitud_confirmada', array_solicitudes_confirmadas)
     except:
         bpm.fail()

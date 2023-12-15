@@ -86,4 +86,4 @@ properties:
       subtype: expression
       rowStart: true
       rowEnd: true
-      value: "#!run:INSTFCI/TEMPLATE_RESCATE_CONFIRMADO"
+      value: "#!run:INSTFCI/TEMPLATE_SOLICITUD_RESCATE_CONFIRMADO"
