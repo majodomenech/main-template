@@ -41,23 +41,40 @@ def suscribir(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_soli
     cantidad = solicitud['cantidad']
     integraComitente = solicitud['integra_comitente']
 
-
-    data = {
-        "contexto": {
-            "modalidad": "BILATERAL",
-            "origen": "S&C",
-            "acdi": "000"
-        },
-        "solicitud": {
-            "fechaSolicitud": fecha,
-            "cuentaComitente": cuenta,
-            "fondo": fondo_id,
-            "especieMoneda": moneda,
-            "cantidad": cantidad,
-            "integraComitente": integraComitente,
-            "aceptaReglamento": True
+    if bpm.service.text("STAGE") == 'DEV':
+        data = {
+            "contexto": {
+                "modalidad": "BILATERAL",
+                "origen": "S&C",
+                "acdi": "000"
+            },
+            "solicitud": {
+                "fechaSolicitud": fecha,
+                "cuentaComitente": '141390',
+                "fondo": '14298',
+                "especieMoneda": moneda,
+                "cantidad": cantidad,
+                "integraComitente": integraComitente,
+                "aceptaReglamento": True
+            }
         }
-    }
+    else:
+        data = {
+            "contexto": {
+                "modalidad": "BILATERAL",
+                "origen": "S&C",
+                "acdi": "000"
+            },
+            "solicitud": {
+                "fechaSolicitud": fecha,
+                "cuentaComitente": cuenta,
+                "fondo": fondo_id,
+                "especieMoneda": moneda,
+                "cantidad": cantidad,
+                "integraComitente": integraComitente,
+                "aceptaReglamento": True
+            }
+        }
 
     logging.info('Thread %s: starting', name)
     response = suscripcion_fci(token, url_base, data)
@@ -97,7 +114,6 @@ if __name__ == '__main__':
             array_solicitudes_confirmadas = []
 
 
-
         thread_list = []
         i = 1
         with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
@@ -108,7 +124,6 @@ if __name__ == '__main__':
                 i+=1
 
         if len(array_solicitudes_pendientes) == 0:
-            print(len(array_solicitudes_pendientes))
             # todo coment in local tests only
             bpm.execution.setVariable('terminado', True)
         else:
