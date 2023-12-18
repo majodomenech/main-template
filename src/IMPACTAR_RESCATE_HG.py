@@ -31,7 +31,7 @@ if __name__ == '__main__':
             url_base = f''
         token = login(url_base)
         #todo unncoment in local tests only
-        get_backtesting_redemption_data(bpm)
+        # get_backtesting_redemption_data(bpm)
         fecha = formatear(bpm.context['fecha.getTime()'])
         cuenta = bpm.context['cuenta']
 
@@ -91,7 +91,6 @@ if __name__ == '__main__':
 
 
         if len(array_solicitudes_pendientes) == 0:
-            pass
             bpm.execution.setVariable('terminado', True)
         else:
             bpm.execution.setVariable('terminado', False)
