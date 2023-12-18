@@ -92,10 +92,10 @@ if __name__ == '__main__':
 
         if len(array_solicitudes_pendientes) == 0:
             pass
-        #     bpm.execution.setVariable('terminado', True)
-        # else:
-        #     bpm.execution.setVariable('terminado', False)
-        # bpm.execution.setVariable('array_solicitud_pendiente', array_solicitudes_pendientes)
-        # bpm.execution.setVariable('array_solicitud_confirmada', array_solicitudes_confirmadas)
+            bpm.execution.setVariable('terminado', True)
+        else:
+            bpm.execution.setVariable('terminado', False)
+        bpm.execution.setVariable('array_solicitud_pendiente', array_solicitudes_pendientes)
+        bpm.execution.setVariable('array_solicitud_confirmada', array_solicitudes_confirmadas)
     except:
         bpm.fail()
