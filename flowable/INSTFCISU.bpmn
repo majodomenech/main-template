@@ -31,23 +31,23 @@
       </extensionElements>
     </userTask>
     <sequenceFlow id="sid-5A2716DB-76F7-422B-BA28-EB39B2BEEEBB" sourceRef="sid-65EC28E5-007E-4062-9F59-67CFE8919E3E" targetRef="sid-7D07330A-8DF1-4A47-BD1F-87751593A5FD"></sequenceFlow>
-    <scriptTask id="sid-7D95A7E8-6928-4E6F-A2D3-D62AEF19A6B4" name="Impactar suscripción en HG" scriptFormat="code" flowable:autoStoreVariables="false">
+    <scriptTask id="sid-7D95A7E8-6928-4E6F-A2D3-D62AEF19A6B4" name="Impactar suscripción en HG" default="sid-ACA65652-0E4E-438C-8292-F34E7E21D217" scriptFormat="code" flowable:autoStoreVariables="false">
       <script><![CDATA[INSTFCI/IMPACTAR_SUSCRIPCION_HG]]></script>
     </scriptTask>
     <endEvent id="sid-0D8F1CBA-E9F5-4EBF-A88A-42AF558A3704"></endEvent>
-    <exclusiveGateway id="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA" default="sid-B6B0F4FC-F730-4738-876C-70B930B27337"></exclusiveGateway>
-    <sequenceFlow id="sid-ACA65652-0E4E-438C-8292-F34E7E21D217" sourceRef="sid-7D95A7E8-6928-4E6F-A2D3-D62AEF19A6B4" targetRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${terminado==false}]]></conditionExpression>
-    </sequenceFlow>
+    <exclusiveGateway id="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA"></exclusiveGateway>
     <exclusiveGateway id="sid-E5F49CB8-0183-4A24-AA74-0265423521B5" default="sid-65DF001B-D5E9-4B46-8850-EFF71211E28A"></exclusiveGateway>
     <sequenceFlow id="sid-A5FF3049-90FB-4B14-93AE-3288DB0CA3DB" sourceRef="sid-7D07330A-8DF1-4A47-BD1F-87751593A5FD" targetRef="sid-E5F49CB8-0183-4A24-AA74-0265423521B5"></sequenceFlow>
-    <sequenceFlow id="sid-B6B0F4FC-F730-4738-876C-70B930B27337" sourceRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA" targetRef="sid-0D8F1CBA-E9F5-4EBF-A88A-42AF558A3704"></sequenceFlow>
     <sequenceFlow id="sid-23613DDD-241E-4A86-8A35-39B9242ACA1A" sourceRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA" targetRef="sid-AA341290-7481-4584-A200-9367E3C301D6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${terminado==false}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="sid-65DF001B-D5E9-4B46-8850-EFF71211E28A" sourceRef="sid-E5F49CB8-0183-4A24-AA74-0265423521B5" targetRef="sid-7D95A7E8-6928-4E6F-A2D3-D62AEF19A6B4"></sequenceFlow>
     <sequenceFlow id="sid-1EF88971-A295-4F82-8EF5-35D5E5445512" sourceRef="sid-E5F49CB8-0183-4A24-AA74-0265423521B5" targetRef="sid-AA341290-7481-4584-A200-9367E3C301D6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${execution.getVariable("tipoResultado")=="corregir"}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-B6B0F4FC-F730-4738-876C-70B930B27337" sourceRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA" targetRef="sid-0D8F1CBA-E9F5-4EBF-A88A-42AF558A3704"></sequenceFlow>
+    <sequenceFlow id="sid-ACA65652-0E4E-438C-8292-F34E7E21D217" sourceRef="sid-7D95A7E8-6928-4E6F-A2D3-D62AEF19A6B4" targetRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${terminado==false}]]></conditionExpression>
     </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_INSTFCISU">
