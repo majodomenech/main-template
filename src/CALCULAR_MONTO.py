@@ -32,7 +32,7 @@ def get_cotiz_dict(fondo_deno):
     if bpm.service.text("STAGE") == 'DEV':
         conn = _get_connection(bpm)
     else:
-        #todo: rebvisar cómo se comporta en prod
+        #todo: revisar cómo se comporta en prod
         conn = _get_connection('flowable')
     # read from get_cotizacion_provisoria and recover values
     manual_cotiz = get_cotizacion_provisoria(conn, id_fondo)

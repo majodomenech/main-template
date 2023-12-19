@@ -1,6 +1,5 @@
 #!python3
 import time
-
 import redflagbpm
 from endpoints_hg import login, rescate_fci
 from auxiliar import procesar_respuesta
@@ -10,11 +9,9 @@ import http.client as http_client
 import re
 import sys
 sys.path.append('../backtesting')
-from backtest_data import get_backtesting_subscription_data
+from backtest_data import get_backtesting_redemption_data
 import threading
-
 import concurrent.futures
-
 
 http_client.HTTPConnection.debuglevel = 1
 format = "%(asctime)s: %(message)s"
@@ -37,8 +34,9 @@ def formatear(milisegundos):
 
 def rescatar(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_solicitudes_confirmadas, name):
     fondo_deno = solicitud['fondo']
+    print(fondo_deno)
     fondo_id = re.search(r'([\d]+)', fondo_deno).group(1)
-
+    print(fondo_id)
     rescateDinero = solicitud['rescate_dinero']
     cantidadImporte = solicitud['cantidad_importe']
 

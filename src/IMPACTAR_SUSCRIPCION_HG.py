@@ -1,6 +1,5 @@
 #!python3
 import time
-
 import redflagbpm
 from endpoints_hg import login, suscripcion_fci
 from auxiliar import procesar_respuesta
@@ -13,7 +12,6 @@ sys.path.append('../backtesting')
 from backtest_data import get_backtesting_subscription_data
 import threading
 import concurrent.futures
-
 
 http_client.HTTPConnection.debuglevel = 1
 format = "%(asctime)s: %(message)s"
