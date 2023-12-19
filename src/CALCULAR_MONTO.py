@@ -30,8 +30,9 @@ def get_cotiz_dict(fondo_deno):
 
     ###BUSCO COTIZACION PROVISORIA#####
     if bpm.service.text("STAGE") == 'DEV':
-        conn = _get_connection('flowabletest')
+        conn = _get_connection(bpm)
     else:
+        #todo: rebvisar cómo se comporta en prod
         conn = _get_connection('flowable')
     # read from get_cotizacion_provisoria and recover values
     manual_cotiz = get_cotizacion_provisoria(conn, id_fondo)
@@ -84,9 +85,6 @@ if __name__ == '__main__':
 
         monto = cotiz_dict['precio'] * cantidad_importe
 
-        # print(monto)
-        # print(type(cotiz_dict['precio']))
-        # print(cotiz_dict['precio'])
 
         # Set the locale to 'es_AR' for Argentina
         locale.setlocale(locale.LC_ALL, 'es_AR.utf8')

@@ -2,7 +2,7 @@
 import time
 
 import redflagbpm
-from endpoints_hg import login, suscripcion_fci
+from endpoints_hg import login, rescate_fci
 from auxiliar import procesar_respuesta
 from datetime import datetime
 import logging
@@ -12,6 +12,7 @@ import sys
 sys.path.append('../backtesting')
 from backtest_data import get_backtesting_subscription_data
 import threading
+
 import concurrent.futures
 
 
