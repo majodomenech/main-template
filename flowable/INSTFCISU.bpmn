@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:flowable="http://flowable.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.flowable.org/processdef">
-  <process id="INSTFCISU" name="[INSTFCISU] Instrucción de Suscripción" isExecutable="true" flowable:candidateStarterGroups="OPE,OPB,COMINO">
+  <process id="INSTFCISU" name="[INSTFCISU] Instrucción de Suscripción" isExecutable="true" flowable:candidateStarterGroups="OPE,OPB,COMINO,ADMIN">
     <startEvent id="startEvent1" flowable:initiator="initiator" flowable:formFieldValidation="true"></startEvent>
     <userTask id="sid-AA341290-7481-4584-A200-9367E3C301D6" name="Solicitar suscripción" flowable:assignee="${initiator}" flowable:formKey="INSTFCI/FORM_SOLICITUD_SUSCRIPCION" flowable:formFieldValidation="true">
       <extensionElements>
