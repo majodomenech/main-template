@@ -6,22 +6,21 @@ import redflagbpm
 import sys
 sys.path.append('../backtesting')
 from backtest_data import get_backtesting_redemption_data
-from GET_COTIZACIONES import get_cotizacion_cafci, get_cotizacion_provisoria
+from GET_COTIZACIONES import get_cotizacion_cafci, get_cotizacion_provisoria, get_fci_simbolo_local
 import re
 from DB import _get_hg_connection, _get_connection
 
 
 def get_cotiz_dict(fondo_deno):
     # BUSCO COTIZACION CAFCI#####
-    # extraigo el codigo de fci, el id cafci y el id clase
-    matches = re.search(r'(\d+)] CAFCI(\d+)-(\d+)', fondo_deno)
-    print(3*'\n', fondo_deno, 3*'\n')
+    # extraigo el codigo de fci
+    matches = re.search(r'(\d+)', fondo_deno)
     id_fondo= matches.group(1)
-    cafci_id = matches.group(2)
-    id_clase = matches.group(3)
-    print(3 * '\n', id_fondo, 3 * '\n')
+    # del simbolo local obtengo: el id cafci y el id clase
+    cafci_id, id_clase = get_fci_simbolo_local(conn=_get_hg_connection(bpm), id_fondo=id_fondo)
+
     # obtengo la cotizacion de la API de CAFCI
-    cafci_dict = dict(get_cotizacion_cafci(cafci_id, id_clase))
+    cafci_dict = dict(get_cotizacion_cafci(fci_id=cafci_id, class_id=id_clase))
 
     # agrego manualmente hora a la fecha en formato dd/MM/yyyy HH:mm:ss
     cafci_dict['fecha_cotizacion'] = cafci_dict['fecha'] + ' 23:59:59'
