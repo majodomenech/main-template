@@ -31,7 +31,7 @@ if __name__ == '__main__':
             url_base = f''
         token = login(url_base)
         #todo unncoment in local tests only
-        get_backtesting_redemption_data(bpm)
+        # get_backtesting_redemption_data(bpm)
         fecha = formatear(bpm.context['fecha.getTime()'])
         cuenta = bpm.context['cuenta']
 
@@ -49,7 +49,6 @@ if __name__ == '__main__':
             cantidadImporte = solicitud['cantidad_importe']
 
             if bpm.service.text("STAGE") == 'DEV':
-
                 data_res = {
                     "contexto": {
                         "modalidad": "BILATERAL",

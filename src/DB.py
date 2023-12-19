@@ -1,23 +1,14 @@
 #!python3
 
-import psycopg2, psycopg2.extras
+from redflagbpm import BPMService
+from redflagbpm import PgUtils
 
-def _get_hg_connection(DB):
-    #Manual connection, no config file
-    conn = psycopg2.connect(database=DB,
-                        user="consyc",
-                        password="MTU1NDNjN2ZlZGU4ZDdhNDBhZTM2MjA2",
-                        host="db.sycinversiones.com",
-                        port="5432")
+def _get_hg_connection(bpm: BPMService):
+    conn = PgUtils.get_connection(bpm, "SYC")
     conn.autocommit = True
     return conn
 
-def _get_flw_connection(DB):
-    #Manual connection, no config file
-    conn = psycopg2.connect(database=DB,
-                            user="flowable",
-                            password="flowable",
-                            host="db.sycinversiones.com",
-                            port="5432")
+def _get_connection(bpm: BPMService):
+    conn = PgUtils.get_connection(bpm, "FLW")
     conn.autocommit = True
     return conn

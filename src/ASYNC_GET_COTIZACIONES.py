@@ -8,7 +8,7 @@ import redflagbpm
 import re
 import psycopg2, psycopg2.extras
 from auxiliar import formatear
-from DB import _get_hg_connection, _get_flw_connection
+from DB import _get_hg_connection, _get_connection
 import time
 
 def get_fci_simbolo_local(conn, id_fondo):
@@ -74,16 +74,18 @@ async def get_cotizaciones_2(conn, id_fondo):
 async def main(fci, clase, id_fondo):
     bpm = redflagbpm.BPMService()
     if bpm.service.text("STAGE") == 'DEV':
-        conn = _get_flw_connection('flowabletest')
+        conn = _get_connection(bpm)
     else:
-        conn = _get_flw_connection('flowable')
+        #todo: revisar cómo se comporta esta conexión
+        conn = _get_connection('flowable')
     res = await asyncio.gather(get_cotizaciones_1(fci, clase), get_cotizaciones_2(conn, id_fondo))
     return res
 
 
 if __name__ == '__main__':
+    bpm = redflagbpm.BPMService()
     start = time.perf_counter()
-    conn = _get_hg_connection('syc')
+    conn = _get_hg_connection(bpm)
     id_fondo = '14410'
     # Busco el simbolo local en DB HG usando el codigo CV
     simbolo_local = get_fci_simbolo_local(conn, id_fondo)

@@ -1,4 +1,6 @@
 #!python3
+import locale
+
 import redflagbpm
 
 import sys
@@ -6,13 +8,11 @@ sys.path.append('../backtesting')
 from backtest_data import get_backtesting_redemption_data
 from GET_COTIZACIONES import get_cotizacion_cafci, get_cotizacion_provisoria
 import re
-from DB import _get_hg_connection, _get_flw_connection
+from DB import _get_hg_connection, _get_connection
 
 
 def get_cotiz_dict(fondo_deno):
-    conn = _get_hg_connection('syc')
     # BUSCO COTIZACION CAFCI#####
-
     # extraigo el codigo de fci, el id cafci y el id clase
     matches = re.search(r'(\d+)] CAFCI(\d+)-(\d+)', fondo_deno)
     id_fondo= matches.group(1)
@@ -30,9 +30,9 @@ def get_cotiz_dict(fondo_deno):
 
     ###BUSCO COTIZACION PROVISORIA#####
     if bpm.service.text("STAGE") == 'DEV':
-        conn = _get_flw_connection('flowabletest')
+        conn = _get_connection('flowabletest')
     else:
-        conn = _get_flw_connection('flowable')
+        conn = _get_connection('flowable')
     # read from get_cotizacion_provisoria and recover values
     manual_cotiz = get_cotizacion_provisoria(conn, id_fondo)
 
@@ -83,8 +83,19 @@ if __name__ == '__main__':
         cotiz_dict = get_cotiz_dict(fondo_deno)
 
         monto = cotiz_dict['precio'] * cantidad_importe
-        cotiz_dict['monto'] = monto
 
+        # print(monto)
+        # print(type(cotiz_dict['precio']))
+        # print(cotiz_dict['precio'])
+
+        # Set the locale to 'es_AR' for Argentina
+        locale.setlocale(locale.LC_ALL, 'es_AR.utf8')
+        # Format the number according to the locale
+        formatted_monto = locale.format_string("%.2f", monto, grouping=True)
+        cotiz_dict['monto'] = formatted_monto
+
+        formatted_precio = locale.format_string("%.2f", cotiz_dict['precio'], grouping=True)
+        cotiz_dict['precio'] = formatted_precio
 
         html = """
         <div>
