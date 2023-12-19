@@ -15,10 +15,11 @@ def get_cotiz_dict(fondo_deno):
     # BUSCO COTIZACION CAFCI#####
     # extraigo el codigo de fci, el id cafci y el id clase
     matches = re.search(r'(\d+)] CAFCI(\d+)-(\d+)', fondo_deno)
+    print(3*'\n', fondo_deno, 3*'\n')
     id_fondo= matches.group(1)
     cafci_id = matches.group(2)
     id_clase = matches.group(3)
-
+    print(3 * '\n', id_fondo, 3 * '\n')
     # obtengo la cotizacion de la API de CAFCI
     cafci_dict = dict(get_cotizacion_cafci(cafci_id, id_clase))
 
