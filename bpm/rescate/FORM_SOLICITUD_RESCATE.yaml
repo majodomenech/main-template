@@ -9,6 +9,7 @@ hints:
     - fecha
     - cuenta
     - array_solicitud_pendiente
+    - ___expr____solicitud_confirmada
   feedback:
     "Calcular": "run:INSTFCI/CALCULAR_MONTO"
   validation: "run:INSTFCI/VALIDAR"
@@ -79,7 +80,7 @@ properties:
             rowEnd: true
             subtype: expression
   ___expr____solicitud_confirmada:
-    type: boolean
+    type: string
     title: Solicitud Confirmada
     default: false
     hints:

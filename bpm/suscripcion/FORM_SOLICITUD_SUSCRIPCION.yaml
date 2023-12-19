@@ -9,6 +9,7 @@ hints:
     - fecha
     - cuenta
     - array_solicitud_pendiente
+    - ___expr____solicitud_confirmada
   validation: "run:INSTFCI/VALIDAR"
 #  feedback:
 #    "__MonedaDefault": "run:INSTFCI/COMPLETAR_MONEDA"
@@ -86,4 +87,4 @@ properties:
       subtype: expression
       rowStart: true
       rowEnd: true
-      value: "#!run:INSTFCI/TEMPLATE_SUSCRIPCION_CONFIRMADA"
+      value: "#!run:INSTFCI/TEMPLATE_SOLICITUD_SUSCRIPCION_CONFIRMADA"

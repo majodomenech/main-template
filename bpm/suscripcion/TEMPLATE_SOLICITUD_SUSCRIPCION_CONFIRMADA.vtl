@@ -17,21 +17,23 @@
     #if(${array_solicitud_confirmada}):
         <b>Resumen orden:</b><br/>
         <div class="datos2">
-            <div class="cell"><b>Fecha solicitud:</b> $!{fecha}</div>
+            <div class="cell"><b>Fecha solicitud:</b> ${fecha}</div>
             <div class="cell"><b>Cuenta:</b> ${cuenta}</div>
         </div>
         <div class="datos2">
                 <table>
                     <tr>
                     <th style="text-align:left;width:25%">Fondo</th>
-                    <th style="text-align:right;width:25%">Cuotapartes</th>
-                    <th style="text-align:right;width:25%">Rescate dinero</th>
+                    <th style="text-align:right;width:25%">Cantidad</th>
+                    <th style="text-align:right;width:25%">Moneda</th>
+                    <th style="text-align:right;width:25%">Integra comitente</th>
                     </tr>
                     #foreach($solicitud in $array_solicitud_confirmada.getList())
                         <tr>
                           <td style="text-align:left">$!{solicitud.fondo}</td>
-                          <td style="text-align:right">$!{String.format($Locale_ES,"%,.2f",${solicitud.cantidad_importe.doubleValue()})}</td>
-                          <td style="text-align:right">$!{solicitud.rescate_dinero}</td>
+                          <td style="text-align:right">$!{String.format($Locale_ES,"%,.2f",${solicitud.cantidad.doubleValue()})}</td>
+                          <td style="text-align:right">$!{solicitud.moneda}</td>
+                          <td style="text-align:right">$!{solicitud.integra_comitente}</td>
                         </tr>
                     #end
                 </table>

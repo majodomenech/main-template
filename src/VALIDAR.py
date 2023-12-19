@@ -12,3 +12,6 @@ except:
 
 if len(array_solicitud_pendiente) == 0:
     bpm.fail(error)
+
+#validación para rescates
+# bpm.context['array_solicitud_pendiente']['cantidad_importe']
