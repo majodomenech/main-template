@@ -73,10 +73,10 @@ def rescatar(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_solic
 
     logging.info('Thread %s: starting', name)
     response = rescate_fci(token=token, url_base=url_base, data=data)
-    time.sleep(5)
-    resp_alta_ok, mje = procesar_respuesta(response, 'Rescate Alta:')
+    # time.sleep(5)
+    # resp_alta_ok, mje = procesar_respuesta(response, 'Rescate Alta:')
     # backtesting si no anda hg test
-    # resp_alta_ok, mje = True, None
+    resp_alta_ok, mje = False, "error inventado"
     if not resp_alta_ok:
         solicitud["error"] = mje
     else:

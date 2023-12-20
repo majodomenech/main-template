@@ -76,7 +76,7 @@ def suscribir(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_soli
 
     logging.info('Thread %s: starting', name)
     response = suscripcion_fci(token, url_base, data)
-    time.sleep(5)
+    # time.sleep(5)
     resp_alta_ok, mje = procesar_respuesta(response, 'Suscripcion Alta:')
     # backtesting si no anda hg test
     # resp_alta_ok, mje = True, None
