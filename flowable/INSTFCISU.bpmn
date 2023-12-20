@@ -4,6 +4,7 @@
     <startEvent id="startEvent1" flowable:initiator="initiator" flowable:formFieldValidation="true"></startEvent>
     <userTask id="sid-AA341290-7481-4584-A200-9367E3C301D6" name="Solicitar suscripción" flowable:assignee="${initiator}" flowable:formKey="INSTFCI/FORM_SOLICITUD_SUSCRIPCION" flowable:formFieldValidation="true">
       <extensionElements>
+        <flowable:formProperty id="COMPLETED_MESSAGE" name="COMPLETED_MESSAGE" type="string" expression="${message}" readable="false" writable="false" required="true"></flowable:formProperty>
         <modeler:activiti-idm-initiator xmlns:modeler="http://flowable.org/modeler"><![CDATA[true]]></modeler:activiti-idm-initiator>
       </extensionElements>
     </userTask>
