@@ -14,8 +14,8 @@
 .mt-porMonto{background:#bf9000;color:white;}
 </style>
 <div>
-    #if($array_solicitud_confirmada.size() > 0)
-        <b>Resumen orden:</b><br/>
+    #if($array_solicitud_confirmada && $array_solicitud_confirmada.size() > 0)
+        <b>Solicitudes confirmadas:</b><br/>
         <div class="datos2">
             <div class="cell"><b>Fecha solicitud:</b> ${fecha}</div>
             <div class="cell"><b>Cuenta:</b> ${cuenta}</div>
