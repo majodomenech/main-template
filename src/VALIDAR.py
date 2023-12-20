@@ -19,5 +19,7 @@ if tipoResultado == "finalizar":
     message = "Tarea cancelada"
 elif tipoResultado == "guardar":
     message = "Solicitud procesada"
+
+bpm.context.input['message'] = message
 #validación para rescates
 # bpm.context['array_solicitud_pendiente']['cantidad_importe']
