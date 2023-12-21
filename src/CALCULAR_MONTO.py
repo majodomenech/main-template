@@ -75,6 +75,7 @@ if __name__ == '__main__':
     bpm = redflagbpm.BPMService()
     #todo: comment the following outside local tests
     # get_backtesting_redemption_data(bpm)
+    calcular_solicitar_string = ""
     array_solicitud_pendiente = bpm.context['array_solicitud_pendiente']
 
     for solicitud in array_solicitud_pendiente:
@@ -84,6 +85,9 @@ if __name__ == '__main__':
         cotiz_dict = get_cotiz_dict(fondo_deno)
 
         monto = cotiz_dict['precio'] * cantidad_importe
+        #saving to original array
+        solicitud['precio'] = cotiz_dict['precio']
+        solicitud['monto'] = monto
 
 
         # Set the locale to 'es_AR' for Argentina
@@ -94,6 +98,7 @@ if __name__ == '__main__':
 
         formatted_precio = locale.format_string("%.2f", cotiz_dict['precio'], grouping=True)
         cotiz_dict['precio'] = formatted_precio
+        calcular_solicitar_string += f"{fondo_deno}_{cantidad_importe}_{monto}"
 
         html = """
         <div>
@@ -111,13 +116,18 @@ if __name__ == '__main__':
             </style> """+f"""{crearDistri(cotiz_dict)}
         </div>
         """
-
         solicitud['calculos'] = html
-    print(f"ARRAY SOLICITUD PENDIENTE: {array_solicitud_pendiente}")
+
+    print(f"ARRAY SOLICITUD PENDIENTE: \n{array_solicitud_pendiente}")
+
+    bpm.context.input['array_solicitud_pendiente'] = array_solicitud_pendiente
+    bpm.context.input['calcular_solicitar_string'] = calcular_solicitar_string
+
+    #debugging
     try:
         array_solicitud_confirmada = bpm.context.input['array_solicitud_confirmada']
-        print(array_solicitud_confirmada)
+        print(f"ARRAY SOLICITUD CONFIRMADA: \n{array_solicitud_confirmada}")
     except KeyError:
         print("El array_solicitud_confirmada no existe")
 
-    bpm.context.input['array_solicitud_pendiente'] = array_solicitud_pendiente
+
