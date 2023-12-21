@@ -5,6 +5,7 @@ bpm = redflagbpm.BPMService()
 error = '[[[No hay solicitudes pendientes]]]'
 try:
     array_solicitud_pendiente = bpm.context.input['array_solicitud_pendiente']
+    print(f"VALIDAR: validación para rescates sobre cantidad: {[i for i in bpm.context['array_solicitud_pendiente']]}")
     if array_solicitud_pendiente is None:
         bpm.fail(error)
 except:
@@ -22,5 +23,5 @@ else:
 
 bpm.context.input['message'] = message
 #validación para rescates
-print(f"VALIDAR: validación para rescates: {bpm.context['array_solicitud_pendiente']['cantidad_importe']}")
+
 # bpm.context['array_solicitud_pendiente']['cantidad_importe']

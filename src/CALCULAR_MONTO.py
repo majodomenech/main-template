@@ -113,7 +113,7 @@ if __name__ == '__main__':
         """
 
         solicitud['calculos'] = html
-    print(array_solicitud_pendiente)
+    print(f"ARRAY SOLICITUD PENDIENTE: {array_solicitud_pendiente}")
     try:
         array_solicitud_confirmada = bpm.context.input['array_solicitud_confirmada']
         print(array_solicitud_confirmada)
