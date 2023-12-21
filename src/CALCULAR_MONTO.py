@@ -113,5 +113,11 @@ if __name__ == '__main__':
         """
 
         solicitud['calculos'] = html
+    print(array_solicitud_pendiente)
+    try:
+        array_solicitud_confirmada = bpm.context.input['array_solicitud_confirmada']
+        print(array_solicitud_confirmada)
+    except KeyError:
+        print("El array_solicitud_confirmada no existe")
 
     bpm.context.input['array_solicitud_pendiente'] = array_solicitud_pendiente

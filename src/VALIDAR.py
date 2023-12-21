@@ -17,9 +17,10 @@ if len(array_solicitud_pendiente) == 0:
 tipoResultado = bpm.context.input['tipoResultado']
 if tipoResultado == "finalizar":
     message = "Tarea cancelada"
-elif tipoResultado == "guardar":
+else:
     message = "Solicitud procesada"
 
 bpm.context.input['message'] = message
 #validación para rescates
+print(f"VALIDAR: validación para rescates: {bpm.context['array_solicitud_pendiente']['cantidad_importe']}")
 # bpm.context['array_solicitud_pendiente']['cantidad_importe']
