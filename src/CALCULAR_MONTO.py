@@ -123,11 +123,5 @@ if __name__ == '__main__':
     bpm.context.input['array_solicitud_pendiente'] = array_solicitud_pendiente
     bpm.context.input['calcular_solicitar_string'] = calcular_solicitar_string
 
-    #debugging
-    try:
-        array_solicitud_confirmada = bpm.context.input['array_solicitud_confirmada']
-        print(f"ARRAY SOLICITUD CONFIRMADA: \n{array_solicitud_confirmada}")
-    except KeyError:
-        print("El array_solicitud_confirmada no existe")
 
 
