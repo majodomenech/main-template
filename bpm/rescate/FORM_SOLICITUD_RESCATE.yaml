@@ -65,6 +65,8 @@ properties:
         cantidad_importe:
           title: Cuotapartes
           type: number
+          dependents:
+            - "@__Clean"
         rescate_dinero:
           title: Rescate en Dinero
           type: boolean
