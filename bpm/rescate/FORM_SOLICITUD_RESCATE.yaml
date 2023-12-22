@@ -13,8 +13,13 @@ hints:
   feedback:
     "Calcular": "run:INSTFCI/CALCULAR_MONTO"
     "__Clean": |
-      #!python
-      input.put('calculos', None)
+      #!python3
+      import redflagbpm
+      bpm = redflagbpm.BPMService()
+      array_solicitud_pendiente = bpm.context.input['array_solicitud_pendiente']
+      for solicitud in array_solicitud_pendiente:
+          solicitud['calculos'] = None
+      bpm.context.input['array_solicitud_pendiente'] = array_solicitud_pendiente
   validation: "run:INSTFCI/VALIDAR"
 required:
 - fecha
@@ -65,8 +70,9 @@ properties:
         cantidad_importe:
           title: Cuotapartes
           type: number
-          dependents:
-            - "@__Clean"
+          hints:
+            dependents:
+              - "@__Clean"
         rescate_dinero:
           title: Rescate en Dinero
           type: boolean
