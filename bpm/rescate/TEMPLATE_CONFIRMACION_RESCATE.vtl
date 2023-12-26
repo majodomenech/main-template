@@ -29,7 +29,7 @@
                 #foreach($solicitud in $array_solicitud_pendiente.getList())
                     <tr>
                       <td style="text-align:left">$!{solicitud.fondo}</td>
-                      <td style="text-align:right">$!{String.format($Locale_ES,"%,.2f",${solicitud.cantidad_importe.doubleValue()})}</td>
+                      <td style="text-align:right">$!{String.format($Locale_ES,"%,.6f",${solicitud.cantidad_importe.doubleValue()})}</td>
                       #if(${solicitud.rescate_dinero})
                           <td style="text-align:right">Si </td>
                       #else

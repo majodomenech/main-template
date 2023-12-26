@@ -111,20 +111,24 @@ if __name__ == '__main__':
             #lo agrego al diccionario de cotiz formateado
             cotiz_dict['monto'] = formatted_monto
             print(f'MONTO!: \n{monto}')
-        elif monto is not None and cantidad_importe is None:
+        elif monto is not None and (cantidad_importe is None or cantidad_importe == monto/cotiz_dict['precio']):
             cantidad_importe = monto/cotiz_dict['precio']
-            solicitud['cantidad_importe'] = cantidad_importe
-            # Format the number according to the locale
-            formatted_monto = locale.format_string("%.2f", monto, grouping=True)
+            # Truncate to 6 decimal places without rounding
+            truncated_number = int(cantidad_importe * 1e6) / 1e6
+            # Format nominal and amount according to the locale
+            # formatted_cantidad_importe = locale.format_string("%.6f", cantidad_importe, grouping=True)
+            solicitud['cantidad_importe'] = truncated_number
+
+            formatted_monto = locale.format_string("%.6f", monto, grouping=True)
             #lo agrego al diccionario de cotiz formateado
             cotiz_dict['monto'] = formatted_monto
         else:
-            error = "Cargar Monto o cuotapartes pero no ambos"
+            error = "[[[Cargar Monto o cuotapartes pero no ambos]]]"
             bpm.fail(error)
         #saving precio to original array
         solicitud['precio'] = cotiz_dict['precio']
         #formateando el precio
-        formatted_precio = locale.format_string("%.2f", cotiz_dict['precio'], grouping=True)
+        formatted_precio = locale.format_string("%.6f", cotiz_dict['precio'], grouping=True)
         cotiz_dict['precio'] = formatted_precio
         #completando el string de validacion
         calcular_solicitar_string += f"{fondo_deno}_{cantidad_importe}_{monto}"

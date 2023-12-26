@@ -30,6 +30,7 @@ def custom_message(tipoResultado):
     bpm.context.input['message'] = message
 
 
+
 if __name__ == '__main__':
     bpm = redflagbpm.BPMService()
     validar_solicitudes_no_vacias(bpm)

@@ -35,7 +35,8 @@ def formatear(milisegundos):
 def rescatar(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_solicitudes_confirmadas, name):
     fondo_deno = solicitud['fondo']
     fondo_id = re.search(r'([\d]+)', fondo_deno).group(1)
-    rescateDinero = solicitud['rescate_dinero']
+    # rescateDinero = solicitud['rescate_dinero']
+    rescateDinero = False
     cantidadImporte = solicitud['cantidad_importe']
 
     if bpm.service.text("STAGE") == 'DEV':

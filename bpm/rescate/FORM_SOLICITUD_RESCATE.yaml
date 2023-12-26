@@ -12,13 +12,29 @@ hints:
     - ___expr____solicitud_confirmada
   feedback:
     "Calcular": "run:INSTFCI/CALCULAR"
-    "__Clean": |
+    "__Clean_calc": |
       #!python3
       import redflagbpm
       bpm = redflagbpm.BPMService()
       array_solicitud_pendiente = bpm.context.input['array_solicitud_pendiente']
       for solicitud in array_solicitud_pendiente:
           solicitud['calculos'] = None
+      bpm.context.input['array_solicitud_pendiente'] = array_solicitud_pendiente
+    "__Clean_monto": |
+      #!python3
+      import redflagbpm
+      bpm = redflagbpm.BPMService()
+      array_solicitud_pendiente = bpm.context.input['array_solicitud_pendiente']
+      for solicitud in array_solicitud_pendiente:
+          solicitud['monto'] = None
+      bpm.context.input['array_solicitud_pendiente'] = array_solicitud_pendiente
+    "__Clean_cp": |
+      #!python3
+      import redflagbpm
+      bpm = redflagbpm.BPMService()
+      array_solicitud_pendiente = bpm.context.input['array_solicitud_pendiente']
+      for solicitud in array_solicitud_pendiente:
+          solicitud['cantidad_importe'] = None
       bpm.context.input['array_solicitud_pendiente'] = array_solicitud_pendiente
   validation: "run:INSTFCI/VALIDAR"
 required:
@@ -66,16 +82,22 @@ properties:
           hints:
             valueProvider: "INSTFCI/QRY_FCI"
             dependents:
-              - "@__Clean"
+              - "@__Clean_calc"
         cantidad_importe:
           title: Cuotapartes
           type: number
           hints:
+            format: '#,##0.000'
             dependents:
-              - "@__Clean"
+              - "@__Clean_calc"
+              - "@__Clean_monto"
         monto:
           title: Monto
           type: number
+          hints:
+            dependents:
+              - "@__Clean_cp"
+              - "@__Clean_calc"
 #        rescate_dinero:
 #          title: Rescate en Dinero
 #          type: boolean
