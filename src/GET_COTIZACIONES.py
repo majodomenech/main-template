@@ -38,21 +38,3 @@ def get_cotizacion_provisoria(conn, id_fondo):
     cur.close()
     return qry
 
-def get_fci_simbolo_local(conn, id_fondo):
-    sql = """
-      select uu."SIMBOLOLOCAL" as simbolo_local
-      from "UNI_UNIDAD" uu
-        inner join "UNI_TIPO_TITULO" utt on uu."TIPOTITULO" = utt."UNI_TIPO_TITULO_ID"
-      where uu."CLASS" like '%%UFondoComunInversion'
-      and uu."CODIGO" like %s
-    """
-    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-    cur.execute(sql, (id_fondo,))
-    qry = cur.fetchone()
-
-    cur.close()
-    conn.close()
-    matches = re.search(r'(\d+)-(\d+)', qry["simbolo_local"])
-    cafci_id = matches.group(1)
-    clase_id = matches.group(2)
-    return cafci_id, clase_id

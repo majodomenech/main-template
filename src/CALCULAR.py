@@ -6,18 +6,17 @@ import redflagbpm
 import sys
 sys.path.append('../backtesting')
 from backtest_data import get_backtesting_redemption_data
-from GET_COTIZACIONES import get_cotizacion_cafci, get_cotizacion_provisoria, get_fci_simbolo_local
+from GET_COTIZACIONES import get_cotizacion_cafci, get_cotizacion_provisoria
+from GET_FCI_INFO import get_moneda_fondo, get_fci_simbolo_local
 import re
 from DB import _get_hg_connection, _get_connection
 
 
-def get_cotiz_dict(fondo_deno):
+def get_cotiz_dict(codigo_fci):
     # BUSCO COTIZACION CAFCI#####
-    # extraigo el codigo de fci
-    matches = re.search(r'(\d+)', fondo_deno)
-    id_fondo= matches.group(1)
+
     # del simbolo local obtengo: el id cafci y el id clase
-    cafci_id, id_clase = get_fci_simbolo_local(conn=_get_hg_connection(bpm), id_fondo=id_fondo)
+    cafci_id, id_clase = get_fci_simbolo_local(conn=_get_hg_connection(bpm), id_fondo=codigo_fci)
 
     # obtengo la cotizacion de la API de CAFCI
     cafci_dict = dict(get_cotizacion_cafci(fci_id=cafci_id, class_id=id_clase))
@@ -35,7 +34,7 @@ def get_cotiz_dict(fondo_deno):
         #todo: revisar cómo se comporta en prod
         conn = _get_connection('flowable')
     # read from get_cotizacion_provisoria and recover values
-    manual_cotiz = get_cotizacion_provisoria(conn, id_fondo)
+    manual_cotiz = get_cotizacion_provisoria(conn, codigo_fci)
 
 
     ###COMPARO LAS COTIZ EN BASE A LA FECHA######
@@ -58,6 +57,7 @@ def crearDistri(cotiz_dict):
             "<tr>"
                 "<th class=\"tg-0lax center bold gray\">Fecha cotización</th>"
                 "<th class=\"tg-0lax center bold gray\">Cotización CP</th>"
+                "<th class=\"tg-0lax center bold gray\">Moneda</th>"
                 "<th class=\"tg-0lax center bold gray\">Monto</th>"
             "</tr>"
                 )
@@ -65,6 +65,7 @@ def crearDistri(cotiz_dict):
         ret += (f"<tr>"
                 f"<td class=\"tg-0lax center\">{cotiz_dict['fecha_cotizacion']}</td>"
                 f"<td class=\"tg-0lax center\">{cotiz_dict['precio']}</td>"
+                f"<td class=\"tg-0lax center\">{cotiz_dict['moneda_fondo']}</td>"
                 f"<td class=\"tg-0lax center\">{cotiz_dict['monto']}</td>"
                 f"</tr>")
         ret += "</table>"
@@ -79,28 +80,53 @@ if __name__ == '__main__':
     array_solicitud_pendiente = bpm.context['array_solicitud_pendiente']
 
     for solicitud in array_solicitud_pendiente:
+        #leo el user input
         fondo_deno = solicitud['fondo']
         cantidad_importe = solicitud['cantidad_importe']
-        print(cantidad_importe)
         monto = solicitud['monto']
-        print(monto)
 
+        # extraigo el codigo de fci
+        matches = re.search(r'(\d+)', fondo_deno)
+        codigo_fci = matches.group(1)
+        #busco la cotización más reciente
+        cotiz_dict = get_cotiz_dict(codigo_fci)
+        #busco la moneda original del fondo
+        moneda_fondo = get_moneda_fondo(codigo_fci=codigo_fci)
+        #guardo la moneda en el array original
+        solicitud['moneda_fondo'] = moneda_fondo
 
-        cotiz_dict = get_cotiz_dict(fondo_deno)
-        monto = cotiz_dict['precio'] * cantidad_importe
-        #saving to original array
-        solicitud['precio'] = cotiz_dict['precio']
-        solicitud['monto'] = monto
+        #guardo la moneda en el dict de la calculadora
+        cotiz_dict['moneda_fondo'] = moneda_fondo
 
-
-        # Set the locale to 'es_AR' for Argentina
+        # Set the locale format to 'es_AR' for Argentina
         locale.setlocale(locale.LC_ALL, 'es_AR.utf8')
-        # Format the number according to the locale
-        formatted_monto = locale.format_string("%.2f", monto, grouping=True)
-        cotiz_dict['monto'] = formatted_monto
 
+        if monto is None and cantidad_importe is not None:
+            #calculo el monto
+            monto = cotiz_dict['precio'] * cantidad_importe
+            #lo agrego al array original sin formatear
+            solicitud['monto'] = monto
+            # Format the number according to the locale
+            formatted_monto = locale.format_string("%.2f", monto, grouping=True)
+            #lo agrego al diccionario de cotiz formateado
+            cotiz_dict['monto'] = formatted_monto
+            print(f'MONTO!: \n{monto}')
+        elif monto is not None and cantidad_importe is None:
+            cantidad_importe = monto/cotiz_dict['precio']
+            solicitud['cantidad_importe'] = cantidad_importe
+            # Format the number according to the locale
+            formatted_monto = locale.format_string("%.2f", monto, grouping=True)
+            #lo agrego al diccionario de cotiz formateado
+            cotiz_dict['monto'] = formatted_monto
+        else:
+            error = "Cargar Monto o cuotapartes pero no ambos"
+            bpm.fail(error)
+        #saving precio to original array
+        solicitud['precio'] = cotiz_dict['precio']
+        #formateando el precio
         formatted_precio = locale.format_string("%.2f", cotiz_dict['precio'], grouping=True)
         cotiz_dict['precio'] = formatted_precio
+        #completando el string de validacion
         calcular_solicitar_string += f"{fondo_deno}_{cantidad_importe}_{monto}"
 
         html = """
