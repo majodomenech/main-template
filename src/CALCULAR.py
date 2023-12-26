@@ -81,9 +81,12 @@ if __name__ == '__main__':
     for solicitud in array_solicitud_pendiente:
         fondo_deno = solicitud['fondo']
         cantidad_importe = solicitud['cantidad_importe']
+        print(cantidad_importe)
+        monto = solicitud['monto']
+        print(monto)
+
 
         cotiz_dict = get_cotiz_dict(fondo_deno)
-
         monto = cotiz_dict['precio'] * cantidad_importe
         #saving to original array
         solicitud['precio'] = cotiz_dict['precio']

@@ -11,7 +11,7 @@ hints:
     - array_solicitud_pendiente
     - ___expr____solicitud_confirmada
   feedback:
-    "Calcular": "run:INSTFCI/CALCULAR_MONTO"
+    "Calcular": "run:INSTFCI/CALCULAR"
     "__Clean": |
       #!python3
       import redflagbpm
@@ -51,14 +51,14 @@ properties:
         fieldOrder:
           - fondo
           - cantidad_importe
-          - rescate_dinero
+#          - rescate_dinero
+          - monto
           - calculos
           - error
         titlePlural: Solicitudes Pendientes
       title: ""
       required:
         - fondo
-        - cantidad_importe
       properties:
         fondo:
           title: Fondo
@@ -73,11 +73,14 @@ properties:
           hints:
             dependents:
               - "@__Clean"
-        rescate_dinero:
-          title: Rescate en Dinero
-          type: boolean
-          default: false
-          readOnly: true
+        monto:
+          title: Monto
+          type: number
+#        rescate_dinero:
+#          title: Rescate en Dinero
+#          type: boolean
+#          default: false
+#          readOnly: true
         calculos:
           type: string
           title: Cálculos
