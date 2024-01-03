@@ -11,11 +11,11 @@ hints:
     - array_solicitud_pendiente
     - ___expr____solicitud_confirmada
   validation: "run:INSTFCI/VALIDAR"
-#  feedback:
+  feedback:
 #    "__Clean":  |
 #      #!python
 #      input.put('cantidad', None)
-#    "__MonedaDefault": "run:INSTFCI/COMPLETAR_MONEDA"
+    "__MonedaDefault": "run:INSTFCI/COMPLETAR_MONEDA"
 required:
 - fecha
 - cuenta

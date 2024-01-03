@@ -42,7 +42,7 @@ def get_cotiz_dict(codigo_fci):
 
     if manual_cotiz is not None and manual_cotiz['fecha_cotizacion_manual'] > cafci_dict['fecha_cotizacion']:
         cotiz_dict['fecha_cotizacion'] = manual_cotiz['fecha_cotizacion_manual']
-        cotiz_dict['precio'] = manual_cotiz['vcp_provisorio']
+        cotiz_dict['precio'] = float(manual_cotiz['vcp_provisorio'])
     else:
         cotiz_dict['fecha_cotizacion'] = cafci_dict['fecha_cotizacion']
         cotiz_dict['precio'] = float(cafci_dict['vcpUnitario'])
@@ -103,6 +103,7 @@ if __name__ == '__main__':
 
         if monto is None and cantidad_importe is not None:
             #calculo el monto
+
             monto = cotiz_dict['precio'] * cantidad_importe
             #lo agrego al array original sin formatear
             solicitud['monto'] = monto
@@ -110,7 +111,7 @@ if __name__ == '__main__':
             formatted_monto = locale.format_string("%.2f", monto, grouping=True)
             #lo agrego al diccionario de cotiz formateado
             cotiz_dict['monto'] = formatted_monto
-            print(f'MONTO!: \n{monto}')
+
         elif monto is not None and (cantidad_importe is None or cantidad_importe == monto/cotiz_dict['precio']):
             cantidad_importe = monto/cotiz_dict['precio']
             # Truncate to 6 decimal places without rounding
