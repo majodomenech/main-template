@@ -62,13 +62,13 @@ def get_cotiz_dict(codigo_fci):
                 cotiz_dict['fuente'] = 'CAFCI'
         #si la cotizacion manual no es None y la cotizacion de la cafci es None -> busco en el WS de HG
         #si la cotizacion manual es mas reciente que la de HG -> uso la manual
-        elif cafci_dict is None and manual_cotiz['fecha_cotizacion_manual'] > hg_dict[codigo_fci]['fecha']:
+        elif cafci_dict is None and manual_cotiz['fecha_cotizacion_manual'] > hg_dict['fecha_cotizacion']:
             cotiz_dict['fecha_cotizacion'] = manual_cotiz['fecha_cotizacion_manual']
             cotiz_dict['precio'] = hg_dict[codigo_fci]['cotizacion']
             cotiz_dict['fuente'] = 'Manual'
         #si la cotizacion manual es mas vieja que la de HG -> uso la de HG
         else:
-            cotiz_dict['fecha_cotizacion'] = hg_dict[codigo_fci]['fecha']
+            cotiz_dict['fecha_cotizacion'] = hg_dict['fecha_cotizacion']
             cotiz_dict['precio'] = hg_dict[codigo_fci]['cotizacion']
             cotiz_dict['fuente'] = 'HG'
     #si la cotizacion manual es None y la cotizacion de la cafci no es None -> uso la de la cafci
@@ -98,7 +98,7 @@ def crearDistri(cotiz_dict):
         ret += (f"<tr>"
                 f"<td class=\"tg-0lax center\">{cotiz_dict['fuente']}</td>"
                 f"<td class=\"tg-0lax center\">{cotiz_dict['fecha_cotizacion']}</td>"
-                f"<td class=\"tg-0lax center\">{cotiz_dict['precio']}</td>"
+                f"<td class=\"tg-0lax center\">{cotiz_dict['moneda_fondo']} {cotiz_dict['precio']}</td>"
                 f"</tr>")
         ret += "</table>"
         return ret

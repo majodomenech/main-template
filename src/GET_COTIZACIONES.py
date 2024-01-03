@@ -29,7 +29,7 @@ def get_cotizacion_hg(bpm, codigo_fci, fecha):
     return json_data
 
 def get_cotizacion_cafci(fci_id, class_id):
-    url_base = "https://api.cafci.org.ar/fond"
+    url_base = "https://api.cafci.org.ar/fondo"
     url = f"{url_base}/{fci_id}/clase/{class_id}/ficha"
     headers = {
         'Accept': 'application/json, text/plain, */*'

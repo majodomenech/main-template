@@ -37,6 +37,9 @@ hints:
           solicitud['cantidad_importe'] = None
       bpm.context.input['array_solicitud_pendiente'] = array_solicitud_pendiente
   validation: "run:INSTFCI/VALIDAR"
+  defaults: |
+    #!python
+    input.put("array_solicitud_pendiente",[{}])
 required:
 - fecha
 - cuenta
@@ -92,7 +95,7 @@ properties:
               - "@__Clean_calc"
               - "@__Clean_monto"
         monto:
-          title: Monto
+          title: Monto (aproximado)
           type: number
           hints:
             dependents:

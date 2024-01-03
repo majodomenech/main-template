@@ -83,6 +83,7 @@ def suscribir(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_soli
     if not resp_alta_ok:
         solicitud["error"] = mje
     else:
+        solicitud["numero_solicitud"] = response.json()["solicitud"]['numeroSolicitud']
         array_solicitudes_pendientes.remove(solicitud)
         array_solicitudes_confirmadas.append(solicitud)
     logging.info('Thread %s: finishing', name)
@@ -120,11 +121,13 @@ if __name__ == '__main__':
                 logging.info('Main    :before running thread')
                 executor.submit(suscribir, fecha, cuenta, array_solicitudes_pendientes, solicitud, array_solicitudes_confirmadas, i)
                 i+=1
-
+        print(array_solicitudes_confirmadas)
         if len(array_solicitudes_pendientes) == 0:
             # todo coment in local tests only
+            # pass
             bpm.execution.setVariable('terminado', True)
         else:
+            pass
             bpm.execution.setVariable('terminado', False)
         bpm.execution.setVariable('array_solicitud_pendiente', array_solicitudes_pendientes)
         bpm.execution.setVariable('array_solicitud_confirmada', array_solicitudes_confirmadas)
