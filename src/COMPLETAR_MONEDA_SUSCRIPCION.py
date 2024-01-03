@@ -14,6 +14,6 @@ for solicitud in array_solicitud_pendiente:
     # busco la moneda original del fondo
     moneda_fondo = get_moneda_fondo(codigo_fci=codigo_fci)
     # guardo la moneda en el array original
-    solicitud['moneda_fondo'] = moneda_fondo
+    solicitud['moneda'] = moneda_fondo
 
 bpm.context.input['array_solicitud_pendiente'] = array_solicitud_pendiente
