@@ -35,9 +35,9 @@ if __name__ == '__main__':
         fecha = formatear(bpm.context['fecha.getTime()'])
         cuenta = bpm.context['cuenta']
 
-        array_solicitudes_pendientes = bpm.context['array_solicitud_pendiente']
+        array_solicitudes_pendientes = bpm.context['array_solicitudes_pendientes']
         try:
-            array_solicitudes_confirmadas = bpm.context['array_solicitud_confirmada']
+            array_solicitudes_confirmadas = bpm.context['array_solicitudes_confirmadas']
         except:
             array_solicitudes_confirmadas = []
 
@@ -93,7 +93,7 @@ if __name__ == '__main__':
             bpm.execution.setVariable('terminado', True)
         else:
             bpm.execution.setVariable('terminado', False)
-        bpm.execution.setVariable('array_solicitud_pendiente', array_solicitudes_pendientes)
-        bpm.execution.setVariable('array_solicitud_confirmada', array_solicitudes_confirmadas)
+        bpm.execution.setVariable('array_solicitudes_pendientes', array_solicitudes_pendientes)
+        bpm.execution.setVariable('array_solicitudes_confirmadas', array_solicitudes_confirmadas)
     except:
         bpm.fail()

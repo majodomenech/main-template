@@ -108,9 +108,9 @@ if __name__ == '__main__':
     #todo: comment the following outside local tests
     # get_backtesting_redemption_data(bpm)
     calcular_solicitar_string = ""
-    array_solicitud_pendiente = bpm.context['array_solicitud_pendiente']
+    array_solicitudes_pendientes = bpm.context['array_solicitudes_pendientes']
 
-    for solicitud in array_solicitud_pendiente:
+    for solicitud in array_solicitudes_pendientes:
         #leo el user input
         fondo_deno = solicitud['fondo']
         cantidad_importe = solicitud['cantidad_importe']
@@ -183,9 +183,9 @@ if __name__ == '__main__':
         """
         solicitud['calculos'] = html
 
-    print(f"ARRAY SOLICITUD PENDIENTE: \n{array_solicitud_pendiente}")
+    print(f"ARRAY SOLICITUD PENDIENTE: \n{array_solicitudes_pendientes}")
 
-    bpm.context.input['array_solicitud_pendiente'] = array_solicitud_pendiente
+    bpm.context.input['array_solicitudes_pendientes'] = array_solicitudes_pendientes
     bpm.context.input['calcular_solicitar_string'] = calcular_solicitar_string
 
 

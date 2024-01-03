@@ -8,7 +8,7 @@ hints:
   fieldOrder:
     - fecha
     - cuenta
-    - array_solicitud_pendiente
+    - array_solicitudes_pendientes
     - ___expr____solicitud_confirmada
   validation: "run:INSTFCI/VALIDAR"
   feedback:
@@ -38,7 +38,7 @@ properties:
       rowStart: true
       rowEnd: true
       valueProvider: "ID_CLIENTE_COM"
-  array_solicitud_pendiente:
+  array_solicitudes_pendientes:
     type: array
     items:
       type: object
