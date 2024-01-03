@@ -6,47 +6,81 @@ import redflagbpm
 import sys
 sys.path.append('../backtesting')
 from backtest_data import get_backtesting_redemption_data
-from GET_COTIZACIONES import get_cotizacion_cafci, get_cotizacion_provisoria
+from GET_COTIZACIONES import get_cotizacion_cafci, get_cotizacion_provisoria, get_cotizacion_hg
 from GET_FCI_INFO import get_moneda_fondo, get_fci_simbolo_local
 import re
 from DB import _get_hg_connection, _get_connection
+from datetime import datetime
 
 
 def get_cotiz_dict(codigo_fci):
     # BUSCO COTIZACION CAFCI#####
-
     # del simbolo local obtengo: el id cafci y el id clase
     cafci_id, id_clase = get_fci_simbolo_local(conn=_get_hg_connection(bpm), id_fondo=codigo_fci)
 
-    # obtengo la cotizacion de la API de CAFCI
-    cafci_dict = dict(get_cotizacion_cafci(fci_id=cafci_id, class_id=id_clase))
-
-    # agrego manualmente hora a la fecha en formato dd/MM/yyyy HH:mm:ss
-    cafci_dict['fecha_cotizacion'] = cafci_dict['fecha'] + ' 23:59:59'
+    # intento obtener la cotizacion de la CAFCI
+    try:
+        cafci_dict = dict(get_cotizacion_cafci(fci_id=cafci_id, class_id=id_clase))
+    except TypeError:
+        cafci_dict = None
+    if cafci_dict is not None:
+        # agrego manualmente hora a la fecha en formato dd/MM/yyyy HH:mm:ss y lo convierto a datetime
+        cafci_dict['fecha_cotizacion'] = datetime.strptime(cafci_dict['fecha'] + ' 23:59:59', '%d/%m/%Y %H:%M:%S')
+    else:
+        # si no hay cotizacion de la CAFCI, busco en el WS de HG
+        #get today's date
+        fecha = datetime.today().strftime('%d/%m/%Y')
+        hg_dict = dict(get_cotizacion_hg(bpm, codigo_fci=codigo_fci, fecha=fecha))
+        hg_dict['fecha_cotizacion'] = datetime.strptime(fecha, '%d/%m/%Y')
 
 
     ##########################
-
     ###BUSCO COTIZACION PROVISORIA#####
-    if bpm.service.text("STAGE") == 'DEV':
-        conn = _get_connection(bpm)
-    else:
-        #todo: revisar cómo se comporta en prod
-        conn = _get_connection('flowable')
+    conn = _get_connection(bpm)
     # read from get_cotizacion_provisoria and recover values
     manual_cotiz = get_cotizacion_provisoria(conn, codigo_fci)
+    if manual_cotiz is not None:
+        manual_cotiz['fecha_cotizacion_manual'] = datetime.strptime(manual_cotiz['fecha_cotizacion_manual'],
+                                                                    '%d/%m/%Y %H:%M:%S')
 
 
     ###COMPARO LAS COTIZ EN BASE A LA FECHA######
-    cotiz_dict = {}
 
-    if manual_cotiz is not None and manual_cotiz['fecha_cotizacion_manual'] > cafci_dict['fecha_cotizacion']:
-        cotiz_dict['fecha_cotizacion'] = manual_cotiz['fecha_cotizacion_manual']
-        cotiz_dict['precio'] = float(manual_cotiz['vcp_provisorio'])
-    else:
+    cotiz_dict = {}
+    # si la cotizacion manual no es None y la cotizacion de la cafci no es None
+    if manual_cotiz is not None:
+        if cafci_dict is not None:
+            #si la cotizacion manual es mas reciente que la de la cafci -> uso la manual
+            if manual_cotiz['fecha_cotizacion_manual'] > cafci_dict['fecha_cotizacion']:
+                cotiz_dict['fecha_cotizacion'] = manual_cotiz['fecha_cotizacion_manual']
+                cotiz_dict['precio'] = float(manual_cotiz['vcp_provisorio'])
+                cotiz_dict['fuente'] = 'Manual'
+            #si la cotizacion manual es mas vieja que la de la cafci -> uso la de la cafci
+            else:
+                cotiz_dict['fecha_cotizacion'] = cafci_dict['fecha_cotizacion']
+                cotiz_dict['precio'] = float(cafci_dict['vcpUnitario'])
+                cotiz_dict['fuente'] = 'CAFCI'
+        #si la cotizacion manual no es None y la cotizacion de la cafci es None -> busco en el WS de HG
+        #si la cotizacion manual es mas reciente que la de HG -> uso la manual
+        elif cafci_dict is None and manual_cotiz['fecha_cotizacion_manual'] > hg_dict[codigo_fci]['fecha']:
+            cotiz_dict['fecha_cotizacion'] = manual_cotiz['fecha_cotizacion_manual']
+            cotiz_dict['precio'] = hg_dict[codigo_fci]['cotizacion']
+            cotiz_dict['fuente'] = 'Manual'
+        #si la cotizacion manual es mas vieja que la de HG -> uso la de HG
+        else:
+            cotiz_dict['fecha_cotizacion'] = hg_dict[codigo_fci]['fecha']
+            cotiz_dict['precio'] = hg_dict[codigo_fci]['cotizacion']
+            cotiz_dict['fuente'] = 'HG'
+    #si la cotizacion manual es None y la cotizacion de la cafci no es None -> uso la de la cafci
+    elif cafci_dict is not None:
         cotiz_dict['fecha_cotizacion'] = cafci_dict['fecha_cotizacion']
         cotiz_dict['precio'] = float(cafci_dict['vcpUnitario'])
-
+        cotiz_dict['fuente'] = 'CAFCI'
+    #si la cotizacion manual es None y la cotizacion de la cafci es None -> busco en el WS de HG
+    else:
+        cotiz_dict['fecha_cotizacion'] = hg_dict['fecha_cotizacion']
+        cotiz_dict['precio'] = hg_dict[codigo_fci]['cotizacion']
+        cotiz_dict['fuente'] = 'HG'
     return cotiz_dict
 
 
@@ -55,21 +89,18 @@ def crearDistri(cotiz_dict):
         ret = "<table class=\"tg\">"
         ret += (
             "<tr>"
+                "<th class=\"tg-0lax center bold gray\">Fuente</th>"
                 "<th class=\"tg-0lax center bold gray\">Fecha cotización</th>"
                 "<th class=\"tg-0lax center bold gray\">Cotización CP</th>"
-                "<th class=\"tg-0lax center bold gray\">Moneda</th>"
-                "<th class=\"tg-0lax center bold gray\">Monto</th>"
             "</tr>"
                 )
 
         ret += (f"<tr>"
+                f"<td class=\"tg-0lax center\">{cotiz_dict['fuente']}</td>"
                 f"<td class=\"tg-0lax center\">{cotiz_dict['fecha_cotizacion']}</td>"
                 f"<td class=\"tg-0lax center\">{cotiz_dict['precio']}</td>"
-                f"<td class=\"tg-0lax center\">{cotiz_dict['moneda_fondo']}</td>"
-                f"<td class=\"tg-0lax center\">{cotiz_dict['monto']}</td>"
                 f"</tr>")
         ret += "</table>"
-
         return ret
 
 if __name__ == '__main__':
@@ -103,7 +134,6 @@ if __name__ == '__main__':
 
         if monto is None and cantidad_importe is not None:
             #calculo el monto
-
             monto = cotiz_dict['precio'] * cantidad_importe
             #lo agrego al array original sin formatear
             solicitud['monto'] = monto
@@ -112,7 +142,8 @@ if __name__ == '__main__':
             #lo agrego al diccionario de cotiz formateado
             cotiz_dict['monto'] = formatted_monto
 
-        elif monto is not None and (cantidad_importe is None or cantidad_importe == monto/cotiz_dict['precio']):
+        # if monto is not None and absolute value of the diference is less than 0.000001 (bc quantity is truncated to 6 decimal places
+        elif monto is not None and (cantidad_importe is None or abs(cantidad_importe - monto/cotiz_dict['precio']) < 0.000001):
             cantidad_importe = monto/cotiz_dict['precio']
             # Truncate to 6 decimal places without rounding
             truncated_number = int(cantidad_importe * 1e6) / 1e6

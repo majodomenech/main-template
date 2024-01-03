@@ -59,13 +59,13 @@ async def get_cotizacion_provisoria(conn, id_fondo):
     cur.close()
     return qry
 
-async def get_cotizaciones_1(fci_id, class_id):
+async def get_cotizaciones_cafci_bis(fci_id, class_id):
     print("Antes de CAFCI")
     cotizacion = await get_cotizacion_cafci(fci_id=fci_id, class_id=class_id)
     print("Después de CAFCI")
     return cotizacion
 
-async def get_cotizaciones_2(conn, id_fondo):
+async def get_cotizaciones_provisorias_bis(conn, id_fondo):
     print("Antes de PROVISORIA")
     cotizacion = await get_cotizacion_provisoria(conn=conn, id_fondo=id_fondo)
     print("Después de PROVISORIA")
@@ -78,7 +78,7 @@ async def main(fci, clase, id_fondo):
     else:
         #todo: revisar cómo se comporta esta conexión
         conn = _get_connection('flowable')
-    res = await asyncio.gather(get_cotizaciones_1(fci, clase), get_cotizaciones_2(conn, id_fondo))
+    res = await asyncio.gather(get_cotizaciones_cafci_bis(fci, clase), get_cotizaciones_provisorias_bis(conn, id_fondo))
     return res
 
 

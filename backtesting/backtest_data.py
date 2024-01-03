@@ -48,7 +48,7 @@ def get_backtesting_subscription_data(bpm):
 
 def get_backtesting_redemption_data(bpm):
     bpm.context.array_solicitud_pendiente = [{"fondo": "[14325] CAFCI461-887 - Cohen Abierto Pymes - Clase A.",
-                                              "cantidad_importe": 1, "rescate_dinero": False}
+                                              "cantidad_importe": 1, "rescate_dinero": False, "monto": None}
                                              ]
     bpm.context.cuenta = "145196"
     bpm.context.initiator = "lbessone"

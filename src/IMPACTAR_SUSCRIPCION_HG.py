@@ -36,7 +36,7 @@ def suscribir(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_soli
     fondo_deno = solicitud['fondo']
     fondo_id = re.search(r'([\d]+)', fondo_deno).group(1)
     moneda = solicitud['moneda']
-    cantidad = solicitud['cantidad']
+    monto = solicitud['monto']
     integraComitente = solicitud['integra_comitente']
 
     if bpm.service.text("STAGE") == 'DEV':
@@ -51,7 +51,7 @@ def suscribir(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_soli
                 "cuentaComitente": '141390',
                 "fondo": '14298',
                 "especieMoneda": moneda,
-                "cantidad": cantidad,
+                "cantidad": monto,
                 "integraComitente": integraComitente,
                 "aceptaReglamento": True
             }
@@ -68,7 +68,7 @@ def suscribir(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_soli
                 "cuentaComitente": cuenta,
                 "fondo": fondo_id,
                 "especieMoneda": moneda,
-                "cantidad": cantidad,
+                "cantidad": monto,
                 "integraComitente": integraComitente,
                 "aceptaReglamento": True
             }
