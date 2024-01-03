@@ -11,6 +11,9 @@ hints:
     - array_solicitudes_pendientes
     - ___expr____solicitud_confirmada
   validation: "run:INSTFCI/VALIDAR"
+  defaults: |
+    #!python
+    input.put("array_solicitudes_pendientes",[{}])
   feedback:
     "__Clean":  |
       #!python
