@@ -123,9 +123,9 @@ if __name__ == '__main__':
 
         if len(array_solicitudes_pendientes) == 0:
             # todo coment in local tests only
-            bpm.execution.setVariable('terminado', True)
+            bpm.execution.setVariable('accion', 'continuar')
         else:
-            bpm.execution.setVariable('terminado', False)
+            bpm.execution.setVariable('accion', 'corregir')
         bpm.execution.setVariable('array_solicitud_pendiente', array_solicitudes_pendientes)
         bpm.execution.setVariable('array_solicitud_confirmada', array_solicitudes_confirmadas)
     except:
