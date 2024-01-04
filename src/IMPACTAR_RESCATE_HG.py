@@ -81,6 +81,7 @@ def rescatar(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_solic
         solicitud["error"] = mje
     else:
         array_solicitudes_pendientes.remove(solicitud)
+        solicitud["numero_solicitud"] = response.json()["solicitud"]['numeroSolicitud']
         array_solicitudes_confirmadas.append(solicitud)
     logging.info('Thread %s: finishing', name)
 
@@ -101,9 +102,9 @@ if __name__ == '__main__':
         # -> uso .getTime() para obtener los milisegundos
         fecha = formatear(bpm.context['fecha.getTime()'])
         cuenta = bpm.context['cuenta']
-        array_solicitudes_pendientes = bpm.context['array_solicitud_pendiente']
+        array_solicitudes_pendientes = bpm.context['array_solicitudes_pendientes']
         try:
-            array_solicitudes_confirmadas = bpm.context['array_solicitud_confirmada']
+            array_solicitudes_confirmadas = bpm.context['array_solicitudes_confirmadas']
         except:
             array_solicitudes_confirmadas = []
 

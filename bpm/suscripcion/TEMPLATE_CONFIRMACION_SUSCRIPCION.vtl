@@ -23,15 +23,15 @@
             <table>
                 <tr>
                 <th style="text-align:left;width:25%">Fondo</th>
-                <th style="text-align:right;width:25%">Cantidad</th>
                 <th style="text-align:right;width:25%">Moneda</th>
+                <th style="text-align:right;width:25%">Monto</th>
                 <th style="text-align:right;width:25%">Integra comitente</th>
                 </tr>
-                #foreach($solicitud in $array_solicitud_pendiente.getList())
+                #foreach($solicitud in $array_solicitudes_pendientes.getList())
                     <tr>
                       <td style="text-align:left">$!{solicitud.fondo}</td>
-                      <td style="text-align:right">$!{String.format($Locale_ES,"%,.2f",${solicitud.cantidad.doubleValue()})}</td>
                       <td style="text-align:right">$!{solicitud.moneda}</td>
+                      <td style="text-align:right">$!{String.format($Locale_ES,"%,.2f",${solicitud.monto.doubleValue()})}</td>
                       #if(${solicitud.integra_comitente})
                           <td style="text-align:right">Si </td>
                       #else

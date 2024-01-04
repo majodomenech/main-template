@@ -36,7 +36,7 @@ def suscribir(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_soli
     fondo_deno = solicitud['fondo']
     fondo_id = re.search(r'([\d]+)', fondo_deno).group(1)
     moneda = solicitud['moneda']
-    cantidad = solicitud['cantidad']
+    monto = solicitud['monto']
     integraComitente = solicitud['integra_comitente']
 
     if bpm.service.text("STAGE") == 'DEV':
@@ -51,7 +51,7 @@ def suscribir(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_soli
                 "cuentaComitente": '141390',
                 "fondo": '14298',
                 "especieMoneda": moneda,
-                "cantidad": cantidad,
+                "cantidad": monto,
                 "integraComitente": integraComitente,
                 "aceptaReglamento": True
             }
@@ -68,7 +68,7 @@ def suscribir(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_soli
                 "cuentaComitente": cuenta,
                 "fondo": fondo_id,
                 "especieMoneda": moneda,
-                "cantidad": cantidad,
+                "cantidad": monto,
                 "integraComitente": integraComitente,
                 "aceptaReglamento": True
             }
@@ -91,6 +91,7 @@ def suscribir(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_soli
 
     else:
         #si no hay error la quito del array pendiente y la envío al array confirmado
+        solicitud["numero_solicitud"] = response.json()["solicitud"]['numeroSolicitud']
         array_solicitudes_pendientes.remove(solicitud)
         array_solicitudes_confirmadas.append(solicitud)
     logging.info('Thread %s: finishing', name)
@@ -113,9 +114,9 @@ if __name__ == '__main__':
         # -> uso .getTime() para obtener los milisegundos
         fecha = formatear(bpm.context['fecha.getTime()'])
         cuenta = bpm.context['cuenta']
-        array_solicitudes_pendientes = bpm.context['array_solicitud_pendiente']
+        array_solicitudes_pendientes = bpm.context['array_solicitudes_pendientes']
         try:
-            array_solicitudes_confirmadas = bpm.context['array_solicitud_confirmada']
+            array_solicitudes_confirmadas = bpm.context['array_solicitudes_confirmadas']
         except:
             array_solicitudes_confirmadas = []
 
@@ -128,7 +129,7 @@ if __name__ == '__main__':
                 logging.info('Main    :before running thread')
                 executor.submit(suscribir, fecha, cuenta, array_solicitudes_pendientes, solicitud, array_solicitudes_confirmadas, i)
                 i+=1
-
+        print(array_solicitudes_confirmadas)
         if len(array_solicitudes_pendientes) == 0:
             pass
             # todo coment in local tests only
@@ -138,5 +139,6 @@ if __name__ == '__main__':
         #     bpm.execution.setVariable('accion', 'corregir')
         # bpm.execution.setVariable('array_solicitud_pendiente', array_solicitudes_pendientes)
         # bpm.execution.setVariable('array_solicitud_confirmada', array_solicitudes_confirmadas)
+
     except:
         bpm.fail()

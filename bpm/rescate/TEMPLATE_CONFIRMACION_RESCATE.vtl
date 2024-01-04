@@ -26,7 +26,7 @@
                 <th style="text-align:right;width:25%">Cuotapartes</th>
                 <th style="text-align:right;width:25%">Rescate dinero</th>
                 </tr>
-                #foreach($solicitud in $array_solicitud_pendiente.getList())
+                #foreach($solicitud in $array_solicitudes_pendientes.getList())
                     <tr>
                       <td style="text-align:left">$!{solicitud.fondo}</td>
                       <td style="text-align:right">$!{String.format($Locale_ES,"%,.6f",${solicitud.cantidad_importe.doubleValue()})}</td>

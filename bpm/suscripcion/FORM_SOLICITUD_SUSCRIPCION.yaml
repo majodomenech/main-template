@@ -8,14 +8,18 @@ hints:
   fieldOrder:
     - fecha
     - cuenta
-    - array_solicitud_pendiente
+    - array_solicitudes_pendientes
     - ___expr____solicitud_confirmada
   validation: "run:INSTFCI/VALIDAR"
-#  feedback:
-#    "__Clean":  |
-#      #!python
-#      input.put('cantidad', None)
-#    "__MonedaDefault": "run:INSTFCI/COMPLETAR_MONEDA"
+  defaults: |
+    #!python
+    input.put("array_solicitudes_pendientes",[{}])
+  feedback:
+    "__Clean":  |
+      #!python
+      input.put('monto', None)
+      input.put('moneda', None)
+    "__MonedaDefault": "run:INSTFCI/COMPLETAR_MONEDA_SUSCRIPCION"
 required:
 - fecha
 - cuenta
@@ -37,7 +41,7 @@ properties:
       rowStart: true
       rowEnd: true
       valueProvider: "ID_CLIENTE_COM"
-  array_solicitud_pendiente:
+  array_solicitudes_pendientes:
     type: array
     items:
       type: object
@@ -45,7 +49,7 @@ properties:
         fieldOrder:
           - fondo
           - moneda
-          - cantidad
+          - monto
           - integra_comitente
           - error
         titlePlural: Solicitudes Pendientes
@@ -53,25 +57,21 @@ properties:
       required:
         - fondo
         - moneda
-        - cantidad
+        - monto
       properties:
         fondo:
           title: Fondo
           type: string
           hints:
             valueProvider: "INSTFCI/QRY_FCI"
-#            dependents:
-#              - "@__Clean"
-#              - "@__MonedaDefault"
+            dependents:
+              - "@__MonedaDefault"
+              - "@__Clean"
         moneda:
           title: Moneda
           type: string
-          enum:
-            - ARS
-            - USD
-            - USDC
-        cantidad:
-          title: Cantidad
+        monto:
+          title: Monto
           type: number
         integra_comitente:
           title: Integra Comitente

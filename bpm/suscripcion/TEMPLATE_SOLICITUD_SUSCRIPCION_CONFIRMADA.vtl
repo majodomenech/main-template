@@ -14,7 +14,7 @@
 .mt-porMonto{background:#bf9000;color:white;}
 </style>
 <div>
-    #if($array_solicitud_confirmada && $array_solicitud_confirmada.size() > 0)
+    #if($array_solicitudes_confirmadas && $array_solicitudes_confirmadas.size() > 0)
         <b>Solicitudes confirmadas:</b><br/>
         <div class="datos2">
             <div class="cell"><b>Fecha solicitud:</b> ${fecha}</div>
@@ -28,7 +28,7 @@
                     <th style="text-align:right;width:25%">Moneda</th>
                     <th style="text-align:right;width:25%">Integra comitente</th>
                     </tr>
-                    #foreach($solicitud in $array_solicitud_confirmada.getList())
+                    #foreach($solicitud in $array_solicitudes_confirmadas.getList())
                         <tr>
                           <td style="text-align:left">$!{solicitud.fondo}</td>
                           <td style="text-align:right">$!{String.format($Locale_ES,"%,.2f",${solicitud.cantidad.doubleValue()})}</td>
