@@ -79,11 +79,6 @@ def rescatar(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_solic
     # resp_alta_ok, mje = True, None
     if not resp_alta_ok:
         solicitud["error"] = mje
-        pattern = 'Ya existe una solicitud pendiente con estos datos. Por favor actualice la solicitud previa.'
-        err_solicitud_duplicada = re.search(pattern, mje).group(1)
-        # si el error es solicitud repetida seteo una acción de reintentar
-        if err_solicitud_duplicada is not None:
-            print(err_solicitud_duplicada)
     else:
         array_solicitudes_pendientes.remove(solicitud)
         solicitud["numero_solicitud"] = response.json()["solicitud"]['numeroSolicitud']
@@ -100,7 +95,7 @@ if __name__ == '__main__':
 
         token = login(url_base)
         #todo unncoment in local tests only
-        # get_backtesting_redemption_data(bpm)
+        get_backtesting_redemption_data(bpm)
 
         # el form manda la fecha en milisegundos al proceso
         # y el proceso la guarda como fecha de java
@@ -123,12 +118,12 @@ if __name__ == '__main__':
                 executor.submit(rescatar, fecha, cuenta, array_solicitudes_pendientes, solicitud, array_solicitudes_confirmadas, i)
                 i+=1
 
-        if len(array_solicitudes_pendientes) == 0:
-            # todo coment in local tests only
-            bpm.execution.setVariable('accion', "continuar")
-        else:
-            bpm.execution.setVariable('accion', 'corregir')
-        bpm.execution.setVariable('array_solicitud_pendiente', array_solicitudes_pendientes)
-        bpm.execution.setVariable('array_solicitud_confirmada', array_solicitudes_confirmadas)
+        # if len(array_solicitudes_pendientes) == 0:
+        #     # todo coment in local tests only
+        #     bpm.execution.setVariable('accion', "continuar")
+        # else:
+        #     bpm.execution.setVariable('accion', 'corregir')
+        # bpm.execution.setVariable('array_solicitud_pendiente', array_solicitudes_pendientes)
+        # bpm.execution.setVariable('array_solicitud_confirmada', array_solicitudes_confirmadas)
     except:
         bpm.fail()

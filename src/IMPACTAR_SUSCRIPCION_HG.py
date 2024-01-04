@@ -83,18 +83,15 @@ def suscribir(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_soli
     if not resp_alta_ok:
         #si la solicitud (pendiente) arroja error , almaceno el error
         solicitud["error"] = mje
-        pattern = 'Ya existe una solicitud pendiente con estos datos. Por favor actualice la solicitud previa.'
-        err_solicitud_duplicada = re.search(pattern, mje).group(1)
-        # si el error es solicitud repetida seteo una acción de reintentar
-        if err_solicitud_duplicada is not None:
-            print(err_solicitud_duplicada)
-
+        return mje
     else:
         #si no hay error la quito del array pendiente y la envío al array confirmado
         solicitud["numero_solicitud"] = response.json()["solicitud"]['numeroSolicitud']
         array_solicitudes_pendientes.remove(solicitud)
         array_solicitudes_confirmadas.append(solicitud)
+        return None
     logging.info('Thread %s: finishing', name)
+
 
 if __name__ == '__main__':
     bpm = redflagbpm.BPMService()
@@ -120,25 +117,46 @@ if __name__ == '__main__':
         except:
             array_solicitudes_confirmadas = []
 
-
-        thread_list = []
+        #defino la lista future_results donde almaceno la "promesa" de la respuesta de todos
+        # los threads
+        future_results = []
         i = 1
         with concurrent.futures.ThreadPoolExecutor(max_workers=3) as executor:
             i=1
             for solicitud in array_solicitudes_pendientes:
                 logging.info('Main    :before running thread')
-                executor.submit(suscribir, fecha, cuenta, array_solicitudes_pendientes, solicitud, array_solicitudes_confirmadas, i)
+                futuro = executor.submit(suscribir, fecha, cuenta, array_solicitudes_pendientes, solicitud, array_solicitudes_confirmadas, i)
+                future_results.append(futuro)
                 i+=1
-        print(array_solicitudes_confirmadas)
+
+        final_results = [result.result() for result in future_results]
+
         if len(array_solicitudes_pendientes) == 0:
-            pass
             # todo coment in local tests only
-            # bpm.execution.setVariable('accion', 'continuar')
+            bpm.execution.setVariable('accion', 'continuar')
         else:
-            pass
-        #     bpm.execution.setVariable('accion', 'corregir')
-        # bpm.execution.setVariable('array_solicitud_pendiente', array_solicitudes_pendientes)
-        # bpm.execution.setVariable('array_solicitud_confirmada', array_solicitudes_confirmadas)
+            pattern = 'Ya existe una solicitud pendiente con estos datos. Por favor actualice la solicitud previa.'
+            #itero el resultado de todos los threads
+            for res in final_results:
+                #comparo con el error de solicitud repetida
+                err_solicitud_duplicada = re.search(pattern, res).group(1)
+                # si no hay error o es un error por otro motivo -> error x duplicado es falso
+                if err_solicitud_duplicada is None:
+                    error_x_duplicado = False
+                # si el error es por solicitud repetida-> error x duplicado es verdadero (y sobreescribe le valor anterior)
+                else:
+                    error_x_duplicado = True
+
+
+            #si hay algún error por solicitud repetida -> accion: reintentar
+            if error_x_duplicado:
+                bpm.execution.setVariable('accion', 'reintentar')
+            #si hay error pero no de duplicados ->accion: corregir
+            else:
+                bpm.execution.setVariable('accion', 'corregir')
+
+        bpm.execution.setVariable('array_solicitud_pendiente', array_solicitudes_pendientes)
+        bpm.execution.setVariable('array_solicitud_confirmada', array_solicitudes_confirmadas)
 
     except:
         bpm.fail()
