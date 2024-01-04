@@ -79,6 +79,11 @@ def rescatar(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_solic
     # resp_alta_ok, mje = True, None
     if not resp_alta_ok:
         solicitud["error"] = mje
+        pattern = 'Ya existe una solicitud pendiente con estos datos. Por favor actualice la solicitud previa.'
+        err_solicitud_duplicada = re.search(pattern, mje).group(1)
+        # si el error es solicitud repetida seteo una acción de reintentar
+        if err_solicitud_duplicada is not None:
+            print(err_solicitud_duplicada)
     else:
         array_solicitudes_pendientes.remove(solicitud)
         solicitud["numero_solicitud"] = response.json()["solicitud"]['numeroSolicitud']
