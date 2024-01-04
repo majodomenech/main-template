@@ -104,7 +104,7 @@ if __name__ == '__main__':
 
         token = login(url_base)
         #todo unncoment in local tests only
-        get_backtesting_subscription_data(bpm)
+        # get_backtesting_subscription_data(bpm)
 
         # el form manda la fecha en milisegundos al proceso
         # y el proceso la guarda como fecha de java
@@ -134,19 +134,22 @@ if __name__ == '__main__':
         if len(array_solicitudes_pendientes) == 0:
             # todo coment in local tests only
             bpm.execution.setVariable('accion', 'continuar')
+            pass
         else:
-            pattern = 'Ya existe una solicitud pendiente con estos datos. Por favor actualice la solicitud previa.'
+            pattern = '(Ya existe una solicitud pendiente con estos datos. Por favor actualice la solicitud previa.)'
             #itero el resultado de todos los threads
             for res in final_results:
                 #comparo con el error de solicitud repetida
-                err_solicitud_duplicada = re.search(pattern, res).group(1)
+                try:
+                    err_solicitud_duplicada = re.search(pattern, res).group(1)
+                except AttributeError:
+                    err_solicitud_duplicada = None
                 # si no hay error o es un error por otro motivo -> error x duplicado es falso
                 if err_solicitud_duplicada is None:
                     error_x_duplicado = False
                 # si el error es por solicitud repetida-> error x duplicado es verdadero (y sobreescribe le valor anterior)
                 else:
                     error_x_duplicado = True
-
 
             #si hay algún error por solicitud repetida -> accion: reintentar
             if error_x_duplicado:
