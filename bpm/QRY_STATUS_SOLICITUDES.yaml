@@ -1,25 +1,49 @@
 name: INSTFCI/QRY_STATUS_SOLICITUDES
-caption: FCI STDR - Solicitud de Rescates
+caption: FCI HG - Status Solicitudes
 dataSource: "run:INSTFCI/SCRIPT_QRY_STATUS_SOLICITUDES"
 postProcessors:
-- FCISTDR/TEMPLATE_QRY_STATUS_SOLICITUDES
+- INSTFCI/TEMPLATE_QRY_STATUS_SOLICITUDES
 columns:
-- name: tipo_solicitud
-  caption: Solicitud
+- name: business_key
+  caption: business_key
   fieldType: java.lang.String
-- name: especie_moneda
-  caption: Especie/Moneda
+- name: numero_solicitud
+  caption: numero_solicitud
   fieldType: java.lang.String
-- name: cantidad_cuotapartes
-  caption: Cuotapartes
-  fieldType: java.lang.Double
-- name: fci
+- name: tipo_solicitud_bpm
+  caption: tipo_solicitud
+  fieldType: java.lang.String
+- name: start
+  caption: Inicio
+  fieldType: java.lang.String
+- name: end
+  caption: Fin
+  fieldType: java.lang.String
+- name: cuenta_id
+  caption: cuenta_id
+  fieldType: java.lang.String
+- name: fondo
   caption: FCI
   fieldType: java.lang.String
-- name: fecha
-  caption: Fecha
+- name: monto
+  caption: Monto
+  fieldType: java.lang.Double
+- name: moneda
+  caption: Moneda
   fieldType: java.lang.String
-- name: estado
+- name: cantidad_importe
+  caption: Cuotapartes
+  fieldType: java.lang.Double
+- name: precio
+  caption: Precio
+  fieldType: java.lang.Double
+- name: id_origen
+  caption: id_origen
+  fieldType: java.lang.String
+- name: tipo_solicitud_hg
+  caption: tipo_solicitud
+  fieldType: java.lang.String
+- name: estado_hg
   caption: Estado
   fieldType: java.lang.String
 - name: template

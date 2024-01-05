@@ -1,3 +1,6 @@
+
+4.10 KiB
+
 <style>
     .cell{border-radius: var(--lumo-border-radius); background-color: var(--lumo-contrast-10pct);padding:0.2em;}
     .cell2{border-radius: var(--lumo-border-radius); background-color: var(--lumo-primary-10pct);padding:0.2em;}
@@ -16,19 +19,53 @@
     </style>
     <div style="margin-bottom:0.5em">
         <div class="cell titulo">
-            <b>Plazo de liquidación: $!{plazo_liq} días</b>
+            <b>${business_key}</b>
         </div>
         <div class="cell subtitulo">
-              <div class="cell"><b>ID HG: </b> $!{idOrigen}</div>
+              Status solicitud fci
         </div>
         <div class="datos2">
-            <div class="cell"><b>FCI: </b> $!{fci}</div>
-            <div class="cell"><b>Solicitud: </b> $!{solicitud}</div>
-            <div class="cell"><b>Cuotapartes: </b> $!{cantidad_cuotapartes}</div>
-            <div class="cell"><b>Fecha: </b> $!{fecha}</div>
-            <div class="cell"><b>Especie/Moneda: </b> $!{especie_moneda}</div>
-            <div class="cell"><b>Estado: </b> $!{estado}</div>
-            <div class="cell"><b>Mensaje: </b> $!{usr_message}</div>
+            <div class="cell"><b>Procesada BPM?:</b>
+            #if($!{facturado})
+                <span style="color:green; font-weight: bold;">SI</span></div>
+            #else
+            <span style="color:red; font-weight: bold;">NO</span></div>
+            #end
+            <div class="cell"><b>Fecha:</b> $!{start}</div>
+            <div class="cell"><b>Cuenta ID:</b> $!{cuenta_id}</div>
+            <div class="cell"><b>Fondo:</b> $!{fondo}</div>
         </div>
+        <div class="wrapper">
+            <div class="col1">
+            <div class="cell subtitulo">
+                HG
+            </div>
+                #if($!{id_origen})
+                    <div class="datos_detalle">
+                        <div class="cell" ><b>Comitente:</b></div>
+                        <div class="cell" ><b>Cantidad:</b></div>
+                    </div>
+                        <div class="datos_detalle">
+                            <div class="cell"> $!{j.comitente}</div>
+                            <div class="cell"> $!{String.format($Locale_ES,"%,.0f",$cantidad.doubleValue())}</div>
+                        </div>
+                #end
+            </div>
+            <div class="col2">
+            <div class="cell subtitulo">
+                Distribución IB
+            </div>
+                #if($!{numero_solicitud})
+                    <div class="datos_detalle">
+                        <div class="cell" ><b>Cuenta:</b></div>
+                        <div class="cell" ><b>Cantidad:</b></div>
+                    </div>
+                        <div class="datos_detalle">
+                            <div class="cell"> $!{cuenta}</div>
+                            <div class="cell"> $!{String.format($Locale_ES,"%,.0f",$cantidad.doubleValue())}</div>
+                        </div>
+                    #end
+                #end
+            </div>
         </div>
 </div>
