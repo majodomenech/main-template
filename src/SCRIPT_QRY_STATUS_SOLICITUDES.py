@@ -175,10 +175,11 @@ def get_solicitudes(bpm, conn, tipo_solicitud):
 def main():
     bpm = redflagbpm.BPMService()
     conn = _get_hg_connection(bpm)
-    qry = get_solicitudes(bpm=bpm, conn=conn, tipo_solicitud='Suscripcion')
+
+    qry = get_solicitudes(bpm=bpm, conn=conn, tipo_solicitud=bpm.context['tipo_solicitud'])
 
 
-    # print(qry)
+    print(qry)
     class Encoder(json.JSONEncoder):
         def default(self, obj):
             if isinstance(obj, (datetime.date, datetime.datetime)):
@@ -187,14 +188,14 @@ def main():
                 return float(obj)
             return super().default(obj)
 
-    with open('/tmp/qry_solicitudes.json', 'w') as f:
+    with open('/tmp/qry_solicitudes_hg.json', 'w') as f:
         json.dump(qry, f, cls=Encoder)
 
     _responseHeaders = bpm.context.json._responseHeaders
     _responseHeaders['status'] = '200'
     _responseHeaders['Content-Type'] = 'application/json'
     _responseHeaders["Content-Encoding"] = "UTF-8"
-    _responseHeaders["resource"] = "/tmp/qry_rescates.json"
+    _responseHeaders["resource"] = "/tmp/qry_solicitudes_hg.json"
 
 if __name__ == '__main__':
     main()

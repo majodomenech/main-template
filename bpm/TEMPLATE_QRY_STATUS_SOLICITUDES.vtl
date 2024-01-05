@@ -42,11 +42,11 @@
             </div>
                 #if($!{id_origen})
                     <div class="datos_detalle">
-                        <div class="cell" ><b>Comitente:</b></div>
+                        <div class="cell" ><b>Cuenta:</b></div>
                         <div class="cell" ><b>Cantidad:</b></div>
                     </div>
                         <div class="datos_detalle">
-                            <div class="cell"> $!{j.comitente}</div>
+                            <div class="cell"> $!{cuenta}</div>
                             <div class="cell"> $!{String.format($Locale_ES,"%,.0f",$cantidad.doubleValue())}</div>
                         </div>
                 #end
