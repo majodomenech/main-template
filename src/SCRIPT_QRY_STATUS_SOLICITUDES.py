@@ -11,19 +11,16 @@ from decimal import Decimal
 def get_solicitudes(bpm, conn, tipo_solicitud):
     # me conecto a la DB remota
     dblink = PgUtils.get_dblink(bpm, "SYC")
-    sql_connect = "SELECT dblink_connect_u('hg_fci_tareas', %s)"
-    sql_disconnect = "SELECT dblink_disconnect('hg_fci_tareas')"
 
     conn = _get_hg_connection(bpm)
 
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
-    cur.execute(sql_connect, (dblink,))
 
     sql = """    
             with hg as(
                   select *
-                  from dblink('hg_fci_tareas',
+                  from dblink(%s,
                   $$
                             with solicitudes as (
                             select 
@@ -93,7 +90,7 @@ def get_solicitudes(bpm, conn, tipo_solicitud):
                             from solicitudes
                             where 
                              fecha = current_date
-                            and lower(tipo_solicitud) = lower(%s)
+                            and lower(tipo_solicitud) = lower(''Suscripcion'')
                             order by 1 desc
                             limit 100
                   $$) as t(id_origen bigint, tipo_solicitud character varying, codigo_fci bigint, fci character varying, cuenta_id bigint,	
@@ -139,9 +136,9 @@ def get_solicitudes(bpm, conn, tipo_solicitud):
                 left join ds.participantes p on hg.propietario_tarea = p.participante
         """
 
-    cur.execute(sql, (tipo_solicitud, ))
+    cur.execute(sql, (dblink, tipo_solicitud, ))
     qry = cur.fetchall()
-    cur.execute(sql_disconnect)
+
     cur.close()
     conn.close()
     return qry
