@@ -20,7 +20,7 @@ def get_solicitudes(bpm, conn, tipo_solicitud):
     sql = """    
             with hg as(
                   select *
-                  from dblink(%s,
+                  from dblink(%%s,
                   $$
                             with solicitudes as (
                             select 
@@ -136,7 +136,7 @@ def get_solicitudes(bpm, conn, tipo_solicitud):
                 left join ds.participantes p on hg.propietario_tarea = p.participante
         """
 
-    cur.execute(sql, (dblink, tipo_solicitud, ))
+    cur.execute(sql, (dblink, ))
     qry = cur.fetchall()
 
     cur.close()
