@@ -4,9 +4,9 @@ dataSource: "run:INSTFCI/SCRIPT_QRY_STATUS_SOLICITUDES"
 postProcessors:
 - FCISTDR/TEMPLATE_QRY_STATUS_SOLICITUDES
 columns:
-- name: plazo_liq
-  caption: Plazo de liquidación
-  fieldType: java.lang.Integer
+- name: tipo_solicitud
+  caption: Solicitud
+  fieldType: java.lang.String
 - name: especie_moneda
   caption: Especie/Moneda
   fieldType: java.lang.String
@@ -16,14 +16,8 @@ columns:
 - name: fci
   caption: FCI
   fieldType: java.lang.String
-- name: solicitud
-  caption: Solicitud
-  fieldType: java.lang.String
 - name: fecha
   caption: Fecha
-  fieldType: java.lang.String
-- name: usr_message
-  caption: Mensaje
   fieldType: java.lang.String
 - name: estado
   caption: Estado
@@ -42,8 +36,8 @@ targetGroups:
 filterGroup:
   caption: Filtros
   filters:
-  - name: tipo
-    caption: Tipo
+  - name: tipo_solicitud
+    caption: Tipo de Solicitud
     fieldType: java.lang.String
     required: false
     dependents: []
@@ -56,8 +50,8 @@ filterGroup:
     required: false
     dependents: []
     possibleValues:
-      - "Liquidacion pendiente"
       - "Pendiente"
+      - "Liquidacion pendiente"
       - "Finalizada"
       - "Pendiente de confirmar"
 dataSourceOptions: {}
