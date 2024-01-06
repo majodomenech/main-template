@@ -90,7 +90,7 @@ def get_solicitudes(bpm, conn, tipo_solicitud):
                             from solicitudes
                             where 
                              fecha = current_date
-                            and lower(tipo_solicitud) = lower(''%s'')
+                            and (lower(tipo_solicitud) is null or lower(tipo_solicitud) = lower(''%s''))
                             order by 1 desc
                             limit 100
                   $$) as t(id_origen bigint, tipo_solicitud character varying, codigo_fci bigint, fci character varying, cuenta_id bigint,	
@@ -176,7 +176,12 @@ def main():
     bpm = redflagbpm.BPMService()
     conn = _get_hg_connection(bpm)
 
-    qry = get_solicitudes(bpm=bpm, conn=conn, tipo_solicitud=bpm.context['tipo_solicitud'])
+    try:
+        tipo_solicitud = bpm.context['tipo_solicitud']
+    except KeyError:
+        tipo_solicitud = None
+
+    qry = get_solicitudes(bpm=bpm, conn=conn, tipo_solicitud=tipo_solicitud)
 
 
     print(qry)

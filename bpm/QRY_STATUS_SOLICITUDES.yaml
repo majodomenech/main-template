@@ -66,8 +66,8 @@ filterGroup:
     required: false
     dependents: []
     possibleValues:
-      - "Suscripción"
-      - "Rescate"
+      - "Suscripciones"
+      - "Rescates"
   - name: estado
     caption: Estado
     fieldType: java.lang.String
