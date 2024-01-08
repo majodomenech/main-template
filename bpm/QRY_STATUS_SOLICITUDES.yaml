@@ -7,9 +7,6 @@ columns:
 - name: business_key
   caption: business_key
   fieldType: java.lang.String
-- name: numero_solicitud
-  caption: numero_solicitud
-  fieldType: java.lang.String
 - name: tipo_solicitud_bpm
   caption: tipo_solicitud
   fieldType: java.lang.String
@@ -22,7 +19,7 @@ columns:
 - name: cuenta_id
   caption: cuenta_id
   fieldType: java.lang.String
-- name: fondo
+- name: bpm_fondo
   caption: FCI
   fieldType: java.lang.String
 - name: monto
@@ -40,11 +37,14 @@ columns:
 - name: id_origen
   caption: id_origen
   fieldType: java.lang.String
-- name: tipo_solicitud_hg
+- name: tipo_solicitud
   caption: tipo_solicitud
   fieldType: java.lang.String
 - name: estado_hg
   caption: Estado
+  fieldType: java.lang.String
+- name: estado_bpm
+  caption: Estado BPM
   fieldType: java.lang.String
 - name: template
   caption: Template
@@ -63,13 +63,13 @@ filterGroup:
   - name: tipo_solicitud
     caption: Tipo de Solicitud
     fieldType: java.lang.String
-    required: false
+    required: true
     dependents: []
     possibleValues:
       - "Suscripciones"
       - "Rescates"
-  - name: estado
-    caption: Estado
+  - name: estado_hg
+    caption: Estado HG
     fieldType: java.lang.String
     required: false
     dependents: []
@@ -78,6 +78,8 @@ filterGroup:
       - "Liquidacion pendiente"
       - "Finalizada"
       - "Pendiente de confirmar"
+  defaultFilter:
+    tipo_solicitud: 'Rescates'
 dataSourceOptions: {}
 reports: []
 services: []

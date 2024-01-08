@@ -1,6 +1,3 @@
-
-4.10 KiB
-
 <style>
     .cell{border-radius: var(--lumo-border-radius); background-color: var(--lumo-contrast-10pct);padding:0.2em;}
     .cell2{border-radius: var(--lumo-border-radius); background-color: var(--lumo-primary-10pct);padding:0.2em;}
@@ -16,56 +13,51 @@
     .wrapper{display: grid;  grid-template-columns: repeat(2, minmax(30em, 1fr));  grid-gap: 0.2em;margin-bottom: 0.5em;}
     .col1{grid-column: 1 / 2;}
     .col2 {grid-column: 2 / 2;}
-    </style>
+</style>
     <div style="margin-bottom:0.5em">
         <div class="cell titulo">
             <b>${business_key}</b>
         </div>
-        <div class="cell subtitulo">
-              Status solicitud fci
-        </div>
         <div class="datos2">
-            <div class="cell"><b>Procesada BPM?:</b>
-            #if($!{facturado})
-                <span style="color:green; font-weight: bold;">SI</span></div>
-            #else
-            <span style="color:red; font-weight: bold;">NO</span></div>
-            #end
             <div class="cell"><b>Fecha:</b> $!{start}</div>
-            <div class="cell"><b>Cuenta ID:</b> $!{cuenta_id}</div>
+            <div class="cell"><b>Cuenta ID:</b> $!{bpm_cuenta_id}</div>
             <div class="cell"><b>Fondo:</b> $!{fondo}</div>
         </div>
-        <div class="wrapper">
-            <div class="col1">
-            <div class="cell subtitulo">
-                HG
-            </div>
-                #if($!{id_origen})
-                    <div class="datos_detalle">
-                        <div class="cell" ><b>Cuenta:</b></div>
-                        <div class="cell" ><b>Cantidad:</b></div>
+            <div class="wrapper">
+                <div class="col1">
+                    <div class="cell subtitulo">
+                        HG
                     </div>
+                    #if($!{id_origen})
                         <div class="datos_detalle">
-                            <div class="cell"> $!{cuenta}</div>
-                            <div class="cell"> $!{String.format($Locale_ES,"%,.0f",$cantidad.doubleValue())}</div>
-                        </div>
-                #end
-            </div>
-            <div class="col2">
-            <div class="cell subtitulo">
-                Distribución IB
-            </div>
-                #if($!{numero_solicitud})
-                    <div class="datos_detalle">
-                        <div class="cell" ><b>Cuenta:</b></div>
-                        <div class="cell" ><b>Cantidad:</b></div>
-                    </div>
-                        <div class="datos_detalle">
-                            <div class="cell"> $!{cuenta}</div>
-                            <div class="cell"> $!{String.format($Locale_ES,"%,.0f",$cantidad.doubleValue())}</div>
+                            <div class="cell"><b>ID HG:</b> $!{id_origen}</div>
+                            <div class="cell"><b>Estado:</b> $!{estado_hg}</div>
+                            #if(${tipo_solicitud_hg} == 'Suscripciones')
+                                <div class="cell" ><b>Moneda: </b>$!{moneda}</div>
+                                <div class="cell" ><b>Monto:</b>$!{String.format($Locale_ES,"%,.0f",$monto.doubleValue())}</div>
+                            #elseif(${tipo_solicitud_hg} == 'Rescates')
+                                <div class="cell" ><b>Cantidad CP:</b>$!{String.format($Locale_ES,"%,.0f",$cantidad_importe.doubleValue())}</div>
+                                <div class="cell" ><b>Precio CP:</b>$!{precio}</div>
+                            #end
                         </div>
                     #end
-                #end
+                </div>
+                <div class="col2">
+                <div class="cell subtitulo">
+                    BPM
+                </div>
+                    #if($!{business_key})
+                        <div class="datos_detalle">
+                            <div class="cell" ><b>Estado:</b></div>
+                            #if(${tipo_solicitud_bpm} == 'Suscripciones')
+                                <div class="cell" ><b>Moneda:</b>$!{moneda}</div>
+                                <div class="cell" ><b>Monto:</b>$!{String.format($Locale_ES,"%,.0f",$monto.doubleValue())}</div>
+                            #elseif(${tipo_solicitud_bpm} == 'Rescates')
+                                <div class="cell" ><b>Cantidad CP:</b>$!{String.format($Locale_ES,"%,.0f",$cantidad_importe.doubleValue())}</div>
+                                <div class="cell" ><b>Precio CP:</b>$!{precio}</div>
+                            #end
+                        </div>
+                    #end
+                </div>
             </div>
-        </div>
-</div>
+    </div>

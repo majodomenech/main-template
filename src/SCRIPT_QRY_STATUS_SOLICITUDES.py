@@ -25,7 +25,7 @@ def get_solicitudes(bpm, conn, tipo_solicitud):
                             with solicitudes as (
                             select 
                                 t."IRM_TAREA_ID" as "id_origen",
-                                (REGEXP_MATCHES(t."CLASS", '(Rescate)', 'g'))[1] AS tipo_solicitud,
+                                'Rescate' AS tipo_solicitud,
                                 unf."CODIGO"::bigint as codigo_fci,
                                 '[' ||unf."CODIGO" ||'] ' || unf."NOMBRE" as fci,
                                 c."ID"::bigint as cuenta_id,
@@ -56,7 +56,7 @@ def get_solicitudes(bpm, conn, tipo_solicitud):
                             union
                             select 
                                 t."IRM_TAREA_ID" as "id_origen",
-                                (REGEXP_MATCHES(t."CLASS", '(Suscripcion)', 'g'))[1] AS tipo_solicitud,
+                                'Suscripcion' AS tipo_solicitud,
                                 unf."CODIGO"::bigint as codigo_fci,
                                 '[' ||unf."CODIGO" ||'] ' || unf."NOMBRE" as fci,
                                 c."ID"::bigint as cuenta_id,
@@ -88,11 +88,9 @@ def get_solicitudes(bpm, conn, tipo_solicitud):
                             select *,
                             null as template 
                             from solicitudes
-                            where 
-                             fecha = current_date
-                            and (lower(tipo_solicitud) is null or lower(tipo_solicitud) = lower(''%s''))
+                            where fecha = current_date
+                            and lower(tipo_solicitud) = lower(''%s'')
                             order by 1 desc
-                            limit 100
                   $$) as t(id_origen bigint, tipo_solicitud character varying, codigo_fci bigint, fci character varying, cuenta_id bigint,	
                            cuenta character varying, moneda character varying, estado character varying, fecha date, fecha_fin date,	 
                            cantidad decimal, VALORCUOTAPARTE decimal, cantidad_cuotapartes decimal, la_otra_cantidad decimal,  
@@ -136,12 +134,12 @@ def get_solicitudes(bpm, conn, tipo_solicitud):
             bpm.business_key,
             bpm.numero_solicitud,
             bpm.initiator,
-            bpm.cuenta_id,
+            bpm.cuenta_id as bpm_cuenta_id,
             bpm.tipo_solicitud as tipo_solicitud_bpm,
             bpm.start,
             bpm.end,
-            bpm.fondo,
-            bpm.codigo_fci,
+            bpm.fondo as bpm_fondo,
+            bpm.codigo_fci as bpm_codigo_fci,
             bpm.monto,
             bpm.moneda,
             bpm.cantidad_importe,
@@ -149,12 +147,26 @@ def get_solicitudes(bpm, conn, tipo_solicitud):
             hg.id_origen,
             hg.tipo_solicitud tipo_solicitud_hg,
             hg.propietario_tarea,
-            hg.codigo_fci,
-            hg.cuenta_id,
+            hg.codigo_fci hg_codigo_fci,
+            hg.cuenta_id as hg_cuenta_id,
             hg.estado as estado_hg,
             hg.fecha,
             hg.cantidad,
             hg.cantidad_cuotapartes,
+            case
+			  -- Caso 1.a
+			  when bpm.business_key is not null and hg.id_origen is null and bpm.numero_solicitud is null and bpm.error is null then 'Solicitud nueva'
+			  -- Caso 1.b
+			  when bpm.business_key is not null and hg.id_origen is null and bpm.numero_solicitud is null and bpm.error is not null then 'Solicitud nueva con error'
+			  -- Caso 1.c
+			  when bpm.business_key is not null and hg.id_origen is null and bpm.numero_solicitud is not null then 'Solicitud enviada eliminada'
+			  -- Caso 2 (todas las variantes)
+			  when bpm.business_key is not null and hg.id_origen is not null then 'Solicitud enviada '||hg.estado
+			  -- Caso 3 (todas las variantes)
+			  when bpm.business_key is null and hg.id_origen is not null then 'Solicitud manual '||hg.estado
+			  -- Perdeterminado
+			  else 'Estado no disponible' 
+			end as estado_bpm,
             (select 
             STRING_AGG(participante, ', ') AS participante_list
             from ds.participantes
