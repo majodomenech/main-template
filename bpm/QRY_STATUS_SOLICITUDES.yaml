@@ -15,7 +15,7 @@ columns:
   fieldType: java.lang.String
 - name: start
   caption: Inicio
-  fieldType: java.lang.String
+  fieldType: java.util.Date
 - name: bpm_fondo
   caption: FCI
   fieldType: java.lang.String
@@ -36,13 +36,13 @@ columns:
   fieldType: java.lang.String
 - name: id_origen
   caption: id_origen
-  fieldType: java.lang.String
+  fieldType: java.lang.Integer
 - name: estado_hg
   caption: Estado
   fieldType: java.lang.String
 - name: fecha
   caption: Fecha
-  fieldType: java.lang.String
+  fieldType: java.util.Date
 - name: template
   caption: Template
   fieldType: java.lang.String

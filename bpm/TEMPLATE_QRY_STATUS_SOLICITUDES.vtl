@@ -48,7 +48,7 @@
                 </div>
                     #if($!{business_key})
                         <div class="datos_detalle">
-                            <div class="cell" ><b>Estado:</b></div>
+                            <div class="cell" ><b>Estado:</b>$!{estado_bpm}</div>
                             #if(${tipo_solicitud} == 'Suscripciones')
                                 <div class="cell" ><b>Moneda:</b>$!{moneda}</div>
                                 <div class="cell" ><b>Monto:</b>$!{String.format($Locale_ES,"%,.0f",$monto.doubleValue())}</div>

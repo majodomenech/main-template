@@ -179,7 +179,7 @@ def get_solicitudes(bpm, conn, tipo_solicitud):
                 bpm_cuenta_id,
                 tipo_solicitud_bpm,
                 start::date,
-                bpm_fondo,
+                bpm_fondo::character varying,
                 monto,
                 moneda,
                 cantidad_importe,
@@ -190,7 +190,7 @@ def get_solicitudes(bpm, conn, tipo_solicitud):
                 fecha,
                 template
 			from bpm_hg
-			where (tipo_solicitud_bpm is null or tipo_solicitud_bpm = %s)
+			where (tipo_solicitud_bpm is null or tipo_solicitud_bpm = lower(%s))
 			order by 1
 			limit 10
         """
