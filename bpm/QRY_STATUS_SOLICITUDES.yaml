@@ -21,16 +21,19 @@ columns:
   fieldType: java.lang.String
 - name: monto
   caption: Monto
-  fieldType: java.lang.Double
+  fieldType: java.math.BigDecimal
+  format: "#,##0.00"
 - name: moneda
   caption: Moneda
   fieldType: java.lang.String
 - name: cantidad_importe
   caption: Cuotapartes
-  fieldType: java.lang.Double
+  fieldType: java.math.BigDecimal
+  format: "#,##0.000000"
 - name: precio
   caption: Precio
-  fieldType: java.lang.Double
+  fieldType: java.math.BigDecimal
+  format: "#,##0.000000"
 - name: estado_bpm
   caption: Estado BPM
   fieldType: java.lang.String

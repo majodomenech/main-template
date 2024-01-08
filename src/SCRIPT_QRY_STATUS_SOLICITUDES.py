@@ -172,7 +172,7 @@ def get_solicitudes(bpm, conn, tipo_solicitud):
             where team = p.team)::character varying as team_members, 
             null as template
             from bpm_explotada as bpm
-            full join hg on bpm.numero_solicitud = hg.id_origen
+            left join hg on bpm.numero_solicitud = hg.id_origen
             left join ds.participantes p on hg.propietario_tarea = p.participante)
 			select
                 business_key,
