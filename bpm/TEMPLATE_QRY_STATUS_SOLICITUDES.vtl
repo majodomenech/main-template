@@ -32,10 +32,10 @@
                         <div class="datos_detalle">
                             <div class="cell"><b>ID HG:</b> $!{id_origen}</div>
                             <div class="cell"><b>Estado:</b> $!{estado_hg}</div>
-                            #if(${tipo_solicitud_hg} == 'Suscripciones')
+                            #if(${tipo_solicitud} == 'Suscripciones')
                                 <div class="cell" ><b>Moneda: </b>$!{moneda}</div>
                                 <div class="cell" ><b>Monto:</b>$!{String.format($Locale_ES,"%,.0f",$monto.doubleValue())}</div>
-                            #elseif(${tipo_solicitud_hg} == 'Rescates')
+                            #elseif(${tipo_solicitud} == 'Rescates')
                                 <div class="cell" ><b>Cantidad CP:</b>$!{String.format($Locale_ES,"%,.0f",$cantidad_importe.doubleValue())}</div>
                                 <div class="cell" ><b>Precio CP:</b>$!{precio}</div>
                             #end
@@ -49,10 +49,10 @@
                     #if($!{business_key})
                         <div class="datos_detalle">
                             <div class="cell" ><b>Estado:</b></div>
-                            #if(${tipo_solicitud_bpm} == 'Suscripciones')
+                            #if(${tipo_solicitud} == 'Suscripciones')
                                 <div class="cell" ><b>Moneda:</b>$!{moneda}</div>
                                 <div class="cell" ><b>Monto:</b>$!{String.format($Locale_ES,"%,.0f",$monto.doubleValue())}</div>
-                            #elseif(${tipo_solicitud_bpm} == 'Rescates')
+                            #elseif(${tipo_solicitud} == 'Rescates')
                                 <div class="cell" ><b>Cantidad CP:</b>$!{String.format($Locale_ES,"%,.0f",$cantidad_importe.doubleValue())}</div>
                                 <div class="cell" ><b>Precio CP:</b>$!{precio}</div>
                             #end
