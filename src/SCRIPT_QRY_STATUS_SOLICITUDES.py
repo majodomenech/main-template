@@ -85,16 +85,14 @@ def get_solicitudes(bpm, conn, tipo_solicitud):
                                 and unf."CODIGO" ~'^[0-9\\.]+$'
                                 
                             )
-                            select *,
-                            null as template 
+                            select *
                             from solicitudes
                             where fecha = current_date
-                            and lower(tipo_solicitud) = lower(''%s'')
                             order by 1 desc
                   $$) as t(id_origen bigint, tipo_solicitud character varying, codigo_fci bigint, fci character varying, cuenta_id bigint,	
                            cuenta character varying, moneda character varying, estado character varying, fecha date, fecha_fin date,	 
                            cantidad decimal, VALORCUOTAPARTE decimal, cantidad_cuotapartes decimal, la_otra_cantidad decimal,  
-                           propietario_tarea character varying, template character varying)
+                           propietario_tarea character varying)
                 ),
                 bpm_base as (
                     select 
@@ -129,7 +127,8 @@ def get_solicitudes(bpm, conn, tipo_solicitud):
                         (sol#>>'{numero_solicitud}')::bigint as numero_solicitud
                     from bpm_base as bpm
                     cross join lateral jsonb_array_elements(bpm.array_pend_conf) as s (sol)
-                )
+                ),
+            bpm_hg as (
             select
             bpm.business_key,
             bpm.numero_solicitud,
@@ -171,10 +170,29 @@ def get_solicitudes(bpm, conn, tipo_solicitud):
             STRING_AGG(participante, ', ') AS participante_list
             from ds.participantes
             where team = p.team)::character varying as team_members, 
-            template
+            null as template
             from bpm_explotada as bpm
             full join hg on bpm.numero_solicitud = hg.id_origen
-            left join ds.participantes p on hg.propietario_tarea = p.participante
+            left join ds.participantes p on hg.propietario_tarea = p.participante)
+			select
+                business_key,
+                bpm_cuenta_id,
+                tipo_solicitud_bpm,
+                start::date,
+                bpm_fondo,
+                monto,
+                moneda,
+                cantidad_importe,
+                precio,
+                estado_bpm,
+                id_origen,
+                estado_hg,
+                fecha,
+                template
+			from bpm_hg
+			where (tipo_solicitud_bpm is null or tipo_solicitud_bpm = %s)
+			order by 1
+			limit 10
         """
 
     cur.execute(sql, (dblink, tipo_solicitud, ))
