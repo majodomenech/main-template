@@ -32,7 +32,7 @@ def formatear(milisegundos):
     return fecha_formateada
 
 
-def suscribir(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_solicitudes_confirmadas, name):
+def suscribir(fecha, cuenta_id, array_solicitudes_pendientes, solicitud, array_solicitudes_confirmadas, thread_name):
     fondo_deno = solicitud['fondo']
     fondo_id = re.search(r'([\d]+)', fondo_deno).group(1)
     moneda = solicitud['moneda']
@@ -65,7 +65,7 @@ def suscribir(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_soli
             },
             "solicitud": {
                 "fechaSolicitud": fecha,
-                "cuentaComitente": cuenta,
+                "cuentaComitente": cuenta_id,
                 "fondo": fondo_id,
                 "especieMoneda": moneda,
                 "cantidad": monto,
@@ -74,7 +74,7 @@ def suscribir(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_soli
             }
         }
 
-    logging.info('Thread %s: starting', name)
+    logging.info('Thread %s: starting', thread_name)
     response = suscripcion_fci(token, url_base, data)
     # time.sleep(5)
     resp_alta_ok, mje = procesar_respuesta(response, 'Suscripcion Alta:')
@@ -90,7 +90,7 @@ def suscribir(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_soli
         array_solicitudes_pendientes.remove(solicitud)
         array_solicitudes_confirmadas.append(solicitud)
         return None
-    logging.info('Thread %s: finishing', name)
+    logging.info('Thread %s: finishing', thread_name)
 
 
 if __name__ == '__main__':
@@ -110,7 +110,7 @@ if __name__ == '__main__':
         # y el proceso la guarda como fecha de java
         # -> uso .getTime() para obtener los milisegundos
         fecha = formatear(bpm.context['fecha.getTime()'])
-        cuenta = bpm.context['cuenta']
+        cuenta_id = bpm.context['cuenta']
         array_solicitudes_pendientes = bpm.context['array_solicitudes_pendientes']
         try:
             array_solicitudes_confirmadas = bpm.context['array_solicitudes_confirmadas']
@@ -125,7 +125,7 @@ if __name__ == '__main__':
             i=1
             for solicitud in array_solicitudes_pendientes:
                 logging.info('Main    :before running thread')
-                futuro = executor.submit(suscribir, fecha, cuenta, array_solicitudes_pendientes, solicitud, array_solicitudes_confirmadas, i)
+                futuro = executor.submit(suscribir, fecha=fecha, cuenta_id=cuenta_id, array_solicitudes_pendientes=array_solicitudes_pendientes, solicitud=solicitud, array_solicitudes_confirmadas=array_solicitudes_confirmadas, thread_name=i)
                 future_results.append(futuro)
                 i+=1
 
