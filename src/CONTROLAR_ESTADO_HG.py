@@ -8,7 +8,7 @@ from SCRIPT_QRY_STATUS_SOLICITUDES import *
 from DB import _get_hg_connection, _get_connection
 import re
 
-def consultar_estado_solicitud(bpm, conn, cuenta_id, fondo_id, tipo_solicitud_bpm):
+def consultar_estado_solicitud(bpm, conn, cuenta_id, fondo_id, tipo_solicitud):
     # me conecto a la DB remota
     dblink = PgUtils.get_dblink(bpm, "SYC")
     conn = _get_connection(bpm)
@@ -72,7 +72,7 @@ def consultar_estado_solicitud(bpm, conn, cuenta_id, fondo_id, tipo_solicitud_bp
             and codigo_fci = %s
             and cuenta_id = %s 
         """
-    cur.execute(sql, (dblink, tipo_solicitud_bpm, fondo_id, cuenta_id))
+    cur.execute(sql, (dblink, tipo_solicitud, fondo_id, cuenta_id))
     qry = cur.fetchall()
     cur.close()
     conn.close()
@@ -87,21 +87,25 @@ def main():
     elif re.search(r'(INSTFCIRE)', business_key).group(1) == 'INSTFCIRE':
         tipo_solicitud = 'rescate'
 
-    for solicitud in bpm.context['array_solicitudes_pendientes']:
-        cuenta_id = solicitud['cuenta']
+    cuenta_id = bpm.context['cuenta']
+
+    #si este script se ejecuta es porque quedó una solicitud pendiente debido a una duplicación
+    estado_hg_pendiente = True
+    array_solicitudes_pendientes = bpm.context['array_solicitudes_pendientes']
+    for solicitud in array_solicitudes_pendientes:
+
         fondo_id = solicitud['fondo_id']
-
-
 
         qry = consultar_estado_solicitud(bpm=bpm, conn=None, cuenta_id=cuenta_id, fondo_id=fondo_id, tipo_solicitud=tipo_solicitud)
         print(qry)
         if len(qry) == 0:
             estado_hg_pendiente = False
-        else:
-            estado_hg_pendiente = True
+            solicitud["error"] = "Existía una solicitud previa, listo para reintentar"
 
     bpm.execution.setVariable('estado_hg_pendiente', estado_hg_pendiente)
+    bpm.execution.setVariable('array_solicitudes_pendientes', array_solicitudes_pendientes)
+    initiator = bpm.context["initiator"]
+    bpm.service.notifyUser(user=initiator, title=f"Instruccción de {tipo_solicitud}",
+                           description=f"Se destrabó la suscripción duplicada en el proceso {business_key}")
 if __name__ == '__main__':
     main()
-
-
