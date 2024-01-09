@@ -6,6 +6,7 @@ import psycopg2.extras
 from redflagbpm import PgUtils
 from SCRIPT_QRY_STATUS_SOLICITUDES import *
 from DB import _get_hg_connection, _get_connection
+import re
 
 def consultar_estado_solicitud(bpm, conn, cuenta_id, fondo_id, tipo_solicitud_bpm):
     # me conecto a la DB remota
@@ -79,17 +80,25 @@ def consultar_estado_solicitud(bpm, conn, cuenta_id, fondo_id, tipo_solicitud_bp
 
 def main():
     bpm = redflagbpm.BPMService()
+    business_key = bpm.execution.getBusinessKey()
 
-    cuenta_id = bpm.context['cuenta_id']
-    fondo_id = bpm.context['fondo_id']
-    tipo_solicitud_bpm = bpm.context['tipo_solicitud_bpm']
+    if re.search(r'(INSTFCISU)', business_key).group(1) == 'INSTFCISU':
+        tipo_solicitud = 'suscripcion'
+    elif re.search(r'(INSTFCIRE)', business_key).group(1) == 'INSTFCIRE':
+        tipo_solicitud = 'rescate'
 
-    qry = consultar_estado_solicitud(bpm=bpm, conn=None, cuenta_id=cuenta_id, fondo_id=fondo_id, tipo_solicitud_bpm=tipo_solicitud_bpm)
-    print(qry)
-    if len(qry) != 0:
-        estado_hg_pendiente = True
-    else:
-        estado_hg_pendiente = False
+    for solicitud in bpm.context['array_solicitudes_pendientes']:
+        cuenta_id = solicitud['cuenta']
+        fondo_id = solicitud['fondo_id']
+
+
+
+        qry = consultar_estado_solicitud(bpm=bpm, conn=None, cuenta_id=cuenta_id, fondo_id=fondo_id, tipo_solicitud=tipo_solicitud)
+        print(qry)
+        if len(qry) == 0:
+            estado_hg_pendiente = False
+        else:
+            estado_hg_pendiente = True
 
     bpm.execution.setVariable('estado_hg_pendiente', estado_hg_pendiente)
 if __name__ == '__main__':

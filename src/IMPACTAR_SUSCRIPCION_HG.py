@@ -35,6 +35,7 @@ def formatear(milisegundos):
 def suscribir(fecha, cuenta_id, array_solicitudes_pendientes, solicitud, array_solicitudes_confirmadas, thread_name):
     fondo_deno = solicitud['fondo']
     fondo_id = re.search(r'([\d]+)', fondo_deno).group(1)
+    solicitud['fondo_id'] = fondo_id
     moneda = solicitud['moneda']
     monto = solicitud['monto']
     integraComitente = solicitud['integra_comitente']
