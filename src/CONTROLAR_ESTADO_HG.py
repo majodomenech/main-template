@@ -17,81 +17,55 @@ def consultar_estado_solicitud(bpm, conn, cuenta_id, fondo_id, tipo_solicitud_bp
             with hg as(
                 select *
                 from dblink(%s,
-                $$
-                with solicitudes as (
-                select 
-                    t."IRM_TAREA_ID" as "id_origen",
-                    'Rescate' AS tipo_solicitud,
-                    unf."CODIGO"::bigint as codigo_fci,
-                    '[' ||unf."CODIGO" ||'] ' || unf."NOMBRE" as fci,
-                    c."ID"::bigint as cuenta_id,
-                    '[' || c."ID" ||'] ' || c."DENOMINACION" as cuenta, 
-                    uni."CODIGO" as moneda,
-                    t."ESTADO" as estado, 
-                    "FECHA"::date as fecha, 
-                    "FECHAFIN"::date as fecha_fin, 
-                    t."CANTIDAD"::decimal as cantidad,
-                    t."VALORCUOTAPARTE", 
-                    "CANTIDADSOLICITUD"::decimal as cantidad_cuotapartes, 
-                    t."CANTIDADCUOTAPARTES" as la_otra_cantidad,
-                    u."NOMBRE" as propietario_tarea
-                from "IRM_TAREA" t
-                    inner join "CTA_ESQUEMA" c on c."CTA_ESQUEMA_ID"  = t."CUENTA"
-                    inner join "SEC_USUARIO" u on u."SEC_USUARIO_ID" = t."PROPIETARIO"
-                    inner join "UNI_UNIDAD" unf on unf."UNI_UNIDAD_ID"=t."FCI" 
-                    inner join "GNT_PERSONA" p on p."GNT_PERSONA_ID" = unf."ACPIC"
-                    left join "CTA_CODIGO_INTEGRACION" cm on unf."CUENTAAAPIC"=cm."ESQUEMA" and cm."CODIFICACION"='Modo operativo FCI'
-                    left join "CTA_CODIGO_INTEGRACION" chro on unf."CUENTAAAPIC"=chro."ESQUEMA" and chro."CODIFICACION"='Límite presentación rescate FCI T+0'
-                    left join "CTA_CODIGO_INTEGRACION" chr on unf."CUENTAAAPIC"=chr."ESQUEMA" and chr."CODIFICACION"='Límite presentación rescate FCI T++'
-                    left join "CTA_CODIGO_INTEGRACION" chs on unf."CUENTAAAPIC"=chs."ESQUEMA" and chs."CODIFICACION"='Límite presentación suscripción FCI'
-                    left join "CTA_ESQUEMA" cfci on cfci."CTA_ESQUEMA_ID" = unf."CUENTAAAPIC"
-                    inner join "UNI_UNIDAD" uni on uni."UNI_UNIDAD_ID"=unf."MONEDA"
-                    where t."CLASS" = 'com.aunesa.irmo.model.acdi.ISolicitudRescateFCI'
-                        -- Filtro fondos cuyo codigo sea numérico
-                        and unf."CODIGO" ~'^[0-9\\.]+$'
-                union
-                select 
-                    t."IRM_TAREA_ID" as "id_origen",
-                    'Suscripcion' AS tipo_solicitud,
-                    unf."CODIGO"::bigint as codigo_fci,
-                    '[' ||unf."CODIGO" ||'] ' || unf."NOMBRE" as fci,
-                    c."ID"::bigint as cuenta_id,
-                    '[' || c."ID" ||'] ' || c."DENOMINACION" as cuenta, 
-                    uni."CODIGO" as moneda,
-                    t."ESTADO" as estado, 
-                    "FECHA"::date as fecha, 
-                    "FECHAFIN"::date as fecha_fin, 
-                    t."CANTIDAD"::decimal as cantidad,
-                    t."VALORCUOTAPARTE", 
-                    t."CANTIDADCUOTAPARTES"::decimal as cantidad_cuotapartes,
-                    "CANTIDADSOLICITUD" as la_otra_cantidad, 
-                    u."NOMBRE" as propietario_tarea
-                from "IRM_TAREA" t
-                    inner join "CTA_ESQUEMA" c on c."CTA_ESQUEMA_ID"  = t."CUENTA"
-                    inner join "SEC_USUARIO" u on u."SEC_USUARIO_ID" = t."PROPIETARIO"
-                    inner join "UNI_UNIDAD" unf on unf."UNI_UNIDAD_ID"=t."FCI" 
-                    inner join "GNT_PERSONA" p on p."GNT_PERSONA_ID" = unf."ACPIC"
-                    left join "CTA_CODIGO_INTEGRACION" cm on unf."CUENTAAAPIC"=cm."ESQUEMA" and cm."CODIFICACION"='Modo operativo FCI'
-                    left join "CTA_CODIGO_INTEGRACION" chro on unf."CUENTAAAPIC"=chro."ESQUEMA" and chro."CODIFICACION"='Límite presentación rescate FCI T+0'
-                    left join "CTA_CODIGO_INTEGRACION" chr on unf."CUENTAAAPIC"=chr."ESQUEMA" and chr."CODIFICACION"='Límite presentación rescate FCI T++'
-                    left join "CTA_CODIGO_INTEGRACION" chs on unf."CUENTAAAPIC"=chs."ESQUEMA" and chs."CODIFICACION"='Límite presentación suscripción FCI'
-                    left join "CTA_ESQUEMA" cfci on cfci."CTA_ESQUEMA_ID" = unf."CUENTAAAPIC"
-                    inner join "UNI_UNIDAD" uni on uni."UNI_UNIDAD_ID"=t."UNIDAD"
-                where t."CLASS" = 'com.aunesa.irmo.model.acdi.ISolicitudSuscripcionFCI'
-                    and unf."CODIGO" ~'^[0-9\\.]+$'
-                    
+                  $$
+                            with solicitudes as (
+                            select 
+                                'Rescate' AS tipo_solicitud,
+                                unf."CODIGO"::bigint as codigo_fci,
+                                c."ID"::bigint as cuenta_id,
+                                t."ESTADO" as estado
+                            from "IRM_TAREA" t
+                                inner join "CTA_ESQUEMA" c on c."CTA_ESQUEMA_ID"  = t."CUENTA"
+                                inner join "SEC_USUARIO" u on u."SEC_USUARIO_ID" = t."PROPIETARIO"
+                                inner join "UNI_UNIDAD" unf on unf."UNI_UNIDAD_ID"=t."FCI" 
+                                inner join "GNT_PERSONA" p on p."GNT_PERSONA_ID" = unf."ACPIC"
+                                left join "CTA_CODIGO_INTEGRACION" cm on unf."CUENTAAAPIC"=cm."ESQUEMA" and cm."CODIFICACION"='Modo operativo FCI'
+                                left join "CTA_CODIGO_INTEGRACION" chro on unf."CUENTAAAPIC"=chro."ESQUEMA" and chro."CODIFICACION"='Límite presentación rescate FCI T+0'
+                                left join "CTA_CODIGO_INTEGRACION" chr on unf."CUENTAAAPIC"=chr."ESQUEMA" and chr."CODIFICACION"='Límite presentación rescate FCI T++'
+                                left join "CTA_CODIGO_INTEGRACION" chs on unf."CUENTAAAPIC"=chs."ESQUEMA" and chs."CODIFICACION"='Límite presentación suscripción FCI'
+                                left join "CTA_ESQUEMA" cfci on cfci."CTA_ESQUEMA_ID" = unf."CUENTAAAPIC"
+                                inner join "UNI_UNIDAD" uni on uni."UNI_UNIDAD_ID"=unf."MONEDA"
+                                where t."CLASS" = 'com.aunesa.irmo.model.acdi.ISolicitudRescateFCI'
+                                    -- Filtro fondos cuyo codigo sea numérico
+                                    and unf."CODIGO" ~'^[0-9\.]+$'
+                            union
+                            select 
+                                'Suscripcion' AS tipo_solicitud,
+                                unf."CODIGO"::bigint as codigo_fci,
+                                c."ID"::bigint as cuenta_id,
+                                t."ESTADO" as estado
+                            from "IRM_TAREA" t
+                                inner join "CTA_ESQUEMA" c on c."CTA_ESQUEMA_ID"  = t."CUENTA"
+                                inner join "SEC_USUARIO" u on u."SEC_USUARIO_ID" = t."PROPIETARIO"
+                                inner join "UNI_UNIDAD" unf on unf."UNI_UNIDAD_ID"=t."FCI" 
+                                inner join "GNT_PERSONA" p on p."GNT_PERSONA_ID" = unf."ACPIC"
+                                left join "CTA_CODIGO_INTEGRACION" cm on unf."CUENTAAAPIC"=cm."ESQUEMA" and cm."CODIFICACION"='Modo operativo FCI'
+                                left join "CTA_CODIGO_INTEGRACION" chro on unf."CUENTAAAPIC"=chro."ESQUEMA" and chro."CODIFICACION"='Límite presentación rescate FCI T+0'
+                                left join "CTA_CODIGO_INTEGRACION" chr on unf."CUENTAAAPIC"=chr."ESQUEMA" and chr."CODIFICACION"='Límite presentación rescate FCI T++'
+                                left join "CTA_CODIGO_INTEGRACION" chs on unf."CUENTAAAPIC"=chs."ESQUEMA" and chs."CODIFICACION"='Límite presentación suscripción FCI'
+                                left join "CTA_ESQUEMA" cfci on cfci."CTA_ESQUEMA_ID" = unf."CUENTAAAPIC"
+                                inner join "UNI_UNIDAD" uni on uni."UNI_UNIDAD_ID"=t."UNIDAD"
+                            where t."CLASS" = 'com.aunesa.irmo.model.acdi.ISolicitudSuscripcionFCI'
+                                and unf."CODIGO" ~'^[0-9\.]+$'
+                                
+                            )
+                            select *
+                            from solicitudes
+                  $$) as t(tipo_solicitud character varying, codigo_fci bigint, cuenta_id bigint,	
+                           estado character varying)
                 )
-                select *
-                from solicitudes
-                where 
-                 fecha = current_date
-                order by 1 desc
-                $$) as t(id_origen bigint, tipo_solicitud character varying, codigo_fci bigint, fci character varying, cuenta_id bigint,	
-                       cuenta character varying, moneda character varying, estado character varying, fecha date, fecha_fin date,	 
-                       cantidad decimal, VALORCUOTAPARTE decimal, cantidad_cuotapartes decimal, la_otra_cantidad decimal,  
-                       propietario_tarea character varying))
-            select *
-            from hg
+				select estado
+				from hg
             where estado = 'Pendiente'
             and lower(tipo_solicitud) = %s
             and codigo_fci = %s
@@ -106,16 +80,16 @@ def consultar_estado_solicitud(bpm, conn, cuenta_id, fondo_id, tipo_solicitud_bp
 def main():
     bpm = redflagbpm.BPMService()
 
-
-    cuenta = bpm.context['cuenta']
+    cuenta_id = bpm.context['cuenta_id']
     fondo_id = bpm.context['fondo_id']
     tipo_solicitud_bpm = bpm.context['tipo_solicitud_bpm']
-    qry = consultar_estado_solicitud(bpm=bpm, conn=None, cuenta_id='5004543', fondo_id='14209', tipo_solicitud_bpm='suscripcion')
+
+    qry = consultar_estado_solicitud(bpm=bpm, conn=None, cuenta_id=cuenta_id, fondo_id=fondo_id, tipo_solicitud_bpm=tipo_solicitud_bpm)
     print(qry)
     if len(qry) != 0:
-        reintentar = False
+        estado_hg_pendiente = True
     else:
-        reintentar = True
+        estado_hg_pendiente = False
 if __name__ == '__main__':
     main()
 
