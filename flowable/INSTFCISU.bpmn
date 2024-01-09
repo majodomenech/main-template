@@ -43,7 +43,6 @@
     <exclusiveGateway id="sid-66CD66B3-5A3B-4601-B11C-C36C733FE300" default="sid-4C1E75A7-AD58-4CE0-BD4B-B4F69B97E49D"></exclusiveGateway>
     <exclusiveGateway id="sid-9BB127F9-45D3-4715-AD85-FAB5A512065A" default="sid-9E5953E8-9D16-4FCB-A75C-424B4E7D0EBE"></exclusiveGateway>
     <endEvent id="sid-ECFC72E1-9244-4979-AD51-9696A04B793E"></endEvent>
-    <sequenceFlow id="sid-9E5953E8-9D16-4FCB-A75C-424B4E7D0EBE" name="1ra iter" sourceRef="sid-9BB127F9-45D3-4715-AD85-FAB5A512065A" targetRef="sid-ECFC72E1-9244-4979-AD51-9696A04B793E"></sequenceFlow>
     <sequenceFlow id="sid-B6B0F4FC-F730-4738-876C-70B930B27337" name="Sin error" sourceRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA" targetRef="sid-0D8F1CBA-E9F5-4EBF-A88A-42AF558A3704"></sequenceFlow>
     <sequenceFlow id="sid-23613DDD-241E-4A86-8A35-39B9242ACA1A" name="Algún error no es
 solicitud repetida" sourceRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA" targetRef="sid-AA341290-7481-4584-A200-9367E3C301D6">
@@ -51,7 +50,6 @@ solicitud repetida" sourceRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA" targetR
     </sequenceFlow>
     <sequenceFlow id="sid-8FA66230-B1A7-40F7-9AFA-39B45202B06F" sourceRef="sid-94B51782-58F4-4F8C-8091-CBD2D3FBF5CC" targetRef="sid-31EF1C1F-4237-41EE-84F0-ACF652698F9F"></sequenceFlow>
     <sequenceFlow id="sid-2999C090-EEAA-4390-8C53-04CCF2B7D827" sourceRef="sid-31EF1C1F-4237-41EE-84F0-ACF652698F9F" targetRef="sid-66CD66B3-5A3B-4601-B11C-C36C733FE300"></sequenceFlow>
-    <sequenceFlow id="sid-C288C5D7-40A6-4031-B006-4257BA682F0C" sourceRef="sid-FC7FA0E9-A096-4B8B-8576-CBD37812FA46" targetRef="sid-9BB127F9-45D3-4715-AD85-FAB5A512065A"></sequenceFlow>
     <sequenceFlow id="sid-8627EEE6-DD88-4F4A-8FA9-DA83DC82C57C" sourceRef="sid-FB8FEC43-DFF6-46C9-9AF2-1A14BDF1D41D" targetRef="sid-ECFC72E1-9244-4979-AD51-9696A04B793E"></sequenceFlow>
     <boundaryEvent id="sid-FC7FA0E9-A096-4B8B-8576-CBD37812FA46" attachedToRef="sid-AA341290-7481-4584-A200-9367E3C301D6" cancelActivity="true">
       <timerEventDefinition>
@@ -61,9 +59,6 @@ solicitud repetida" sourceRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA" targetR
     <sequenceFlow id="sid-BFFA9878-F755-4F11-9F52-609A8C5D47DE" sourceRef="sid-FB8FEC43-DFF6-46C9-9AF2-1A14BDF1D41D" targetRef="sid-65EC28E5-007E-4062-9F59-67CFE8919E3E">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${tipoResultado=="guardar"}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="sid-344515B8-F4D0-4CD5-B4D6-5154484DA73B" sourceRef="sid-9BB127F9-45D3-4715-AD85-FAB5A512065A" targetRef="sid-AA341290-7481-4584-A200-9367E3C301D6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${accion!=null}]]></conditionExpression>
-    </sequenceFlow>
     <sequenceFlow id="sid-0F2D9AED-88BF-4F91-B4C3-CF4A46D6A6C6" name="Todos los errores
 son solicitud
 repetida" sourceRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA" targetRef="sid-94B51782-58F4-4F8C-8091-CBD2D3FBF5CC">
@@ -72,6 +67,11 @@ repetida" sourceRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA" targetRef="sid-94
     <sequenceFlow id="sid-4C1E75A7-AD58-4CE0-BD4B-B4F69B97E49D" name="Está pendiente" sourceRef="sid-66CD66B3-5A3B-4601-B11C-C36C733FE300" targetRef="sid-94B51782-58F4-4F8C-8091-CBD2D3FBF5CC"></sequenceFlow>
     <sequenceFlow id="sid-8B5E4B55-3C79-474F-A957-F8B1EC537EC6" name="No está pendiente" sourceRef="sid-66CD66B3-5A3B-4601-B11C-C36C733FE300" targetRef="sid-AA341290-7481-4584-A200-9367E3C301D6">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${estado_hg_pendiente==false}]]></conditionExpression>
+    </sequenceFlow>
+    <sequenceFlow id="sid-9E5953E8-9D16-4FCB-A75C-424B4E7D0EBE" name="1ra iter" sourceRef="sid-9BB127F9-45D3-4715-AD85-FAB5A512065A" targetRef="sid-ECFC72E1-9244-4979-AD51-9696A04B793E"></sequenceFlow>
+    <sequenceFlow id="sid-C288C5D7-40A6-4031-B006-4257BA682F0C" sourceRef="sid-FC7FA0E9-A096-4B8B-8576-CBD37812FA46" targetRef="sid-9BB127F9-45D3-4715-AD85-FAB5A512065A"></sequenceFlow>
+    <sequenceFlow id="sid-344515B8-F4D0-4CD5-B4D6-5154484DA73B" name="Iteracion 2,3 ..." sourceRef="sid-9BB127F9-45D3-4715-AD85-FAB5A512065A" targetRef="sid-AA341290-7481-4584-A200-9367E3C301D6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${accion!=null}]]></conditionExpression>
     </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_INSTFCISU">
