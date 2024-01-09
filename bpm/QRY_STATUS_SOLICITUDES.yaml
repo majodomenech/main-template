@@ -7,8 +7,8 @@ columns:
 - name: business_key
   caption: business_key
   fieldType: java.lang.String
-- name: bpm_cuenta_id
-  caption: bpm_cuenta_id
+- name: cuenta
+  caption: cuenta
   fieldType: java.lang.String
 - name: tipo_solicitud_bpm
   caption: tipo_solicitud
@@ -78,8 +78,20 @@ filterGroup:
       - "Liquidacion pendiente"
       - "Finalizada"
       - "Pendiente de confirmar"
+  - name: fechaConsultaDesde
+    caption: Fecha Desde
+    fieldType: java.sql.Date
+    required: false
+    dependents: [ ]
+  - name: fechaConsultaHasta
+    caption: Fecha Hasta
+    fieldType: java.sql.Date
+    required: false
+    dependents: [ ]
   defaultFilter:
     tipo_solicitud: 'Rescate'
+    fechaConsultaDesde: ;new java.lang.Long(Date.now() - 24*60*60*1000);
+    fechaConsultaHasta: ;new java.lang.Long(Date.now());
 dataSourceOptions: {}
 reports: []
 services: []

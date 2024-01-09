@@ -8,7 +8,7 @@ from redflagbpm import PgUtils
 from DB import _get_hg_connection, _get_connection
 import datetime
 from decimal import Decimal
-def get_solicitudes(bpm, conn, tipo_solicitud):
+def get_solicitudes(bpm, conn, tipo_solicitud, fechaConsultaDesde, fechaConsultaHasta):
     # me conecto a la DB remota
     dblink = PgUtils.get_dblink(bpm, "SYC")
     #me conecto a la DB local
@@ -87,13 +87,17 @@ def get_solicitudes(bpm, conn, tipo_solicitud):
                             )
                             select *
                             from solicitudes
-                            where fecha = current_date
-                            order by 1 desc
                   $$) as t(id_origen bigint, tipo_solicitud character varying, codigo_fci bigint, fci character varying, cuenta_id bigint,	
                            cuenta character varying, moneda character varying, estado character varying, fecha date, fecha_fin date,	 
                            cantidad decimal, VALORCUOTAPARTE decimal, cantidad_cuotapartes decimal, la_otra_cantidad decimal,  
                            propietario_tarea character varying)
                 ),
+                hg_cuenta as(
+                  select *
+                  from dblink('dbname=syc user=consyc password=MTU1NDNjN2ZlZGU4ZDdhNDBhZTM2MjA2',
+                  $$ select "ID" as id_cuenta, '['||"ID"||'] '|| "DENOMINACION" as denominacion
+							  from "CTA_ESQUEMA"
+				  $$) as t(id_cuenta character varying, denominacion character varying)),
                 bpm_base as (
                     select 
                         p.business_key_ as "business_key",
@@ -133,7 +137,8 @@ def get_solicitudes(bpm, conn, tipo_solicitud):
             bpm.business_key,
             bpm.numero_solicitud,
             bpm.initiator,
-            bpm.cuenta_id as bpm_cuenta_id,
+            bpm.cuenta_id,
+            hg_cuenta.denominacion as cuenta,
             bpm.tipo_solicitud as tipo_solicitud_bpm,
             bpm.start,
             bpm.end,
@@ -173,10 +178,12 @@ def get_solicitudes(bpm, conn, tipo_solicitud):
             null as template
             from bpm_explotada as bpm
             left join hg on bpm.numero_solicitud = hg.id_origen
-            left join ds.participantes p on hg.propietario_tarea = p.participante)
+            left join ds.participantes p on hg.propietario_tarea = p.participante
+            left join hg_cuenta on hg_cuenta.id_cuenta = bpm.cuenta_id
+            )
 			select
                 business_key,
-                bpm_cuenta_id,
+                cuenta,
                 tipo_solicitud_bpm,
                 start::date,
                 bpm_fondo::character varying,
@@ -191,11 +198,12 @@ def get_solicitudes(bpm, conn, tipo_solicitud):
                 template
 			from bpm_hg
 			where (tipo_solicitud_bpm is null or tipo_solicitud_bpm = lower(%s))
+						and (%s::bigint is null or (start)::date >= to_timestamp(cast(%s/1000 as bigint))::date)
+    			and (%s::bigint is null or (start)::date <= to_timestamp(cast(%s/1000 as bigint))::date)
 			order by 1
-			limit 10
         """
 
-    cur.execute(sql, (dblink, tipo_solicitud, ))
+    cur.execute(sql, (dblink, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta,))
     qry = cur.fetchall()
 
     cur.close()
@@ -211,7 +219,13 @@ def main():
     except KeyError:
         tipo_solicitud = None
 
-    qry = get_solicitudes(bpm=bpm, conn=conn, tipo_solicitud=tipo_solicitud)
+
+    #leyendo filtros de fecha en milisegundos
+    fechaConsultaDesde = bpm.context['fechaConsultaDesde']
+    fechaConsultaHasta = bpm.context['fechaConsultaHasta']
+
+
+    qry = get_solicitudes(bpm=bpm, conn=conn, tipo_solicitud=tipo_solicitud, fechaConsultaDesde=fechaConsultaDesde, fechaConsultaHasta=fechaConsultaHasta)
 
 
     print(qry)

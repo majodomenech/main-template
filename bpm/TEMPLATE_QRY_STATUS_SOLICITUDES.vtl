@@ -20,44 +20,42 @@
         </div>
         <div class="datos2">
             <div class="cell"><b>Fecha:</b> $!{start}</div>
-            <div class="cell"><b>Cuenta ID:</b> $!{bpm_cuenta_id}</div>
+            <div class="cell"><b>Cuenta: </b> $!{cuenta}</div>
             <div class="cell"><b>Fondo:</b> $!{bpm_fondo}</div>
         </div>
-            <div class="wrapper">
-                <div class="col1">
-                    <div class="cell subtitulo">
-                        HG
+        <div class="wrapper">
+            <div class="col1">
+                            <div class="cell subtitulo">BPM
+                </div>
+                #if($!{business_key})
+                    <div class="datos_detalle">
+                        <div class="cell" ><b>Estado: </b>$!{estado_bpm}</div>
+                        #if(${tipo_solicitud_bpm} == 'suscripcion')
+                            <div class="cell" ><b>Moneda: </b>$!{moneda}</div>
+                            <div class="cell" ><b>Monto: </b>$!{monto}</div>
+                        #elseif(${tipo_solicitud_bpm} == 'rescate')
+                            <div class="cell" ><b>Cantidad CP: </b>$!{cantidad_importe}</div>
+                            <div class="cell" ><b>Precio CP: </b>$!{precio}</div>
+                        #end
                     </div>
-                    #if($!{id_origen})
-                        <div class="datos_detalle">
-                            <div class="cell"><b>ID HG:</b> $!{id_origen}</div>
-                            <div class="cell"><b>Estado:</b> $!{estado_hg}</div>
-                            #if(${tipo_solicitud_bpm} == 'suscripcion')
-                                <div class="cell" ><b>Moneda: </b>$!{moneda}</div>
-                                <div class="cell" ><b>Monto:</b>$!{String.format($Locale_ES,"%,.0f",$monto.doubleValue())}</div>
-                            #elseif(${tipo_solicitud_bpm} == 'rescate')
-                                <div class="cell" ><b>Cantidad CP:</b>$!{String.format($Locale_ES,"%,.0f",$cantidad_importe.doubleValue())}</div>
-                                <div class="cell" ><b>Precio CP:</b>$!{precio}</div>
-                            #end
-                        </div>
-                    #end
-                </div>
-                <div class="col2">
-                <div class="cell subtitulo">
-                    BPM
-                </div>
-                    #if($!{business_key})
-                        <div class="datos_detalle">
-                            <div class="cell" ><b>Estado:</b>$!{estado_bpm}</div>
-                            #if(${tipo_solicitud_bpm} == 'suscripcion')
-                                <div class="cell" ><b>Moneda:</b>$!{moneda}</div>
-                                <div class="cell" ><b>Monto:</b>$!{String.format($Locale_ES,"%,.0f",$monto.doubleValue())}</div>
-                            #elseif(${tipo_solicitud_bpm} == 'rescate')
-                                <div class="cell" ><b>Cantidad CP:</b>$!{String.format($Locale_ES,"%,.0f",$cantidad_importe.doubleValue())}</div>
-                                <div class="cell" ><b>Precio CP:</b>$!{precio}</div>
-                            #end
-                        </div>
-                    #end
-                </div>
+                #end
             </div>
+            <div class="col2">
+                <div class="cell subtitulo">HG
+                </div>
+                #if($!{id_origen})
+                    <div class="datos_detalle">
+                        <div class="cell"><b>ID HG: </b> $!{id_origen}</div>
+                        <div class="cell"><b>Estado: </b> $!{estado_hg}</div>
+                        #if(${tipo_solicitud_bpm} == 'suscripcion')
+                            <div class="cell" ><b>Moneda: </b>$!{moneda}</div>
+                            <div class="cell" ><b>Monto: </b>$!{monto}</div>
+                        #elseif(${tipo_solicitud_bpm} == 'rescate')
+                            <div class="cell" ><b>Cantidad CP: </b>$!{cantidad_importe}</div>
+                            <div class="cell" ><b>Precio CP: </b>$!{precio}</div>
+                        #end
+                    </div>
+                #end
+            </div>
+        </div>
     </div>
