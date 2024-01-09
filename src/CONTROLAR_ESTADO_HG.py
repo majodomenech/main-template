@@ -90,6 +90,8 @@ def main():
         estado_hg_pendiente = True
     else:
         estado_hg_pendiente = False
+
+    bpm.execution.setVariable('estado_hg_pendiente', estado_hg_pendiente)
 if __name__ == '__main__':
     main()
 
