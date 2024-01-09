@@ -118,12 +118,12 @@ if __name__ == '__main__':
                 executor.submit(rescatar, fecha, cuenta, array_solicitudes_pendientes, solicitud, array_solicitudes_confirmadas, i)
                 i+=1
 
-        # if len(array_solicitudes_pendientes) == 0:
-        #     # todo coment in local tests only
-        #     bpm.execution.setVariable('accion', "continuar")
-        # else:
-        #     bpm.execution.setVariable('accion', 'corregir')
-        # bpm.execution.setVariable('array_solicitud_pendiente', array_solicitudes_pendientes)
-        # bpm.execution.setVariable('array_solicitud_confirmada', array_solicitudes_confirmadas)
+        if len(array_solicitudes_pendientes) == 0:
+            # todo coment in local tests only
+            bpm.execution.setVariable('accion', "continuar")
+        else:
+            bpm.execution.setVariable('accion', 'corregir')
+        bpm.execution.setVariable('array_solicitud_pendiente', array_solicitudes_pendientes)
+        bpm.execution.setVariable('array_solicitud_confirmada', array_solicitudes_confirmadas)
     except:
         bpm.fail()

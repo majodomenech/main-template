@@ -82,15 +82,13 @@ filterGroup:
     caption: Fecha Desde
     fieldType: java.sql.Date
     required: false
-    dependents: [ ]
   - name: fechaConsultaHasta
     caption: Fecha Hasta
     fieldType: java.sql.Date
     required: false
-    dependents: [ ]
   defaultFilter:
     tipo_solicitud: 'Rescate'
-    fechaConsultaDesde: ;new java.lang.Long(Date.now() - 24*60*60*1000);
+    fechaConsultaDesde: ;new java.lang.Long(Date.now() - 30*24*60*60*1000);
     fechaConsultaHasta: ;new java.lang.Long(Date.now());
 dataSourceOptions: {}
 reports: []

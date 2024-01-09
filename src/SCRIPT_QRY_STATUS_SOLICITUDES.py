@@ -185,7 +185,7 @@ def get_solicitudes(bpm, conn, tipo_solicitud, fechaConsultaDesde, fechaConsulta
                 business_key,
                 cuenta,
                 tipo_solicitud_bpm,
-                start::date,
+                start,
                 bpm_fondo::character varying,
                 monto,
                 moneda,
@@ -198,8 +198,8 @@ def get_solicitudes(bpm, conn, tipo_solicitud, fechaConsultaDesde, fechaConsulta
                 template
 			from bpm_hg
 			where (tipo_solicitud_bpm is null or tipo_solicitud_bpm = lower(%s))
-						and (%s::bigint is null or (start)::date >= to_timestamp(cast(%s/1000 as bigint))::date)
-    			and (%s::bigint is null or (start)::date <= to_timestamp(cast(%s/1000 as bigint))::date)
+						and (%s::bigint is null or (start)>= to_timestamp(cast(%s/1000 as bigint))::date)
+    			and (%s::bigint is null or (start)<= to_timestamp(cast(%s/1000 as bigint))::date)
 			order by 1
         """
 
