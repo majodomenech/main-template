@@ -32,7 +32,7 @@ def formatear(milisegundos):
     return fecha_formateada
 
 
-def rescatar(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_solicitudes_confirmadas, name):
+def rescatar(fecha, cuenta_id, array_solicitudes_pendientes, solicitud, array_solicitudes_confirmadas, name):
     fondo_deno = solicitud['fondo']
     fondo_id = re.search(r'([\d]+)', fondo_deno).group(1)
     # rescateDinero = solicitud['rescate_dinero']
@@ -63,7 +63,7 @@ def rescatar(fecha, cuenta, array_solicitudes_pendientes, solicitud, array_solic
             },
             "solicitud": {
                 "fechaSolicitud": fecha,
-                "cuentaComitente": cuenta,
+                "cuentaComitente": cuenta_id,
                 "fondo": fondo_id,
                 "rescateDinero": rescateDinero,
                 "cantidadImporte": cantidadImporte
@@ -101,7 +101,7 @@ if __name__ == '__main__':
         # y el proceso la guarda como fecha de java
         # -> uso .getTime() para obtener los milisegundos
         fecha = formatear(bpm.context['fecha.getTime()'])
-        cuenta = bpm.context['cuenta']
+        cuenta_id= bpm.context['cuenta']
         array_solicitudes_pendientes = bpm.context['array_solicitudes_pendientes']
         try:
             array_solicitudes_confirmadas = bpm.context['array_solicitudes_confirmadas']
@@ -115,7 +115,7 @@ if __name__ == '__main__':
             i=1
             for solicitud in array_solicitudes_pendientes:
                 logging.info('Main    :before running thread')
-                executor.submit(rescatar, fecha, cuenta, array_solicitudes_pendientes, solicitud, array_solicitudes_confirmadas, i)
+                executor.submit(rescatar, fecha=fecha, cuenta_id=cuenta_id, array_solicitudes_pendientes=array_solicitudes_pendientes, solicitud=solicitud, array_solicitudes_confirmadas=array_solicitudes_confirmadas, thread_name=i)
                 i+=1
 
         if len(array_solicitudes_pendientes) == 0:
