@@ -51,7 +51,6 @@ solicitud repetida" sourceRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA" targetR
     </sequenceFlow>
     <sequenceFlow id="sid-8FA66230-B1A7-40F7-9AFA-39B45202B06F" sourceRef="sid-94B51782-58F4-4F8C-8091-CBD2D3FBF5CC" targetRef="sid-31EF1C1F-4237-41EE-84F0-ACF652698F9F"></sequenceFlow>
     <sequenceFlow id="sid-2999C090-EEAA-4390-8C53-04CCF2B7D827" sourceRef="sid-31EF1C1F-4237-41EE-84F0-ACF652698F9F" targetRef="sid-66CD66B3-5A3B-4601-B11C-C36C733FE300"></sequenceFlow>
-    <sequenceFlow id="sid-4C1E75A7-AD58-4CE0-BD4B-B4F69B97E49D" name="No está liquidado" sourceRef="sid-66CD66B3-5A3B-4601-B11C-C36C733FE300" targetRef="sid-94B51782-58F4-4F8C-8091-CBD2D3FBF5CC"></sequenceFlow>
     <sequenceFlow id="sid-C288C5D7-40A6-4031-B006-4257BA682F0C" sourceRef="sid-FC7FA0E9-A096-4B8B-8576-CBD37812FA46" targetRef="sid-9BB127F9-45D3-4715-AD85-FAB5A512065A"></sequenceFlow>
     <sequenceFlow id="sid-8627EEE6-DD88-4F4A-8FA9-DA83DC82C57C" sourceRef="sid-FB8FEC43-DFF6-46C9-9AF2-1A14BDF1D41D" targetRef="sid-ECFC72E1-9244-4979-AD51-9696A04B793E"></sequenceFlow>
     <boundaryEvent id="sid-FC7FA0E9-A096-4B8B-8576-CBD37812FA46" attachedToRef="sid-AA341290-7481-4584-A200-9367E3C301D6" cancelActivity="true">
@@ -70,8 +69,9 @@ son solicitud
 repetida" sourceRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA" targetRef="sid-94B51782-58F4-4F8C-8091-CBD2D3FBF5CC">
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${accion=="reintentar"}]]></conditionExpression>
     </sequenceFlow>
-    <sequenceFlow id="sid-8B5E4B55-3C79-474F-A957-F8B1EC537EC6" name="Está liquidado" sourceRef="sid-66CD66B3-5A3B-4601-B11C-C36C733FE300" targetRef="sid-AA341290-7481-4584-A200-9367E3C301D6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${estado_hg=="liquidado"}]]></conditionExpression>
+    <sequenceFlow id="sid-4C1E75A7-AD58-4CE0-BD4B-B4F69B97E49D" name="Está pendiente" sourceRef="sid-66CD66B3-5A3B-4601-B11C-C36C733FE300" targetRef="sid-94B51782-58F4-4F8C-8091-CBD2D3FBF5CC"></sequenceFlow>
+    <sequenceFlow id="sid-8B5E4B55-3C79-474F-A957-F8B1EC537EC6" name="No está pendiente" sourceRef="sid-66CD66B3-5A3B-4601-B11C-C36C733FE300" targetRef="sid-AA341290-7481-4584-A200-9367E3C301D6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${estado_hg_pendiente==false}]]></conditionExpression>
     </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_INSTFCISU">
