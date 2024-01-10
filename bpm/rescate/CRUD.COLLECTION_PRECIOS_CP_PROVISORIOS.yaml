@@ -1,5 +1,5 @@
 name: CRUD.INSTFCI/COLLECTION_PRECIOS_CP_PROVISORIOS
-caption: Precios CP Provisorios
+caption: FCI HG - Precios CP Provisorios
 viewBindings: []
 columns:
 - name: codigo_fci
@@ -28,3 +28,5 @@ services: []
 scripts: []
 context: {}
 exportable: false
+menus:
+- FONDOS

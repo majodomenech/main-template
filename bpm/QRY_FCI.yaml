@@ -19,3 +19,5 @@ targetUsers:
 - INTERNAL
 dataSource: SYC
 exportable: false
+menus:
+- FONDOS
