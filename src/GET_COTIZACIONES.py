@@ -29,8 +29,11 @@ def get_cotizacion_hg(bpm, codigo_fci, fecha):
     return json_data
 
 def get_cotizacion_cafci(fci_id, class_id):
+    #quinquela pesos clase B: ejemplo
+    #https://api.cafci.org.ar/fondo/593/clase/1201/ficha
     url_base = "https://api.cafci.org.ar/fondo"
     url = f"{url_base}/{fci_id}/clase/{class_id}/ficha"
+
     headers = {
         'Accept': 'application/json, text/plain, */*'
     }

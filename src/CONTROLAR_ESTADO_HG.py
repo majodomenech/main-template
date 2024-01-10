@@ -105,7 +105,12 @@ def main():
     bpm.execution.setVariable('estado_hg_pendiente', estado_hg_pendiente)
     bpm.execution.setVariable('array_solicitudes_pendientes', array_solicitudes_pendientes)
     initiator = bpm.context["initiator"]
-    bpm.service.notifyUser(user=initiator, title=f"Instruccción de {tipo_solicitud}",
-                           description=f"Se destrabó la suscripción duplicada en el proceso {business_key}")
+
+    if tipo_solicitud == 'suscripcion':
+        bpm.service.notifyUser(user=initiator, title=f"Instruccción de {tipo_solicitud}",
+                               description=f"Se destrabó la suscripción duplicada en el proceso {business_key}")
+    elif tipo_solicitud == 'rescate':
+        bpm.service.notifyUser(user=initiator, title=f"Instruccción de {tipo_solicitud}",
+                               description=f"Se destrabó el rescate duplicado en el proceso {business_key}")
 if __name__ == '__main__':
     main()

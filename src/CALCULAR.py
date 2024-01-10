@@ -31,7 +31,8 @@ def get_cotiz_dict(codigo_fci):
         #get today's date
         fecha = datetime.today().strftime('%d/%m/%Y')
         hg_dict = dict(get_cotizacion_hg(bpm, codigo_fci=codigo_fci, fecha=fecha))
-        hg_dict['fecha_cotizacion'] = datetime.strptime(fecha, '%d/%m/%Y')
+        # agrego manualmente hora a la fecha en formato dd/MM/yyyy HH:mm:ss y lo convierto a datetime (especificando el formato que recibe)
+        hg_dict[codigo_fci]['fecha_cotizacion'] = datetime.strptime(hg_dict[codigo_fci]['fecha'] + ' 19:00:00', '%Y-%m-%d %H:%M:%S')
 
 
     ##########################
@@ -62,13 +63,13 @@ def get_cotiz_dict(codigo_fci):
                 cotiz_dict['fuente'] = 'CAFCI'
         #si la cotizacion manual no es None y la cotizacion de la cafci es None -> busco en el WS de HG
         #si la cotizacion manual es mas reciente que la de HG -> uso la manual
-        elif cafci_dict is None and manual_cotiz['fecha_cotizacion_manual'] > hg_dict['fecha_cotizacion']:
+        elif cafci_dict is None and manual_cotiz['fecha_cotizacion_manual'] > hg_dict[codigo_fci]['fecha_cotizacion']:
             cotiz_dict['fecha_cotizacion'] = manual_cotiz['fecha_cotizacion_manual']
-            cotiz_dict['precio'] = hg_dict[codigo_fci]['cotizacion']
+            cotiz_dict['precio'] = float(manual_cotiz['vcp_provisorio'])
             cotiz_dict['fuente'] = 'Manual'
         #si la cotizacion manual es mas vieja que la de HG -> uso la de HG
         else:
-            cotiz_dict['fecha_cotizacion'] = hg_dict['fecha_cotizacion']
+            cotiz_dict['fecha_cotizacion'] = hg_dict[codigo_fci]['fecha_cotizacion']
             cotiz_dict['precio'] = hg_dict[codigo_fci]['cotizacion']
             cotiz_dict['fuente'] = 'HG'
     #si la cotizacion manual es None y la cotizacion de la cafci no es None -> uso la de la cafci
@@ -97,7 +98,7 @@ def crearDistri(cotiz_dict):
 
         ret += (f"<tr>"
                 f"<td class=\"tg-0lax center\">{cotiz_dict['fuente']}</td>"
-                f"<td class=\"tg-0lax center\">{cotiz_dict['fecha_cotizacion']}</td>"
+                f"<td class=\"tg-0lax center\">{cotiz_dict['fecha_cotizacion'].strftime('%d/%m/%Y %H:%M:%S')}</td>"
                 f"<td class=\"tg-0lax center\">{cotiz_dict['moneda_fondo']} {cotiz_dict['precio']}</td>"
                 f"</tr>")
         ret += "</table>"
