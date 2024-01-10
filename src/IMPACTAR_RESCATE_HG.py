@@ -32,7 +32,7 @@ def formatear(milisegundos):
     return fecha_formateada
 
 
-def rescatar(fecha, cuenta_id, array_solicitudes_pendientes, solicitud, array_solicitudes_confirmadas, name):
+def rescatar(fecha, cuenta_id, array_solicitudes_pendientes, solicitud, array_solicitudes_confirmadas, thread_name):
     fondo_deno = solicitud['fondo']
     fondo_id = re.search(r'([\d]+)', fondo_deno).group(1)
     # rescateDinero = solicitud['rescate_dinero']
@@ -70,7 +70,7 @@ def rescatar(fecha, cuenta_id, array_solicitudes_pendientes, solicitud, array_so
             }
         }
 
-    logging.info('Thread %s: starting', name)
+    logging.info('Thread %s: starting', thread_name)
     response = rescate_fci(token=token, url_base=url_base, data=data)
     # time.sleep(5)
     resp_alta_ok, mje = procesar_respuesta(response, 'Rescate Alta:')
@@ -85,7 +85,7 @@ def rescatar(fecha, cuenta_id, array_solicitudes_pendientes, solicitud, array_so
         solicitud["numero_solicitud"] = response.json()["solicitud"]['numeroSolicitud']
         array_solicitudes_confirmadas.append(solicitud)
         return None
-    logging.info('Thread %s: finishing', name)
+    logging.info('Thread %s: finishing', thread_name)
 
 if __name__ == '__main__':
     bpm = redflagbpm.BPMService()
