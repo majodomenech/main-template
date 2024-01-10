@@ -94,7 +94,7 @@ if __name__ == '__main__':
         if bpm.service.text("STAGE") == 'DEV':
             url_base = f'https://demo.aunesa.dev:10017/Irmo/api/'
         else:
-            url_base = f''
+            url_base = f'https://syc.aunesa.com/Irmo/api/'
 
         token = login(url_base)
         #todo unncoment in local tests only
