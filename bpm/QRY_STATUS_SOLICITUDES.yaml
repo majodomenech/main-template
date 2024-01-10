@@ -81,11 +81,11 @@ filterGroup:
   - name: fechaConsultaDesde
     caption: Fecha Desde
     fieldType: java.sql.Date
-    required: false
+    required: true
   - name: fechaConsultaHasta
     caption: Fecha Hasta
     fieldType: java.sql.Date
-    required: false
+    required: true
   defaultFilter:
     tipo_solicitud: 'Rescate'
     fechaConsultaDesde: ;new java.lang.Long(Date.now() - 30*24*60*60*1000);
