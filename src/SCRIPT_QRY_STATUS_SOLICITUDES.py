@@ -198,12 +198,15 @@ def get_solicitudes(bpm, conn, tipo_solicitud, fechaConsultaDesde, fechaConsulta
                 template
 			from bpm_hg
 			where (tipo_solicitud_bpm is null or tipo_solicitud_bpm = lower(%s))
-						and (%s::bigint is null or (start)>= to_timestamp(cast(%s/1000 as bigint))::date)
-    			and (%s::bigint is null or (start)<= to_timestamp(cast(%s/1000 as bigint))::date)
+						and (%s::bigint is null or (start)::date>= to_timestamp(cast(%s/1000 as bigint))::date)
+    			and (%s::bigint is null or (start)::date<= to_timestamp(cast(%s/1000 as bigint))::date)
 			order by 1
         """
+    #mog_var = cur.mogrify(sql, (dblink, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta,))
+    #print(mog_var)
 
     cur.execute(sql, (dblink, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta,))
+
     qry = cur.fetchall()
 
     cur.close()
