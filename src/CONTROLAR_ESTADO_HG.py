@@ -82,9 +82,9 @@ def main():
     bpm = redflagbpm.BPMService()
     business_key = bpm.execution.getBusinessKey()
 
-    if re.search(r'(INSTFCISU)', business_key).group(1) == 'INSTFCISU':
+    if 'INSTFCISU'in business_key:
         tipo_solicitud = 'suscripcion'
-    elif re.search(r'(INSTFCIRE)', business_key).group(1) == 'INSTFCIRE':
+    elif 'INSTFCIRE' in business_key:
         tipo_solicitud = 'rescate'
 
     cuenta_id = bpm.context['cuenta']

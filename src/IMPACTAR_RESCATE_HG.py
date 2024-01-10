@@ -35,6 +35,7 @@ def formatear(milisegundos):
 def rescatar(fecha, cuenta_id, array_solicitudes_pendientes, solicitud, array_solicitudes_confirmadas, thread_name):
     fondo_deno = solicitud['fondo']
     fondo_id = re.search(r'([\d]+)', fondo_deno).group(1)
+    solicitud['fondo_id'] = fondo_id
     # rescateDinero = solicitud['rescate_dinero']
     rescateDinero = False
     cantidadImporte = solicitud['cantidad_importe']
