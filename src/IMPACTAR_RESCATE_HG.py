@@ -128,6 +128,7 @@ if __name__ == '__main__':
         if len(array_solicitudes_pendientes) == 0:
             # todo coment in local tests only
             bpm.execution.setVariable('accion', "continuar")
+            error_x_duplicado = False
         else:
             pattern = '(Ya existe una solicitud pendiente con estos datos. Por favor actualice la solicitud previa.)'
             # itero el resultado de todos los threads
