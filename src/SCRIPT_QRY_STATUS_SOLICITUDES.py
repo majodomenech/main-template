@@ -8,7 +8,7 @@ from redflagbpm import PgUtils
 from DB import _get_hg_connection, _get_connection
 import datetime
 from decimal import Decimal
-def get_solicitudes(bpm, conn, tipo_solicitud, fechaConsultaDesde, fechaConsultaHasta):
+def get_solicitudes(bpm, conn, user_id,  tipo_solicitud, fechaConsultaDesde, fechaConsultaHasta):
     # me conecto a la DB remota
     dblink = PgUtils.get_dblink(bpm, "SYC")
     #me conecto a la DB local
@@ -171,19 +171,27 @@ def get_solicitudes(bpm, conn, tipo_solicitud, fechaConsultaDesde, fechaConsulta
 			  -- Perdeterminado
 			  else 'Estado no disponible' 
 			end as estado_bpm,
-            (select 
-            STRING_AGG(participante, ', ') AS participante_list
-            from ds.participantes
-            where team = p.team)::character varying as team_members, 
             null as template
             from bpm_explotada as bpm
             left join hg on bpm.numero_solicitud = hg.id_origen
             left join ds.participantes p on hg.propietario_tarea = p.participante
             left join hg_cuenta on hg_cuenta.id_cuenta = bpm.cuenta_id
-            )
+            ),
+            team as (
+			select distinct participante
+			from ds.participantes
+			where team = (select distinct team from ds.participantes
+							where %s in (participante, coordinador)
+						 )
+			),
+			com_team as (
+			   select cuenta
+			   from ds.operadores
+			   where operador in (select participante from team)
+			)
 			select
                 business_key,
-                cuenta,
+                bh.cuenta,
                 tipo_solicitud_bpm,
                 start,
                 bpm_fondo::character varying,
@@ -197,6 +205,7 @@ def get_solicitudes(bpm, conn, tipo_solicitud, fechaConsultaDesde, fechaConsulta
                 fecha,
                 template
 			from bpm_hg
+			inner join com_team ct on bh.cuenta_id = ct.cuenta
 			where (tipo_solicitud_bpm is null or tipo_solicitud_bpm = lower(%s))
 						and (%s::bigint is null or (start)::date>= to_timestamp(cast(%s/1000 as bigint))::date)
     			and (%s::bigint is null or (start)::date<= to_timestamp(cast(%s/1000 as bigint))::date)
@@ -205,7 +214,7 @@ def get_solicitudes(bpm, conn, tipo_solicitud, fechaConsultaDesde, fechaConsulta
     #mog_var = cur.mogrify(sql, (dblink, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta,))
     #print(mog_var)
 
-    cur.execute(sql, (dblink, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta,))
+    cur.execute(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta,))
 
     qry = cur.fetchall()
 
@@ -227,8 +236,9 @@ def main():
     fechaConsultaDesde = bpm.context['fechaConsultaDesde']
     fechaConsultaHasta = bpm.context['fechaConsultaHasta']
 
-
-    qry = get_solicitudes(bpm=bpm, conn=conn, tipo_solicitud=tipo_solicitud, fechaConsultaDesde=fechaConsultaDesde, fechaConsultaHasta=fechaConsultaHasta)
+    #recupero el usuario logueado
+    user_id = bpm.context['userId']
+    qry = get_solicitudes(bpm=bpm, conn=conn, user_id = user_id, tipo_solicitud=tipo_solicitud, fechaConsultaDesde=fechaConsultaDesde, fechaConsultaHasta=fechaConsultaHasta)
 
 
     print(qry)
