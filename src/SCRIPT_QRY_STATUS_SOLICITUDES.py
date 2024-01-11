@@ -8,7 +8,10 @@ from redflagbpm import PgUtils
 from DB import _get_hg_connection, _get_connection
 import datetime
 from decimal import Decimal
-def get_solicitudes(bpm, conn, user_id,  tipo_solicitud, fechaConsultaDesde, fechaConsultaHasta):
+import sys
+sys.path.append('../backtesting')
+from backtest_data import setup_qry_backtesting_parameters
+def get_solicitudes(bpm, conn, user_id,  tipo_solicitud, fechaConsultaDesde, fechaConsultaHasta, cuenta_id, fondo_id):
     # me conecto a la DB remota
     dblink = PgUtils.get_dblink(bpm, "SYC")
     #me conecto a la DB local
@@ -204,17 +207,19 @@ def get_solicitudes(bpm, conn, user_id,  tipo_solicitud, fechaConsultaDesde, fec
                 estado_hg,
                 fecha,
                 template
-			from bpm_hg
+			from bpm_hg bh
 			inner join com_team ct on bh.cuenta_id = ct.cuenta
 			where (tipo_solicitud_bpm is null or tipo_solicitud_bpm = lower(%s))
 						and (%s::bigint is null or (start)::date>= to_timestamp(cast(%s/1000 as bigint))::date)
     			and (%s::bigint is null or (start)::date<= to_timestamp(cast(%s/1000 as bigint))::date)
+    			and (bh.cuenta is null or bh.cuenta like %s)
+			    and (bpm_fondo is null or bpm_fondo like %s)
 			order by 1
         """
-    #mog_var = cur.mogrify(sql, (dblink, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta,))
-    #print(mog_var)
+    # mog_var = cur.mogrify(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta,))
+    # print(mog_var.decode('UTF-8'))
 
-    cur.execute(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta,))
+    cur.execute(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta, cuenta_id, fondo_id,))
 
     qry = cur.fetchall()
 
@@ -226,19 +231,22 @@ def main():
     bpm = redflagbpm.BPMService()
     conn = _get_hg_connection(bpm)
 
+    #todo unncoment in local tests only
+    # setup_qry_backtesting_parameters(bpm)
+
     try:
         tipo_solicitud = bpm.context['tipo_solicitud']
     except KeyError:
         tipo_solicitud = None
-
-
     #leyendo filtros de fecha en milisegundos
     fechaConsultaDesde = bpm.context['fechaConsultaDesde']
     fechaConsultaHasta = bpm.context['fechaConsultaHasta']
-
     #recupero el usuario logueado
     user_id = bpm.context['userId']
-    qry = get_solicitudes(bpm=bpm, conn=conn, user_id = user_id, tipo_solicitud=tipo_solicitud, fechaConsultaDesde=fechaConsultaDesde, fechaConsultaHasta=fechaConsultaHasta)
+    cuenta_id = bpm.context['cuenta']
+    fondo_id = bpm.context['fondo']
+
+    qry = get_solicitudes(bpm=bpm, conn=conn, user_id = user_id, tipo_solicitud=tipo_solicitud, fechaConsultaDesde=fechaConsultaDesde, fechaConsultaHasta=fechaConsultaHasta, cuenta_id = cuenta_id, fondo_id = fondo_id)
 
 
     print(qry)
