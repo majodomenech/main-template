@@ -246,7 +246,7 @@ def main():
     cuenta_id = bpm.context['cuenta']
     fondo_id = bpm.context['fondo']
 
-    qry = get_solicitudes(bpm=bpm, conn=conn, user_id = user_id, tipo_solicitud=tipo_solicitud, fechaConsultaDesde=fechaConsultaDesde, fechaConsultaHasta=fechaConsultaHasta, cuenta_id=cuenta_id, fondo_id=fondo_id)
+    qry = get_solicitudes(bpm=bpm, conn=conn, user_id=user_id, tipo_solicitud=tipo_solicitud, fechaConsultaDesde=fechaConsultaDesde, fechaConsultaHasta=fechaConsultaHasta, cuenta_id=cuenta_id, fondo_id=fondo_id)
 
     class Encoder(json.JSONEncoder):
         def default(self, obj):
