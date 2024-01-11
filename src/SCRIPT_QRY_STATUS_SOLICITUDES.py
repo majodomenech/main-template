@@ -212,14 +212,14 @@ def get_solicitudes(bpm, conn, user_id,  tipo_solicitud, fechaConsultaDesde, fec
 			where (tipo_solicitud_bpm is null or tipo_solicitud_bpm = lower(%s))
 						and (%s::bigint is null or (start)::date>= to_timestamp(cast(%s/1000 as bigint))::date)
     			and (%s::bigint is null or (start)::date<= to_timestamp(cast(%s/1000 as bigint))::date)
-    			and (bh.cuenta is null or bh.cuenta like %s)
-			    and (bpm_fondo is null or bpm_fondo like %s)
+    			and (%s is null or bh.cuenta_id like %s)
+			    and (%s is null or bpm_fondo like %s)
 			order by 1
         """
-    # mog_var = cur.mogrify(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta,))
+    # mog_var = cur.mogrify(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta, cuenta_id, fondo_id))
     # print(mog_var.decode('UTF-8'))
 
-    cur.execute(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta, cuenta_id, fondo_id,))
+    cur.execute(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta, cuenta_id, cuenta_id, fondo_id, fondo_id,))
 
     qry = cur.fetchall()
 
@@ -246,10 +246,8 @@ def main():
     cuenta_id = bpm.context['cuenta']
     fondo_id = bpm.context['fondo']
 
-    qry = get_solicitudes(bpm=bpm, conn=conn, user_id = user_id, tipo_solicitud=tipo_solicitud, fechaConsultaDesde=fechaConsultaDesde, fechaConsultaHasta=fechaConsultaHasta, cuenta_id = cuenta_id, fondo_id = fondo_id)
+    qry = get_solicitudes(bpm=bpm, conn=conn, user_id = user_id, tipo_solicitud=tipo_solicitud, fechaConsultaDesde=fechaConsultaDesde, fechaConsultaHasta=fechaConsultaHasta, cuenta_id=cuenta_id, fondo_id=fondo_id)
 
-
-    print(qry)
     class Encoder(json.JSONEncoder):
         def default(self, obj):
             if isinstance(obj, (datetime.date, datetime.datetime)):

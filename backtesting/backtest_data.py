@@ -62,6 +62,6 @@ def setup_qry_backtesting_parameters(bpm):
     bpm.context['fechaConsultaDesde'] = 1702177200000
 
     bpm.context['fechaConsultaHasta'] = 1704942000000
-    bpm.context.cuenta = '[5001751] HUMBERTO BATISTELLA S.A'
-    bpm.context.fondo = '[14410] CAFCI593-1201 - QUINQUELA PESOS CLASE B'
+    # bpm.context.cuenta = '5001751'
+    # bpm.context.fondo = '[14410] CAFCI593-1201 - QUINQUELA PESOS CLASE B'
 
