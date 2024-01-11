@@ -68,16 +68,16 @@ filterGroup:
     possibleValues:
       - "Suscripcion"
       - "Rescate"
-#  - name: estado_hg
-#    caption: Estado HG
-#    fieldType: java.lang.String
-#    required: false
-#    dependents: []
-#    possibleValues:
-#      - "Pendiente"
-#      - "Liquidacion pendiente"
-#      - "Finalizada"
-#      - "Pendiente de confirmar"
+  - name: estado_hg
+    caption: Estado HG
+    fieldType: java.lang.String
+    required: false
+    dependents: []
+    possibleValues:
+      - "Pendiente"
+      - "Liquidacion pendiente"
+      - "Finalizada"
+      - "Pendiente de confirmar"
   - name: fechaConsultaDesde
     caption: Fecha Desde
     fieldType: java.sql.Date

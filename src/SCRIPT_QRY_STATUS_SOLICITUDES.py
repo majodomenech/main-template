@@ -11,7 +11,7 @@ from decimal import Decimal
 import sys
 sys.path.append('../backtesting')
 from backtest_data import setup_qry_backtesting_parameters
-def get_solicitudes(bpm, conn, user_id,  tipo_solicitud, fechaConsultaDesde, fechaConsultaHasta, cuenta_id, fondo_id):
+def get_solicitudes(bpm, conn, user_id,  tipo_solicitud, fechaConsultaDesde, fechaConsultaHasta, cuenta_id, fondo_id, estado_hg):
     # me conecto a la DB remota
     dblink = PgUtils.get_dblink(bpm, "SYC")
     #me conecto a la DB local
@@ -214,12 +214,13 @@ def get_solicitudes(bpm, conn, user_id,  tipo_solicitud, fechaConsultaDesde, fec
     			and (%s::bigint is null or (start)::date<= to_timestamp(cast(%s/1000 as bigint))::date)
     			and (%s is null or bh.cuenta_id like %s)
 			    and (%s is null or bpm_fondo like %s)
+			    and (%s is null or estado_hg=%s)
 			order by 1
         """
     # mog_var = cur.mogrify(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta, cuenta_id, fondo_id))
     # print(mog_var.decode('UTF-8'))
 
-    cur.execute(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta, cuenta_id, cuenta_id, fondo_id, fondo_id,))
+    cur.execute(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta, cuenta_id, cuenta_id, fondo_id, fondo_id, estado_hg, estado_hg,))
 
     qry = cur.fetchall()
 
@@ -243,10 +244,22 @@ def main():
     fechaConsultaHasta = bpm.context['fechaConsultaHasta']
     #recupero el usuario logueado
     user_id = bpm.context['userId']
-    cuenta_id = bpm.context['cuenta']
-    fondo_id = bpm.context['fondo']
+    try:
+        cuenta_id = bpm.context['cuenta']
+    except KeyError:
+        cuenta_id = None
 
-    qry = get_solicitudes(bpm=bpm, conn=conn, user_id=user_id, tipo_solicitud=tipo_solicitud, fechaConsultaDesde=fechaConsultaDesde, fechaConsultaHasta=fechaConsultaHasta, cuenta_id=cuenta_id, fondo_id=fondo_id)
+    try:
+        fondo_id = bpm.context['fondo']
+    except KeyError:
+        fondo_id = None
+
+    try:
+        estado_hg = bpm.context['estado_hg']
+    except KeyError:
+        estado_hg = None
+
+    qry = get_solicitudes(bpm=bpm, conn=conn, user_id=user_id, tipo_solicitud=tipo_solicitud, fechaConsultaDesde=fechaConsultaDesde, fechaConsultaHasta=fechaConsultaHasta, cuenta_id=cuenta_id, fondo_id=fondo_id, estado_hg=estado_hg)
 
     class Encoder(json.JSONEncoder):
         def default(self, obj):
