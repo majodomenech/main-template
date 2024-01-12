@@ -6,7 +6,7 @@ hints:
   outcomeVariable: tipoResultado
   fieldOrder:
     - ____expr____confirmacion
-  validation: "run:INSTFCI/MESSAGE"
+  validation: "run:INSTFCI/CUSTOM_MESSAGE"
 properties:
   ____expr____confirmacion:
     type: string
