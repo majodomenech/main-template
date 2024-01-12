@@ -74,7 +74,7 @@ repetida" sourceRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA" targetRef="sid-D7
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${accion=="reintentar"}]]></conditionExpression>
     </sequenceFlow>
     <parallelGateway id="sid-D7755803-B609-45DE-BFFD-B3E2FF4DCCBA"></parallelGateway>
-    <userTask id="sid-7294C357-148F-4332-AF01-35045E0AD7AE" name="Mostrar detalle" flowable:assignee="${initiator}" flowable:formKey="INSTFCI/MOSTRAR_DETALLE" flowable:formFieldValidation="true">
+    <userTask id="sid-7294C357-148F-4332-AF01-35045E0AD7AE" name="Mostrar detalle" flowable:assignee="${initiator}" flowable:formKey="INSTFCI/FORM_DETALLE_SUSCRIPCION" flowable:formFieldValidation="true">
       <extensionElements>
         <modeler:activiti-idm-initiator xmlns:modeler="http://flowable.org/modeler"><![CDATA[true]]></modeler:activiti-idm-initiator>
       </extensionElements>
