@@ -1,7 +1,7 @@
 #!python3
 import time
 import redflagbpm
-from endpoints_hg import login, suscripcion_fci
+from endpoints_hg import login, suscripcion_fci, setup_login
 from auxiliar import procesar_respuesta
 from datetime import datetime
 import logging
@@ -97,13 +97,7 @@ def suscribir(fecha, cuenta_id, array_solicitudes_pendientes, solicitud, array_s
 if __name__ == '__main__':
     bpm = redflagbpm.BPMService()
     try:
-
-        if bpm.service.text("STAGE") == 'DEV':
-            url_base = f'https://demo.aunesa.dev:10017/Irmo/api/'
-        else:
-            url_base = f'https://syc.aunesa.com/Irmo/api/'
-
-        token = login(url_base)
+        token = setup_login(bpm)
         #todo unncoment in local tests only
         # get_backtesting_subscription_data(bpm)
 
@@ -133,7 +127,6 @@ if __name__ == '__main__':
         final_results = [result.result() for result in future_results]
 
         if len(array_solicitudes_pendientes) == 0:
-            # todo coment in local tests only
             bpm.execution.setVariable('accion', 'continuar')
             error_x_duplicado = False
         else:
