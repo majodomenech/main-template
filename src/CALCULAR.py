@@ -108,7 +108,7 @@ if __name__ == '__main__':
     bpm = redflagbpm.BPMService()
     #todo: comment the following outside local tests
     # get_backtesting_redemption_data(bpm)
-    calcular_solicitar_string = ""
+
     array_solicitudes_pendientes = bpm.context['array_solicitudes_pendientes']
 
     for solicitud in array_solicitudes_pendientes:
@@ -165,7 +165,7 @@ if __name__ == '__main__':
         formatted_precio = locale.format_string("%.6f", cotiz_dict['precio'], grouping=True)
         cotiz_dict['precio'] = formatted_precio
         #completando el string de validacion
-        calcular_solicitar_string += f"{fondo_deno}_{cantidad_importe}_{monto}"
+
 
         html = """
         <div>
@@ -188,7 +188,7 @@ if __name__ == '__main__':
     print(f"ARRAY SOLICITUD PENDIENTE: \n{array_solicitudes_pendientes}")
 
     bpm.context.input['array_solicitudes_pendientes'] = array_solicitudes_pendientes
-    bpm.context.input['calcular_solicitar_string'] = calcular_solicitar_string
+
 
 
 
