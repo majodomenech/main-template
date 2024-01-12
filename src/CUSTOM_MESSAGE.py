@@ -4,7 +4,7 @@ def custom_message(tipoResultado):
     if tipoResultado == "ok":
         message = "Solicitud procesada"
 
-        bpm.context.input['message'] = message
+        bpm.context.input['message_2'] = message
 
 if __name__ == '__main__':
     bpm = redflagbpm.BPMService()
