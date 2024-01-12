@@ -100,7 +100,7 @@ if __name__ == '__main__':
         url_base = setup_url_base(bpm)
         token = login(bpm,url_base)
         #todo unncoment in local tests only
-        get_backtesting_subscription_data(bpm)
+        # get_backtesting_subscription_data(bpm)
 
         # el form manda la fecha en milisegundos al proceso
         # y el proceso la guarda como fecha de java
@@ -129,7 +129,7 @@ if __name__ == '__main__':
 
         if len(array_solicitudes_pendientes) == 0:
             bpm.execution.setVariable('accion', 'continuar')
-            error_x_duplicado = False
+
         else:
             pattern = '(Ya existe una solicitud pendiente con estos datos. Por favor actualice la solicitud previa.)'
             #itero el resultado de todos los threads

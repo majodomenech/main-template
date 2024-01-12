@@ -124,7 +124,7 @@ if __name__ == '__main__':
 
         if len(array_solicitudes_pendientes) == 0:
             bpm.execution.setVariable('accion', "continuar")
-            error_x_duplicado = False
+
         else:
             pattern = '(Ya existe una solicitud pendiente con estos datos. Por favor actualice la solicitud previa.)'
             # itero el resultado de todos los threads
@@ -141,12 +141,12 @@ if __name__ == '__main__':
                 else:
                     error_x_duplicado = True
 
-        # si hay algún error por solicitud repetida -> accion: reintentar
-        if error_x_duplicado:
-            bpm.execution.setVariable('accion', 'reintentar')
-        # si hay error pero no de duplicados ->accion: corregir
-        else:
-            bpm.execution.setVariable('accion', 'corregir')
+            # si hay algún error por solicitud repetida -> accion: reintentar
+            if error_x_duplicado:
+                bpm.execution.setVariable('accion', 'reintentar')
+            # si hay error pero no de duplicados ->accion: corregir
+            else:
+                bpm.execution.setVariable('accion', 'corregir')
 
         bpm.execution.setVariable('array_solicitudes_pendientes', array_solicitudes_pendientes)
         bpm.execution.setVariable('array_solicitudes_confirmadas', array_solicitudes_confirmadas)
