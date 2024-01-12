@@ -1,7 +1,7 @@
 #!python3
 import time
 import redflagbpm
-from endpoints_hg import login, rescate_fci, setup_login
+from endpoints_hg import rescate_fci, setup_url_base, login
 from auxiliar import procesar_respuesta
 from datetime import datetime
 import logging
@@ -91,7 +91,8 @@ def rescatar(fecha, cuenta_id, array_solicitudes_pendientes, solicitud, array_so
 if __name__ == '__main__':
     bpm = redflagbpm.BPMService()
     try:
-        token = setup_login(bpm)
+        url_base = setup_url_base(bpm)
+        token = login(bpm,url_base)
 
         #todo unncoment in local tests only
         # get_backtesting_redemption_data(bpm)

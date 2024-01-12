@@ -1,7 +1,7 @@
 #!python3
 import time
 import redflagbpm
-from endpoints_hg import login, suscripcion_fci, setup_login
+from endpoints_hg import suscripcion_fci, setup_url_base, login
 from auxiliar import procesar_respuesta
 from datetime import datetime
 import logging
@@ -97,9 +97,10 @@ def suscribir(fecha, cuenta_id, array_solicitudes_pendientes, solicitud, array_s
 if __name__ == '__main__':
     bpm = redflagbpm.BPMService()
     try:
-        token = setup_login(bpm)
+        url_base = setup_url_base(bpm)
+        token = login(bpm,url_base)
         #todo unncoment in local tests only
-        # get_backtesting_subscription_data(bpm)
+        get_backtesting_subscription_data(bpm)
 
         # el form manda la fecha en milisegundos al proceso
         # y el proceso la guarda como fecha de java

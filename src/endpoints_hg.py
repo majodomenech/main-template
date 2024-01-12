@@ -5,12 +5,14 @@ from io import BytesIO
 import redflagbpm
 import requests
 
-def setup_login(bpm):
+def setup_url_base(bpm):
     if bpm.service.text("STAGE") == 'DEV':
         url_base = f'https://demo.aunesa.dev:10017/Irmo/api/'
     else:
         url_base = f'https://syc.aunesa.com/Irmo/api/'
+    return url_base
 
+def login(bpm, url_base):
     url = f'{url_base}login'
     headers = {'Content-Type': 'application/json'}
 
@@ -20,6 +22,7 @@ def setup_login(bpm):
     else:
         USR_NAME ='API_FCI'
         PWD = 'API_FCI'
+
     data = {
         "clientId": "SYC",
         "username": USR_NAME,
@@ -29,7 +32,6 @@ def setup_login(bpm):
     resp = response.json()
 
     token = resp['token']
-
     return token
 
 

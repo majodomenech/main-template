@@ -41,7 +41,7 @@ def get_backtesting_subscription_data(bpm):
                                              {"fondo": "[14298] CAFCI1018 - FCI MAF PESOS PLUS CL.A", "moneda": "ARS","monto" : 2, "integra_comitente" : False},
                                              {"fondo": "[14305] CAFCI550-1113 - FCI MAF ACCIONES ARGENTINAS B.", "moneda": "ARS","monto" : 3, "integra_comitente" : False}
                                              ]
-    bpm.context.cuenta_id = "141390"
+    bpm.context.cuenta = "141390"
     bpm.context.initiator = "lbessone"
     bpm.context.processInstanceId = '1'
     bpm.context['fecha.getTime()'] = 1702263600000
