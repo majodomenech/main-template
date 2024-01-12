@@ -6,6 +6,7 @@ hints:
   outcomeVariable: tipoResultado
   fieldOrder:
     - ____expr____confirmacion
+  validation: "run:INSTFCI/MESSAGE"
 properties:
   ____expr____confirmacion:
     type: string
