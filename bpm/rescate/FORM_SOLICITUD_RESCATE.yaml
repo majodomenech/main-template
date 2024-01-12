@@ -90,15 +90,15 @@ properties:
           title: Cuotapartes
           type: number
           hints:
-            format: '#,##0.000000'
+            mask: '#,##0.000000'
             dependents:
               - "@__Clean_calc"
               - "@__Clean_monto"
         monto:
           title: Monto (aproximado)
           type: number
-          format: '#,##0.00'
           hints:
+            mask: '#,##0.00'
             dependents:
               - "@__Clean_cp"
               - "@__Clean_calc"

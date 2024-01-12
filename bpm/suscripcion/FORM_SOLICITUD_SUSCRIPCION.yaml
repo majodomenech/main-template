@@ -73,6 +73,8 @@ properties:
         monto:
           title: Monto
           type: number
+          hints:
+            mask: '#,##0.00'
         integra_comitente:
           title: Integra Comitente
           type: boolean
