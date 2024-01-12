@@ -138,7 +138,8 @@ if __name__ == '__main__':
             monto = cotiz_dict['precio'] * cantidad_importe
             #lo agrego al array original sin formatear
             solicitud['monto'] = monto
-            # Format the number according to the locale
+            # Format the number according to the locale: se muestran 2 decimales
+            # cómo todos los rescates son por CP, no importa el valor float del monto
             formatted_monto = locale.format_string("%.2f", monto, grouping=True)
             #lo agrego al diccionario de cotiz formateado
             cotiz_dict['monto'] = formatted_monto
