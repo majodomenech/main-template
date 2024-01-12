@@ -1,12 +1,12 @@
 type:  object
-title: DEtalle
+title: Detalle
 hints:
   outcomes:
-    - corregir: "Corregir"
-    - confirmar: "Confirmar"
+    - ok: "Ok"
   outcomeVariable: tipoResultado
   fieldOrder:
     - ____expr____confirmacion
+  validation: "run:INSTFCI/CUSTOM_MESSAGE"
 properties:
   ____expr____confirmacion:
     type: string
@@ -15,4 +15,4 @@ properties:
       rowStart: true
       rowEnd: true
       subtype: expression
-      value: "#!run:INSTFCI/TEMPLATE_CONFIRMACION_RESCATE"
+      value: "#!run:INSTFCI/TEMPLATE_DETALLE_RESCATE"

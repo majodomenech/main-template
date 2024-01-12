@@ -23,15 +23,19 @@
             <table>
                 <tr>
                 <th style="text-align:left;width:25%">Fondo</th>
-                <th style="text-align:right;width:25%">Moneda</th>
-                <th style="text-align:right;width:25%">Monto</th>
+                <th style="text-align:right;width:25%">Cuotapartes</th>
+                <th style="text-align:right;width:25%">Rescate dinero</th>
                 <th style="text-align:right;width:25%">Error</th>
                 </tr>
                 #foreach($solicitud in $array_solicitudes_pendientes.getList())
                     <tr>
                       <td style="text-align:left">$!{solicitud.fondo}</td>
-                      <td style="text-align:right">$!{solicitud.moneda}</td>
-                      <td style="text-align:right">$!{String.format($Locale_ES,"%,.2f",${solicitud.monto.doubleValue()})}</td>
+                      <td style="text-align:right">$!{String.format($Locale_ES,"%,.6f",${solicitud.cantidad_importe.doubleValue()})}</td>
+                      #if(${solicitud.rescate_dinero})
+                        <td style="text-align:right">Si </td>
+                      #else
+                        <td style="text-align:right">No </td>
+                      #end
                       <td style="text-align:right">$!{solicitud.error}</td>
                     </tr>
                 #end
@@ -40,14 +44,18 @@
                 #if($array_solicitudes_confirmadas.size())
                     <tr>
                     <th style="text-align:left;width:25%">Fondo</th>
-                    <th style="text-align:right;width:25%">Moneda</th>
-                    <th style="text-align:right;width:25%">Monto</th>
+                    <th style="text-align:right;width:25%">Cuotapartes</th>
+                    <th style="text-align:right;width:25%">Rescate dinero</th>
                     </tr>
-                    #foreach($solicitud in $array_solicitudes_confirmadas.getList())
+                    #foreach($solicitud in $array_solicitudes_pendientes.getList())
                         <tr>
                           <td style="text-align:left">$!{solicitud.fondo}</td>
-                          <td style="text-align:right">$!{solicitud.moneda}</td>
-                          <td style="text-align:right">$!{String.format($Locale_ES,"%,.2f",${solicitud.monto.doubleValue()})}</td>
+                          <td style="text-align:right">$!{String.format($Locale_ES,"%,.6f",${solicitud.cantidad_importe.doubleValue()})}</td>
+                          #if(${solicitud.rescate_dinero})
+                            <td style="text-align:right">Si </td>
+                          #else
+                            <td style="text-align:right">No </td>
+                      #end
                         </tr>
                     #end
                 #end
