@@ -46,6 +46,9 @@ columns:
 - name: fecha
   caption: Fecha
   fieldType: java.util.Date
+- name: initiator
+  caption: Iniciador
+  fieldType: java.lang.String
 - name: template
   caption: Template
   fieldType: java.lang.String

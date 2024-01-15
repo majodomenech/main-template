@@ -229,6 +229,7 @@ def get_solicitudes(bpm, conn, user_id, is_admin,  tipo_solicitud, fechaConsulta
                 id_origen,
                 estado_hg,
                 fecha,
+                initiator,
                 template
 			from bpm_hg bh
 			"""
