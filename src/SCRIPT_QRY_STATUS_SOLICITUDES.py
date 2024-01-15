@@ -11,7 +11,30 @@ from decimal import Decimal
 import sys
 sys.path.append('../backtesting')
 from backtest_data import setup_qry_backtesting_parameters
-def get_solicitudes(bpm, conn, user_id,  tipo_solicitud, fechaConsultaDesde, fechaConsultaHasta, cuenta_id, fondo_id, estado_hg):
+
+def is_user_admin(bpm, user_id):
+    # me conecto a la DB local
+    conn = _get_connection(bpm)
+    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    sql = """
+        select count(user_id_)
+        from act_id_membership
+        where group_id_ in ('OPE','OPB','ADMIN')
+           and user_id_ = %s
+        """
+
+    cur.execute(sql, (user_id,))
+
+    qry = cur.fetchall()
+
+    cur.close()
+    conn.close()
+    if qry != 0:
+        return True
+    else:
+        return False
+
+def get_solicitudes(bpm, conn, user_id, is_admin,  tipo_solicitud, fechaConsultaDesde, fechaConsultaHasta, cuenta_id, fondo_id, estado_hg):
     # me conecto a la DB remota
     dblink = PgUtils.get_dblink(bpm, "SYC")
     #me conecto a la DB local
@@ -208,17 +231,24 @@ def get_solicitudes(bpm, conn, user_id,  tipo_solicitud, fechaConsultaDesde, fec
                 fecha,
                 template
 			from bpm_hg bh
-			inner join com_team ct on bh.cuenta_id = ct.cuenta
-			where (tipo_solicitud_bpm is null or tipo_solicitud_bpm = lower(%s))
-						and (%s::bigint is null or (start)::date>= to_timestamp(cast(%s/1000 as bigint))::date)
-    			and (%s::bigint is null or (start)::date<= to_timestamp(cast(%s/1000 as bigint))::date)
-    			and (%s is null or bh.cuenta_id like %s)
-			    and (%s is null or bpm_fondo like %s)
-			    and (%s is null or estado_hg=%s)
-			order by 1
-        """
-    # mog_var = cur.mogrify(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta, cuenta_id, fondo_id))
-    # print(mog_var.decode('UTF-8'))
+			"""
+    #si no es admin, es comercial, le joineo con teams para que solo vean sus cuentas en la consulta
+    if not is_admin:
+        sql += """inner join com_team ct on bh.cuenta_id = ct.cuenta"""
+    #si es admin ven todas las cuentas
+    sql += """
+        where (tipo_solicitud_bpm is null or tipo_solicitud_bpm = lower(%s))
+                    and (%s::bigint is null or (start)::date>= to_timestamp(cast(%s/1000 as bigint))::date)
+            and (%s::bigint is null or (start)::date<= to_timestamp(cast(%s/1000 as bigint))::date)
+            and (%s is null or bh.cuenta_id like %s)
+            and (%s is null or bpm_fondo like %s)
+            and (%s is null or estado_hg=%s)
+        order by 1
+    """
+
+
+    mog_var = cur.mogrify(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta, cuenta_id, cuenta_id, fondo_id, fondo_id, estado_hg, estado_hg,))
+    print(mog_var.decode('UTF-8'))
 
     cur.execute(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta, cuenta_id, cuenta_id, fondo_id, fondo_id, estado_hg, estado_hg,))
 
@@ -233,7 +263,7 @@ def main():
     conn = _get_hg_connection(bpm)
 
     #todo unncoment in local tests only
-    # setup_qry_backtesting_parameters(bpm)
+    setup_qry_backtesting_parameters(bpm)
 
     try:
         tipo_solicitud = bpm.context['tipo_solicitud']
@@ -259,7 +289,10 @@ def main():
     except KeyError:
         estado_hg = None
 
-    qry = get_solicitudes(bpm=bpm, conn=conn, user_id=user_id, tipo_solicitud=tipo_solicitud, fechaConsultaDesde=fechaConsultaDesde, fechaConsultaHasta=fechaConsultaHasta, cuenta_id=cuenta_id, fondo_id=fondo_id, estado_hg=estado_hg)
+    #ver si el usuario es ADMIN (pertenece a operaciones) o no para filtrar la query de solicitudes
+    is_admin = is_user_admin(bpm, user_id)
+
+    qry = get_solicitudes(bpm=bpm, conn=conn, user_id=user_id, is_admin = is_admin,tipo_solicitud=tipo_solicitud, fechaConsultaDesde=fechaConsultaDesde, fechaConsultaHasta=fechaConsultaHasta, cuenta_id=cuenta_id, fondo_id=fondo_id, estado_hg=estado_hg)
 
     class Encoder(json.JSONEncoder):
         def default(self, obj):
