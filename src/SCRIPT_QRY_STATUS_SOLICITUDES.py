@@ -247,8 +247,8 @@ def get_solicitudes(bpm, conn, user_id, is_admin,  tipo_solicitud, fechaConsulta
     """
 
 
-    mog_var = cur.mogrify(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta, cuenta_id, cuenta_id, fondo_id, fondo_id, estado_hg, estado_hg,))
-    print(mog_var.decode('UTF-8'))
+    # mog_var = cur.mogrify(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta, cuenta_id, cuenta_id, fondo_id, fondo_id, estado_hg, estado_hg,))
+    # print(mog_var.decode('UTF-8'))
 
     cur.execute(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta, cuenta_id, cuenta_id, fondo_id, fondo_id, estado_hg, estado_hg,))
 
@@ -263,7 +263,7 @@ def main():
     conn = _get_hg_connection(bpm)
 
     #todo unncoment in local tests only
-    setup_qry_backtesting_parameters(bpm)
+    # setup_qry_backtesting_parameters(bpm)
 
     try:
         tipo_solicitud = bpm.context['tipo_solicitud']

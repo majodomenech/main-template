@@ -19,8 +19,7 @@ hints:
       array_solicitudes_pendientes = bpm.context.input['array_solicitudes_pendientes']
       """
       borro los calculos únicamente del elemento del array que el usuario modifica (en vez del array completo)
-      __source contiene el path del campo modificado
-      __source sería la ruta de lo que se está modificando en el clean.
+      __source es la ruta de lo que se está modificando en el clean.
       Es decir, si cambia el campo cantidad de la primera fila:
       __source=['array_pendientes', 0, 'cantidad']
       Si cambia el campo monto de la segunda fila:
@@ -34,16 +33,14 @@ hints:
       import redflagbpm
       bpm = redflagbpm.BPMService()
       array_solicitudes_pendientes = bpm.context.input['array_solicitudes_pendientes']
-      for solicitud in array_solicitudes_pendientes:
-          solicitud['monto'] = None
+      array_solicitudes_pendientes'[__source[1]]['monto'] = None
       bpm.context.input['array_solicitudes_pendientes'] = array_solicitudes_pendientes
     "__Clean_cp": |
       #!python3
       import redflagbpm
       bpm = redflagbpm.BPMService()
       array_solicitudes_pendientes = bpm.context.input['array_solicitudes_pendientes']
-      for solicitud in array_solicitudes_pendientes:
-          solicitud['cantidad_importe'] = None
+      array_solicitudes_pendientes'[__source[1]]['cantidad_importe'] = None
       bpm.context.input['array_solicitudes_pendientes'] = array_solicitudes_pendientes
   validation: "run:INSTFCI/VALIDAR"
   defaults: |
