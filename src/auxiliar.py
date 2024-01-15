@@ -11,13 +11,11 @@ def procesar_respuesta(resp, tarea):
     elif resp.status_code == 200 or resp.status_code == 201:
         return True, None
     elif resp.status_code == 409:
-        resp_json = json.loads(resp.text)
-        err = tarea+' ' + 'Conflicto: ' + resp_json
+        err = tarea+' ' + 'Conflicto: ' + resp.text
         return False, str(err)
     else:
         print("Error en el request")
-        resp_json = json.loads(resp.text)
-        err = tarea+' ' + str(resp.status_code) + ' ' + resp_json
+        err = tarea+' ' + str(resp.status_code) + ' ' + resp.text
         return False, str(err)
 
 def formatear(milisegundos):
