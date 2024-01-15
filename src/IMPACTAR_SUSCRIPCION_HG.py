@@ -61,8 +61,8 @@ def suscribir(fecha, cuenta_id, array_solicitudes_pendientes, solicitud, array_s
         data = {
             "contexto": {
                 "modalidad": "BILATERAL",
-                "origen": "S&C",
-                "acdi": "000"
+                "origen": "BPM",
+                "acdi": "057"
             },
             "solicitud": {
                 "fechaSolicitud": fecha,
