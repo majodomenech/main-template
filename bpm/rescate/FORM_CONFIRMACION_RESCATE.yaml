@@ -1,0 +1,18 @@
+type:  object
+title: Confirmar Rescate
+hints:
+  outcomes:
+    - corregir: "Corregir"
+    - confirmar: "Confirmar"
+  outcomeVariable: tipoResultado
+  fieldOrder:
+    - ____expr____confirmacion
+properties:
+  ____expr____confirmacion:
+    type: string
+    title: Confirmación
+    hints:
+      rowStart: true
+      rowEnd: true
+      subtype: expression
+      value: "#!run:INSTFCI/TEMPLATE_CONFIRMACION_RESCATE"

@@ -1,0 +1,18 @@
+type:  object
+title: Detalle
+hints:
+  outcomes:
+    - ok: "Ok"
+  outcomeVariable: tipoResultado
+  fieldOrder:
+    - ____expr____confirmacion
+  validation: "run:INSTFCI/CUSTOM_MESSAGE"
+properties:
+  ____expr____confirmacion:
+    type: string
+    title: Confirmación
+    hints:
+      rowStart: true
+      rowEnd: true
+      subtype: expression
+      value: "#!run:INSTFCI/TEMPLATE_DETALLE_SUSCRIPCION"
