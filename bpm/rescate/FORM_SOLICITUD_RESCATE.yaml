@@ -17,6 +17,7 @@ hints:
       import redflagbpm
       bpm = redflagbpm.BPMService()
       array_solicitudes_pendientes = bpm.context.input['array_solicitudes_pendientes']
+      __source=bpm.context['__source']
       """
       borro los calculos únicamente del elemento del array que el usuario modifica (en vez del array completo)
       __source es la ruta de lo que se está modificando en el clean.
@@ -33,6 +34,7 @@ hints:
       import redflagbpm
       bpm = redflagbpm.BPMService()
       array_solicitudes_pendientes = bpm.context.input['array_solicitudes_pendientes']
+      __source=bpm.context['__source']
       array_solicitudes_pendientes[__source[1]]['monto'] = None
       bpm.context.input['array_solicitudes_pendientes'] = array_solicitudes_pendientes
     "__Clean_cp": |
@@ -40,6 +42,7 @@ hints:
       import redflagbpm
       bpm = redflagbpm.BPMService()
       array_solicitudes_pendientes = bpm.context.input['array_solicitudes_pendientes']
+      __source=bpm.context['__source']
       array_solicitudes_pendientes[__source[1]]['cantidad_importe'] = None
       bpm.context.input['array_solicitudes_pendientes'] = array_solicitudes_pendientes
   validation: "run:INSTFCI/VALIDAR"
