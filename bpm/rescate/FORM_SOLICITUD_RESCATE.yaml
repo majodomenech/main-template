@@ -26,21 +26,21 @@ hints:
       __source=['array_pendientes', 1 ,'monto']
       La fila se obtiene con __source[1]
       """
-      array_solicitudes_pendientes'[__source[1]]['calculos'] = None
+      array_solicitudes_pendientes[__source[1]]['calculos'] = None
       bpm.context.input['array_solicitudes_pendientes'] = array_solicitudes_pendientes
     "__Clean_monto": |
       #!python3
       import redflagbpm
       bpm = redflagbpm.BPMService()
       array_solicitudes_pendientes = bpm.context.input['array_solicitudes_pendientes']
-      array_solicitudes_pendientes'[__source[1]]['monto'] = None
+      array_solicitudes_pendientes[__source[1]]['monto'] = None
       bpm.context.input['array_solicitudes_pendientes'] = array_solicitudes_pendientes
     "__Clean_cp": |
       #!python3
       import redflagbpm
       bpm = redflagbpm.BPMService()
       array_solicitudes_pendientes = bpm.context.input['array_solicitudes_pendientes']
-      array_solicitudes_pendientes'[__source[1]]['cantidad_importe'] = None
+      array_solicitudes_pendientes[__source[1]]['cantidad_importe'] = None
       bpm.context.input['array_solicitudes_pendientes'] = array_solicitudes_pendientes
   validation: "run:INSTFCI/VALIDAR"
   defaults: |
