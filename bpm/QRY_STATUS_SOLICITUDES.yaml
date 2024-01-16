@@ -1,5 +1,5 @@
 name: INSTFCI/QRY_STATUS_SOLICITUDES
-caption: Hígyrus - Estado solicitudes FCI
+caption: FCI Hígyrus - Estado solicitudes FCI
 dataSource: "run:INSTFCI/SCRIPT_QRY_STATUS_SOLICITUDES"
 postProcessors:
 - INSTFCI/TEMPLATE_QRY_STATUS_SOLICITUDES

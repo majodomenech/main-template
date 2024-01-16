@@ -1,5 +1,5 @@
 name: CRUD.INSTFCI/COLLECTION_PRECIOS_CP_PROVISORIOS
-caption: FCI HG - Precios CP Provisorios
+caption: FCI Hígyrus - Precios CP Provisorios
 viewBindings: []
 columns:
 - name: codigo_fci
