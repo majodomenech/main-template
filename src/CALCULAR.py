@@ -47,6 +47,7 @@ def get_cotiz_dict(codigo_fci):
 
     ###COMPARO LAS COTIZ EN BASE A LA FECHA######
 
+
     cotiz_dict = {}
     # si la cotizacion manual no es None y la cotizacion de la cafci no es None
     if manual_cotiz is not None:
