@@ -34,7 +34,7 @@ def is_user_admin(bpm, user_id):
     else:
         return False
 
-def get_solicitudes(bpm, conn, user_id, is_admin,  tipo_solicitud, fechaConsultaDesde, fechaConsultaHasta, cuenta_id, fondo_id, estado_hg):
+def get_solicitudes(bpm, conn, user_id, is_admin,  tipo_solicitud, fechaConsultaDesde, fechaConsultaHasta, cuenta_id, fondo_id, estado_hg, id_origen):
     # me conecto a la DB remota
     dblink = PgUtils.get_dblink(bpm, "SYC")
     #me conecto a la DB local
@@ -244,12 +244,13 @@ def get_solicitudes(bpm, conn, user_id, is_admin,  tipo_solicitud, fechaConsulta
             and (%s is null or bh.cuenta_id like %s)
             and (%s is null or bpm_fondo like %s)
             and (%s is null or estado_hg=%s)
+            and (%s is null or id_origen=%s)
         order by 1
     """
 
 
-    # mog_var = cur.mogrify(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta, cuenta_id, cuenta_id, fondo_id, fondo_id, estado_hg, estado_hg,))
-    # print(mog_var.decode('UTF-8'))
+    mog_var = cur.mogrify(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta, cuenta_id, cuenta_id, fondo_id, fondo_id, estado_hg, estado_hg,id_origen, id_origen,))
+    print(mog_var.decode('UTF-8'))
 
     cur.execute(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta, cuenta_id, cuenta_id, fondo_id, fondo_id, estado_hg, estado_hg,))
 
@@ -290,10 +291,15 @@ def main():
     except KeyError:
         estado_hg = None
 
+    try:
+        id_origen = bpm.context['id_origen']
+    except KeyError:
+        id_origen = None
+
     #ver si el usuario es ADMIN (pertenece a operaciones) o no para filtrar la query de solicitudes
     is_admin = is_user_admin(bpm, user_id)
 
-    qry = get_solicitudes(bpm=bpm, conn=conn, user_id=user_id, is_admin = is_admin,tipo_solicitud=tipo_solicitud, fechaConsultaDesde=fechaConsultaDesde, fechaConsultaHasta=fechaConsultaHasta, cuenta_id=cuenta_id, fondo_id=fondo_id, estado_hg=estado_hg)
+    qry = get_solicitudes(bpm=bpm, conn=conn, user_id=user_id, is_admin = is_admin,tipo_solicitud=tipo_solicitud, fechaConsultaDesde=fechaConsultaDesde, fechaConsultaHasta=fechaConsultaHasta, cuenta_id=cuenta_id, fondo_id=fondo_id, estado_hg=estado_hg, id_origen=id_origen)
 
     class Encoder(json.JSONEncoder):
         def default(self, obj):

@@ -99,6 +99,10 @@ filterGroup:
     fieldType: java.lang.String
     required: false
     valueProvider: "INSTFCI/QRY_FCI"
+  - name: id_origen
+    caption: ID HG
+    fieldType: java.lang.Integer
+    required: false
   defaultFilter:
     tipo_solicitud: 'Rescate'
     fechaConsultaDesde: ;new java.lang.Long(Date.now() - 30*24*60*60*1000);
