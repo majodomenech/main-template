@@ -45,7 +45,7 @@ hints:
       __source=bpm.context['__source']
       array_solicitudes_pendientes[__source[1]]['cantidad_importe'] = None
       bpm.context.input['array_solicitudes_pendientes'] = array_solicitudes_pendientes
-  validation: "run:INSTFCI/VALIDAR"
+  validation: "run:INSTFCI/VALIDAR_RESCATE"
   defaults: |
     #!python
     input.put("array_solicitudes_pendientes",[{}])
