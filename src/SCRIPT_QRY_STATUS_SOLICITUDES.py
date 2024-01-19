@@ -41,8 +41,6 @@ def get_solicitudes(bpm, user_id, is_admin,  tipo_solicitud, fechaConsultaDesde,
     #me conecto a la DB local
     conn = _get_connection(bpm)
 
-    cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-
 
     sql = """    
             with hg as(
