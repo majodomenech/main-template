@@ -34,7 +34,8 @@ def is_user_admin(bpm, user_id):
     else:
         return False
 
-def get_solicitudes(bpm, conn, user_id, is_admin,  tipo_solicitud, fechaConsultaDesde, fechaConsultaHasta, cuenta_id, fondo_id, estado_hg, id_origen):
+def get_solicitudes(bpm, user_id, is_admin,  tipo_solicitud, fechaConsultaDesde, fechaConsultaHasta, cuenta_id, fondo_id, estado_hg, id_origen):
+
     # me conecto a la DB remota
     dblink = PgUtils.get_dblink(bpm, "SYC")
     #me conecto a la DB local
@@ -249,20 +250,20 @@ def get_solicitudes(bpm, conn, user_id, is_admin,  tipo_solicitud, fechaConsulta
     """
 
 
-    mog_var = cur.mogrify(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta, cuenta_id, cuenta_id, fondo_id, fondo_id, estado_hg, estado_hg,id_origen, id_origen,))
-    print(mog_var.decode('UTF-8'))
+    # mog_var = cur.mogrify(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta, cuenta_id, cuenta_id, fondo_id, fondo_id, estado_hg, estado_hg,id_origen, id_origen,))
+    # print(mog_var.decode('UTF-8'))
 
-    cur.execute(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta, cuenta_id, cuenta_id, fondo_id, fondo_id, estado_hg, estado_hg,))
 
-    qry = cur.fetchall()
-
-    cur.close()
-    conn.close()
+    with conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor) as cur:
+        cur.execute(sql, (dblink, user_id, tipo_solicitud, fechaConsultaDesde, fechaConsultaDesde, fechaConsultaHasta, fechaConsultaHasta, cuenta_id, cuenta_id, fondo_id, fondo_id, estado_hg, estado_hg, id_origen, id_origen,))
+        qry = cur.fetchall()
+        # if qry is not None:
+            # print(qry)
     return qry
 
 def main():
     bpm = redflagbpm.BPMService()
-    conn = _get_hg_connection(bpm)
+
 
     #todo unncoment in local tests only
     # setup_qry_backtesting_parameters(bpm)
@@ -299,7 +300,7 @@ def main():
     #ver si el usuario es ADMIN (pertenece a operaciones) o no para filtrar la query de solicitudes
     is_admin = is_user_admin(bpm, user_id)
 
-    qry = get_solicitudes(bpm=bpm, conn=conn, user_id=user_id, is_admin = is_admin,tipo_solicitud=tipo_solicitud, fechaConsultaDesde=fechaConsultaDesde, fechaConsultaHasta=fechaConsultaHasta, cuenta_id=cuenta_id, fondo_id=fondo_id, estado_hg=estado_hg, id_origen=id_origen)
+    qry = get_solicitudes(bpm=bpm, user_id=user_id, is_admin = is_admin,tipo_solicitud=tipo_solicitud, fechaConsultaDesde=fechaConsultaDesde, fechaConsultaHasta=fechaConsultaHasta, cuenta_id=cuenta_id, fondo_id=fondo_id, estado_hg=estado_hg, id_origen=id_origen)
 
     class Encoder(json.JSONEncoder):
         def default(self, obj):
