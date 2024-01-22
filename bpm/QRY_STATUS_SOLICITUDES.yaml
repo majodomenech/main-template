@@ -60,6 +60,7 @@ targetGroups:
 - ADMIN
 - OPB
 - COMINO
+- TES
 filterGroup:
   caption: Filtros
   filters:
