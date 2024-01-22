@@ -65,10 +65,6 @@ solicitud repetida" sourceRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA" targetR
       <conditionExpression xsi:type="tFormalExpression"><![CDATA[${estado_hg_pendiente==false}]]></conditionExpression>
     </sequenceFlow>
     <sequenceFlow id="sid-AECF287C-A708-4504-91D9-779BAC91746E" name="Está pendiente" sourceRef="sid-E808DE7C-DCF7-45F9-8152-799BC7296BA6" targetRef="sid-8526CF92-540E-4318-A9F4-07B179DC09FF"></sequenceFlow>
-    <sequenceFlow id="sid-5C52C117-8B2C-4878-B344-4F641C071040" name="Iteraciones 
-posteriores" sourceRef="sid-2B8175BC-C17A-449B-A911-25C5D42D52CE" targetRef="sid-AA341290-7481-4584-A200-9367E3C301D6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${accion!=null}]]></conditionExpression>
-    </sequenceFlow>
     <parallelGateway id="sid-8128A652-DD14-48E8-9504-A740675D6A21"></parallelGateway>
     <sequenceFlow id="sid-B5DB6421-EE3E-4D38-BB42-F7D6BA54CE52" name="Todos los errores 
 son solicitud
@@ -90,6 +86,10 @@ repetida" sourceRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA" targetRef="sid-81
     </boundaryEvent>
     <intermediateThrowEvent id="sid-AA3E11E8-9546-49FF-A65D-7D1FE009643B"></intermediateThrowEvent>
     <sequenceFlow id="sid-8AD7A49F-87CC-4732-B0F1-4E075910913F" sourceRef="sid-F2B47242-A719-414A-B08F-7AB0D48F8ABE" targetRef="sid-AA3E11E8-9546-49FF-A65D-7D1FE009643B"></sequenceFlow>
+    <sequenceFlow id="sid-5C52C117-8B2C-4878-B344-4F641C071040" name="Iteraciones 
+posteriores" sourceRef="sid-2B8175BC-C17A-449B-A911-25C5D42D52CE" targetRef="sid-AA341290-7481-4584-A200-9367E3C301D6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${execution.getVariable("accion")!=null}]]></conditionExpression>
+    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_INSTFCIRE">
     <bpmndi:BPMNPlane bpmnElement="INSTFCIRE" id="BPMNPlane_INSTFCIRE">
