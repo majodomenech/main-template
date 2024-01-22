@@ -65,6 +65,9 @@ solicitud repetida" sourceRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA" targetR
     </sequenceFlow>
     <sequenceFlow id="sid-9E5953E8-9D16-4FCB-A75C-424B4E7D0EBE" name="1ra iter" sourceRef="sid-9BB127F9-45D3-4715-AD85-FAB5A512065A" targetRef="sid-ECFC72E1-9244-4979-AD51-9696A04B793E"></sequenceFlow>
     <sequenceFlow id="sid-C288C5D7-40A6-4031-B006-4257BA682F0C" sourceRef="sid-FC7FA0E9-A096-4B8B-8576-CBD37812FA46" targetRef="sid-9BB127F9-45D3-4715-AD85-FAB5A512065A"></sequenceFlow>
+    <sequenceFlow id="sid-344515B8-F4D0-4CD5-B4D6-5154484DA73B" name="Iteracion 2,3 ..." sourceRef="sid-9BB127F9-45D3-4715-AD85-FAB5A512065A" targetRef="sid-AA341290-7481-4584-A200-9367E3C301D6">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${accion!=null}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="sid-0F2D9AED-88BF-4F91-B4C3-CF4A46D6A6C6" name="Todos los errores
 son solicitud
 repetida" sourceRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA" targetRef="sid-D7755803-B609-45DE-BFFD-B3E2FF4DCCBA">
@@ -86,9 +89,6 @@ repetida" sourceRef="sid-B7E4243A-C887-4E74-BFC4-3D85154850EA" targetRef="sid-D7
     <intermediateThrowEvent id="sid-75612652-ADC3-4416-B03F-DDC909CE3A67"></intermediateThrowEvent>
     <sequenceFlow id="sid-FC03A684-6EF2-4CEE-8324-DB47F7E2E503" sourceRef="sid-A1059B4E-6B4D-4277-BC26-2100EACCD432" targetRef="sid-75612652-ADC3-4416-B03F-DDC909CE3A67"></sequenceFlow>
     <sequenceFlow id="sid-E1F94857-2EC3-48C4-82E7-21073C582C46" sourceRef="sid-D7755803-B609-45DE-BFFD-B3E2FF4DCCBA" targetRef="sid-94B51782-58F4-4F8C-8091-CBD2D3FBF5CC"></sequenceFlow>
-    <sequenceFlow id="sid-344515B8-F4D0-4CD5-B4D6-5154484DA73B" name="Iteracion 2,3 ..." sourceRef="sid-9BB127F9-45D3-4715-AD85-FAB5A512065A" targetRef="sid-AA341290-7481-4584-A200-9367E3C301D6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${execution.getVariable("accion")!=null}]]></conditionExpression>
-    </sequenceFlow>
   </process>
   <bpmndi:BPMNDiagram id="BPMNDiagram_INSTFCISU">
     <bpmndi:BPMNPlane bpmnElement="INSTFCISU" id="BPMNPlane_INSTFCISU">
