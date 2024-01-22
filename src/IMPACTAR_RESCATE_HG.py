@@ -59,8 +59,8 @@ def rescatar(fecha, cuenta_id, array_solicitudes_pendientes, solicitud, array_so
         data = {
             "contexto": {
                 "modalidad": "BILATERAL",
-                "origen": "S&C",
-                "acdi": "000"
+                "origen": "BPM",
+                "acdi": "057"
             },
             "solicitud": {
                 "fechaSolicitud": fecha,

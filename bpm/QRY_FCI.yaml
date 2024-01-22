@@ -6,6 +6,8 @@ view: |
   from "UNI_UNIDAD" uu
     inner join "UNI_TIPO_TITULO" utt on uu."TIPOTITULO" = utt."UNI_TIPO_TITULO_ID"
   where uu."CLASS" like '%UFondoComunInversion'
+  and uu."CODIGO" ~'^[0-9\.]+$'
+  order by 2
 columns:
 - name: id
   caption: Id

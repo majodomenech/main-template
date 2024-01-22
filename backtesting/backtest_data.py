@@ -1,4 +1,5 @@
 #!python3
+import time
 
 def get_uni_suscripcion():
     data_sus = {
@@ -56,13 +57,17 @@ def get_backtesting_redemption_data(bpm):
     bpm.context['fecha.getTime()'] = 1702263600000
 
 def setup_qry_backtesting_parameters(bpm):
-    bpm.context.userId='lcbessone'
+    # bpm.context.userId='lcbessone'
+    bpm.context.userId = 'lbessone'
 
     bpm.context.tipo_solicitud='rescate'
     bpm.context['fechaConsultaDesde'] = 1702177200000
 
-    bpm.context['fechaConsultaHasta'] = 1704942000000
+    current_milliseconds = int(time.time() * 1000)
+    bpm.context['fechaConsultaHasta'] = current_milliseconds
+
     # bpm.context.cuenta = '5001751'
     # bpm.context.fondo = '[14410] CAFCI593-1201 - QUINQUELA PESOS CLASE B'
     # bpm.context.estado_hg = 'Pendiente'
+    bpm.context.id_origen = 229935
 

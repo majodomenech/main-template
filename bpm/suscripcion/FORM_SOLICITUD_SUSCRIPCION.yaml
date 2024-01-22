@@ -10,7 +10,7 @@ hints:
     - cuenta
     - array_solicitudes_pendientes
     - ___expr____solicitud_confirmada
-  validation: "run:INSTFCI/VALIDAR"
+  validation: "run:INSTFCI/VALIDAR_SUSCRIPCION"
   defaults: |
     #!python
     input.put("array_solicitudes_pendientes",[{}])

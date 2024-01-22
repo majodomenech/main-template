@@ -1,5 +1,5 @@
 name: INSTFCI/QRY_STATUS_SOLICITUDES
-caption: Hígyrus - Estado solicitudes FCI
+caption: FCI Hígyrus - Estado solicitudes FCI
 dataSource: "run:INSTFCI/SCRIPT_QRY_STATUS_SOLICITUDES"
 postProcessors:
 - INSTFCI/TEMPLATE_QRY_STATUS_SOLICITUDES
@@ -46,6 +46,9 @@ columns:
 - name: fecha
   caption: Fecha
   fieldType: java.util.Date
+- name: initiator
+  caption: Iniciador
+  fieldType: java.lang.String
 - name: template
   caption: Template
   fieldType: java.lang.String
@@ -57,6 +60,7 @@ targetGroups:
 - ADMIN
 - OPB
 - COMINO
+- TES
 filterGroup:
   caption: Filtros
   filters:
@@ -96,9 +100,13 @@ filterGroup:
     fieldType: java.lang.String
     required: false
     valueProvider: "INSTFCI/QRY_FCI"
+  - name: id_origen
+    caption: ID HG
+    fieldType: java.lang.Integer
+    required: false
   defaultFilter:
     tipo_solicitud: 'Rescate'
-    fechaConsultaDesde: ;new java.lang.Long(Date.now() - 30*24*60*60*1000);
+    fechaConsultaDesde: ;new java.lang.Long(Date.now() - 24*60*60*1000);
     fechaConsultaHasta: ;new java.lang.Long(Date.now());
 dataSourceOptions: {}
 reports: []
