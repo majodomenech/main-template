@@ -1,0 +1,61 @@
+<style>
+    .cell{border-radius: var(--lumo-border-radius); background-color: var(--lumo-contrast-10pct);padding:0.2em;}
+    .cell2{border-radius: var(--lumo-border-radius); background-color: var(--lumo-primary-10pct);padding:0.2em;}
+    .comment{border-radius: var(--lumo-border-radius); background-color: var(--lumo-contrast-10pct);padding:0.2em;margin:0.2em 0 0 0;}
+    .ok{border-radius: var(--lumo-border-radius); background-color: var(--lumo-success-color-50pct);padding:0.2em;margin:0.2em 0 0 0;}
+    .datos{display: grid;  grid-template-columns: repeat(2, minmax(15em, 1fr));  grid-gap: 0.2em;}
+    .datos2{display: grid;  grid-template-columns: repeat(2, minmax(30em, 1fr));  grid-gap: 0.2em;}
+    .datos_detalle{display: grid;  grid-template-columns: repeat(2, minmax(15em, 1fr));  grid-gap: 0.2em;margin-bottom: 0.5em;}
+    .error{background: var(--lumo-error-color); color: var(--lumo-error-contrast-color);}
+    .attn{background:#f4cccc;}
+    .titulo{background:#adbce6;color:black;}
+    .subtitulo{background-color: var(--lumo-contrast-30pct); font-weight:bold;margin:0.5em 0 0 0;}
+    .wrapper{display: grid;  grid-template-columns: repeat(2, minmax(30em, 1fr));  grid-gap: 0.2em;margin-bottom: 0.5em;}
+    .col1{grid-column: 1 / 2;}
+    .col2 {grid-column: 2 / 2;}
+</style>
+    <div style="margin-bottom:0.5em">
+        <div class="cell titulo">
+            <b>$!{business_key}</b>
+        </div>
+        <div class="datos2">
+            <div class="cell"><b>Fecha:</b> $!{start}</div>
+            <div class="cell"><b>Cuenta: </b> $!{cuenta}</div>
+            <div class="cell"><b>Fondo:</b> $!{bpm_fondo}</div>
+        </div>
+        <div class="wrapper">
+            <div class="col1">
+                            <div class="cell subtitulo">BPM
+                </div>
+                #if($!{business_key})
+                    <div class="datos_detalle">
+                        <div class="cell" ><b>Estado: </b>$!{estado_bpm}</div>
+                        #if(${tipo_solicitud_bpm} == 'suscripcion')
+                            <div class="cell" ><b>Moneda: </b>$!{moneda}</div>
+                            <div class="cell" ><b>Monto: </b>$!{monto}</div>
+                        #elseif(${tipo_solicitud_bpm} == 'rescate')
+                            <div class="cell" ><b>Cantidad CP: </b>$!{cantidad_importe}</div>
+                            <div class="cell" ><b>Precio CP: </b>$!{precio}</div>
+                        #end
+                    </div>
+                #end
+            </div>
+            <div class="col2">
+                <div class="cell subtitulo">HG
+                </div>
+                #if($!{id_origen})
+                    <div class="datos_detalle">
+                        <div class="cell"><b>ID HG: </b> $!{id_origen}</div>
+                        <div class="cell"><b>Estado: </b> $!{estado_hg}</div>
+                        #if(${tipo_solicitud_bpm} == 'suscripcion')
+                            <div class="cell" ><b>Moneda: </b>$!{moneda}</div>
+                            <div class="cell" ><b>Monto: </b>$!{monto}</div>
+                        #elseif(${tipo_solicitud_bpm} == 'rescate')
+                            <div class="cell" ><b>Cantidad CP: </b>$!{cantidad_importe}</div>
+                            <div class="cell" ><b>Precio CP: </b>$!{precio}</div>
+                        #end
+                    </div>
+                #end
+            </div>
+        </div>
+    </div>

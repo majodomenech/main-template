@@ -1,0 +1,23 @@
+name: QRY_FCI
+caption: representacion_FCI
+view: |
+  select uu."CODIGO"::character varying as id, 
+    uu."REPRESENTACION" as caption
+  from "UNI_UNIDAD" uu
+    inner join "UNI_TIPO_TITULO" utt on uu."TIPOTITULO" = utt."UNI_TIPO_TITULO_ID"
+  where uu."CLASS" like '%UFondoComunInversion'
+columns:
+- name: id
+  caption: Id
+  fieldType: java.lang.String
+- name: caption
+  caption: Denominación
+  fieldType: java.lang.String
+keys:
+- caption
+targetUsers:
+- INTERNAL
+dataSource: SYC
+exportable: false
+menus:
+- FONDOS
