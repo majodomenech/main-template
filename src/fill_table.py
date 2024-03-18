@@ -24,9 +24,7 @@ def limpiar_sql():
 # Con esta consulta me traigo datos  a utilizar en el pdf y en el endpoint
 def consultar_usuarios():
     conn = None
-    sql = """
-       select * from act_id_membership where group_id_ = 'MENU'
-        """
+    sql = """ select * from act_id_membership where group_id_ = 'MENU' """
     conn = _get_connection()
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     cur.execute(sql)
