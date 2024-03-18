@@ -2,6 +2,7 @@
 import psycopg2, psycopg2.extras
 import redflagbpm
 from redflagbpm import PgUtils
+import pandas as pd
 
 bpm = redflagbpm.BPMService()
 
@@ -15,7 +16,7 @@ def limpiar_sql():
     print("estoy limpiando")
     conn = None
     sql_limpiar = """
-                    delete from ds.especies
+                    delete from menu.menu
                 """
     conn = _get_connection()
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
@@ -55,7 +56,7 @@ def completar_base(archivo, columnas):
     try:
         cur.execute('SET search_path TO menu')
         cur.copy_from(archivo, 'menu', sep=',',
-                      columns=(columnas)
+                      columns=(columnas))
         conn.commit()
     except (Exception, psycopg2.DatabaseError) as error:
         print("Error : %s " % error)
