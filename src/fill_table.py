@@ -35,7 +35,7 @@ def consultar_usuarios():
     cur.close()
     return data
 
-def create_table(data):
+def create_csv(data):
     row = [item[0] for item in data]
     print(row)
     df = pd.DataFrame(data, columns=['Nombre'])
@@ -67,5 +67,5 @@ def completar_base(archivo, columnas):
 
 def main():
     data = consultar_usuarios()
-    columnas = create_table(data)
+    columnas = create_csv(data)
     completar_base('menu_semanal,csv', columnas)
