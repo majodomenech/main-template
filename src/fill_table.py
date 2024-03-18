@@ -24,7 +24,7 @@ def limpiar_sql():
 # Con esta consulta me traigo datos  a utilizar en el pdf y en el endpoint
 def consultar_usuarios():
     conn = None
-    sql = """ select _user_id from act_id_membership where group_id_ = 'MENU' """
+    sql = """ select user_id_ from act_id_membership where group_id_ = 'MENU' """
     conn = _get_connection()
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     cur.execute(sql)
@@ -33,9 +33,9 @@ def consultar_usuarios():
     return data
 
 def create_csv(data):
-    row = [item[0] for item in data]
+    row = [item['user_id_'] for item in data]
     print(row)
-    df = pd.DataFrame(data, columns=['Nombre'])
+    df = pd.DataFrame(row, columns=['Nombre'])
     # Crear una lista de los días de la semana en español
     dias_semana = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo']
 
