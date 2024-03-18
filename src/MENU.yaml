@@ -1,0 +1,37 @@
+type: object
+title: Menú semanal
+hints:
+  fieldOrder:
+  - dia
+  - menu
+required:
+  - dia
+  - menu
+properties:
+  dia:
+    type: string
+    title: Día de la semana
+    enum:
+      - 'Lunes'
+      - 'Martes'
+      - 'Miércoles'
+      - 'Jueves'
+      - 'Viernes'
+    hints:
+      rowStart: true
+      rowEnd: true
+  menu:
+    type: array
+    items:
+      type: object
+      hints:
+        fieldOrder:
+          - opcion
+        titlePlural: Opciones de menú
+      title: Opción
+      required:
+        - opcion
+      properties:
+        opcion:
+          type: string
+          title: Opción

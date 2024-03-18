@@ -1,0 +1,23 @@
+name: CRUD.MENU
+caption: Menu semanal
+viewBindings: []
+columns:
+- name: dia
+  caption: Día de la semana
+  fieldType: java.lang.String
+- name: menu
+  caption: Menú
+  fieldType: java.lang.String
+keys: []
+sortables: []
+targetUsers: []
+targetGroups:
+- ADMIN
+dataSourceOptions:
+  collection: MENU/MENU
+details: []
+reports: []
+services: []
+scripts: []
+context: {}
+exportable: true
