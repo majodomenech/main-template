@@ -55,7 +55,7 @@ def create_csv(data):
     return buffer, tuple(df.columns)
 
 
-def completar_base(archivo, columnas):
+def crear_tabla_menu(archivo, columnas):
     conn = None
     conn = _get_connection()
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
