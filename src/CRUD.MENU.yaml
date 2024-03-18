@@ -1,5 +1,5 @@
 name: CRUD.MENU
-caption: Menu semanal
+caption: Menú semanal
 viewBindings: []
 columns:
 - name: dia
