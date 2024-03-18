@@ -39,7 +39,6 @@ def consultar_usuarios():
 
 def create_csv(data):
     row = [item['user_id_'] for item in data]
-    print(row)
     df = pd.DataFrame(row, columns=['nombre'])
     # Crear una lista de los días de la semana en español
     dias_semana = ['lunes', 'martes', 'miercoles', 'jueves', 'viernes']
@@ -47,7 +46,6 @@ def create_csv(data):
     # Agregar las columnas con los días de la semana y valores vacíos
     for dia in dias_semana:
         df[dia] = ''
-    print(df)
     buffer = StringIO()
     df.to_csv(buffer, index=False, header=False, sep=';')
     buffer.seek(0)
@@ -77,7 +75,7 @@ def main():
     data = consultar_usuarios()
     buffer, columnas = create_csv(data)
     limpiar_sql()
-    completar_base(buffer, columnas)
+    crear_tabla_menu(buffer, columnas)
 
 
 main()
