@@ -15,9 +15,7 @@ def _get_connection():
 def limpiar_sql():
     print("estoy limpiando")
     conn = None
-    sql_limpiar = """
-                    delete from menu.menu
-                """
+    sql_limpiar = """ delete from menu.menu """
     conn = _get_connection()
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     cur.execute(sql_limpiar)
