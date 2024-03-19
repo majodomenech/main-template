@@ -1,0 +1,51 @@
+name: MENU/QRY_A_MENU
+caption: Consultar menú semanal
+dataSource: "run:MENU/QUERY_MENU_SCRIPT"
+columns:
+ #TODOS
+- name: nombre
+  caption: Viernes
+  fieldType: java.lang.String
+- name: lunes
+  caption: Lunes
+  fieldType: java.lang.String
+- name: martes
+  caption: Martes
+  fieldType: java.lang.String
+- name: miercoles
+  caption: Miércoles
+  fieldType: java.lang.String
+- name: jueves
+  caption: Jueves
+  fieldType: java.lang.String
+- name: viernes
+  caption: Viernes
+  fieldType: java.lang.String
+
+#USUARIO
+- name: dia
+    caption: Día
+    fieldType: java.lang.String
+- name: menu
+  caption: Menu
+  fieldType: java.lang.String
+targetUsers: []
+targetGroups:
+- ADMIN
+sortables: []
+filterGroup:
+  caption: Filtros
+  filters:
+  - name: tipo
+    caption: Tipo
+    fieldType:  java.lang.String
+    required: true
+    dependents: []
+    possibleValues:
+      - "Usuario"
+      - "Todos"
+  defaultFilter:
+    mercado: "Usuario"
+scripts: []
+exportable: true
+waitForFilter: true

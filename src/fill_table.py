@@ -49,7 +49,7 @@ def create_csv(data):
     buffer = StringIO()
     df.to_csv(buffer, index=False, header=False, sep=';')
     buffer.seek(0)
-
+    #df.to_csv('/tmp/menu.csv') otra opcion
     return buffer, tuple(df.columns)
 
 
@@ -77,5 +77,5 @@ def main():
     limpiar_sql()
     crear_tabla_menu(buffer, columnas)
 
-
-main()
+if __name__ == "__main__":
+    main()
