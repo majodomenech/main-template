@@ -1,4 +1,4 @@
-name: MENU/QRY_A_MENU
+name: MENU/QUERY_MENU
 caption: Consultar menú semanal
 dataSource: "run:MENU/QUERY_MENU_SCRIPT"
 columns:
@@ -21,11 +21,10 @@ columns:
 - name: viernes
   caption: Viernes
   fieldType: java.lang.String
-
-#USUARIO
+#USUARIO-
 - name: dia
-    caption: Día
-    fieldType: java.lang.String
+  caption: Día
+  fieldType: java.lang.String
 - name: menu
   caption: Menu
   fieldType: java.lang.String
