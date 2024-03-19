@@ -45,7 +45,7 @@ filterGroup:
       - "Usuario"
       - "Todos"
   defaultFilter:
-    mercado: "Usuario"
+    tipo: "Usuario"
 scripts: []
 exportable: true
 waitForFilter: true
