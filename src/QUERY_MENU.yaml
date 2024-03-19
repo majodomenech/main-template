@@ -43,8 +43,14 @@ filterGroup:
     possibleValues:
       - "Usuario"
       - "Todos"
+  - name: usuario
+    caption: Usuario
+    fieldType: java.lang.String
+    required: false
+    dependents: [ ]
+    valueProvider: people::MENU
   defaultFilter:
     tipo: "Usuario"
 scripts: []
 exportable: true
-waitForFilter: true
+waitForFilter: false
