@@ -38,19 +38,19 @@ select *
 from menu.menu
 where nombre = %s)
 
-select 'lunes' as dia, lunes
+select 'lunes' as dia, lunes as menu
 from usuario
 union all
-select 'martes' as dia, martes
+select 'martes' as dia, martes as menu
 from usuario
 union all
-select 'miercoles' as dia, miercoles
+select 'miercoles' as dia, miercoles as menu
 from usuario
 union all
-select 'jueves' as dia, jueves
+select 'jueves' as dia, jueves as menu
 from usuario
 union all
-select 'viernes' as dia, viernes
+select 'viernes' as dia, viernes as menu
 from usuario
 
         """
