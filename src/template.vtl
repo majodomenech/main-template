@@ -1,0 +1,21 @@
+<style>
+    .cell{border-radius: var(--lumo-border-radius); background-color: var(--lumo-contrast-10pct);padding:0.2em;}
+    .datos2{display: grid;  grid-template-columns: repeat(2, minmax(30em, 1fr));  grid-gap: 0.2em;}
+    .datos6{display: grid;  grid-template-columns: repeat(6, minmax(9em, 1fr));  grid-gap: 0.2em;}
+</style>
+<div class="datos2">
+#if(${tipo} == 'Usuario')
+    <div class="cell"><b> $!{dia}</b></div>
+    <div class="cell"><b> $!{menu}</b></div>
+#end
+</div>
+<div class="datos6">
+#if(${tipo} == 'Todos')
+    <div class="cell"><b> $!{nombre}</b></div>
+    <div class="cell"><b> $!{lunes}</b></div>
+    <div class="cell"><b> $!{martes}</b></div>
+    <div class="cell"><b> $!{miercoles}</b></div>
+    <div class="cell"><b> $!{jueves}</b></div>
+    <div class="cell"><b> $!{viernes}</b></div>
+#end
+</div>

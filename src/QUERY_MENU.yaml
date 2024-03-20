@@ -1,10 +1,12 @@
 name: MENU/QUERY_MENU
 caption: Consultar menú semanal
 dataSource: "run:MENU/QUERY_MENU_SCRIPT"
+postProcessors:
+- MENU/template
 columns:
  #TODOS
 - name: nombre
-  caption: Viernes
+  caption: Nombre
   fieldType: java.lang.String
 - name: lunes
   caption: Lunes
@@ -28,6 +30,14 @@ columns:
 - name: menu
   caption: Menu
   fieldType: java.lang.String
+- name: tipo
+  caption: tipo
+  fieldType: java.lang.String
+- name: template
+  caption: Template
+  fieldType: java.lang.String
+template: |
+  <div inner-h-t-m-l="[[item.template]]"></div>
 targetUsers: []
 targetGroups:
 - ADMIN

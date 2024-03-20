@@ -19,7 +19,7 @@ def qry_todos(conn):
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
     sql = """    
-            select *
+            select *, null as template
     from menu.menu
       """
 
@@ -38,19 +38,19 @@ select *
 from menu.menu
 where nombre = %s)
 
-select 'lunes' as dia, lunes as menu
+select 'lunes' as dia, lunes as menu, null as template
 from usuario
 union all
-select 'martes' as dia, martes as menu
+select 'martes' as dia, martes as menu, null as template
 from usuario
 union all
-select 'miercoles' as dia, miercoles as menu
+select 'miercoles' as dia, miercoles as menu, null as template
 from usuario
 union all
-select 'jueves' as dia, jueves as menu
+select 'jueves' as dia, jueves as menu, null as template
 from usuario
 union all
-select 'viernes' as dia, viernes as menu
+select 'viernes' as dia, viernes as menu, null as template
 from usuario
 
         """
@@ -61,6 +61,15 @@ from usuario
     conn.close()
     return pd.DataFrame(qry)
 
+def crear_dataframe(tipo, usuario):
+    if tipo == 'Usuario':
+        conn = _get_connection()
+        df = qry_usuario(conn, usuario)
+    else:
+        conn = _get_connection()
+        df = qry_todos(conn)
+    df['tipo'] = tipo
+    df['usuario'] = usuario
 
 def main():
     bpm = redflagbpm.BPMService()
@@ -70,13 +79,7 @@ def main():
     except:
         nombre = bpm.context['userId']
 
-    if tipo == 'Usuario':
-        conn = _get_connection()
-        df = qry_usuario(conn, nombre)
-    else:
-        conn = _get_connection()
-        df = qry_todos(conn)
-
+    df = crear_dataframe(tipo, nombre)
     data = df.to_dict(orient='records')
 
     with open('/tmp/qry_menu.json', 'w', encoding='utf-8') as f:
