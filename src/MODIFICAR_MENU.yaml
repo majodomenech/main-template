@@ -1,6 +1,6 @@
 caption: Modificar Menu
 reusable: false
-requestUrl: run:DMASIVA/GENERAR_FIRMAS
+requestUrl: run:MENU/MODIFICAR_MENU_SCRIPT
 responseType: MESSAGE
 inputSchema:
   type: object
@@ -20,8 +20,5 @@ inputSchema:
     menu:
       type: string
       title: menu
-    archivo:
-      type: string
-      title: archivo
 targetGroups:
 - ADMIN
