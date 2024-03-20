@@ -1,0 +1,27 @@
+caption: Modificar Menu
+reusable: false
+requestUrl: run:DMASIVA/GENERAR_FIRMAS
+responseType: MESSAGE
+inputSchema:
+  type: object
+  hints:
+    fieldOrder:
+    - usuario
+    - dia
+    - menu
+  title: Modificar menú
+  properties:
+    usuario:
+      type: string
+      title: usuario
+    dia:
+      type: string
+      title: dia
+    menu:
+      type: string
+      title: menu
+    archivo:
+      type: string
+      title: archivo
+targetGroups:
+- ADMIN
