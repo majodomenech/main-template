@@ -36,6 +36,9 @@ columns:
 - name: template
   caption: Template
   fieldType: java.lang.String
+- name: usuario
+  caption: usuario
+  fieldType: java.lang.String
 template: |
   <div inner-h-t-m-l="[[item.template]]"></div>
 targetUsers: []
@@ -62,5 +65,9 @@ filterGroup:
   defaultFilter:
     tipo: "Usuario"
 scripts: []
+services:
+- MENU/MODIFICAR_MENU
 exportable: true
 waitForFilter: false
+menus:
+  - UTILES

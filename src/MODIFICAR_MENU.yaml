@@ -1,24 +1,29 @@
 caption: Modificar Menu
 reusable: false
 requestUrl: run:MENU/MODIFICAR_MENU_SCRIPT
-responseType: MESSAGE
+responseType: TERMINAL
 inputSchema:
   type: object
   hints:
     fieldOrder:
     - usuario
     - dia
-    - menu
+    - menu2
   title: Modificar menú
   properties:
     usuario:
       type: string
       title: usuario
+      hints:
+        readOnly: True
     dia:
       type: string
       title: dia
-    menu:
+      hints:
+        readOnly: True
+    menu2:
       type: string
       title: menu
 targetGroups:
 - ADMIN
+

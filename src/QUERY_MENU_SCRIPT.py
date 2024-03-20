@@ -70,6 +70,7 @@ def crear_dataframe(tipo, usuario):
         df = qry_todos(conn)
     df['tipo'] = tipo
     df['usuario'] = usuario
+    return df
 
 def main():
     bpm = redflagbpm.BPMService()

@@ -12,11 +12,11 @@ properties:
     type: string
     title: Día de la semana
     enum:
-      - 'Lunes'
-      - 'Martes'
-      - 'Miércoles'
-      - 'Jueves'
-      - 'Viernes'
+      - 'lunes'
+      - 'martes'
+      - 'miercoles'
+      - 'jueves'
+      - 'viernes'
     hints:
       rowStart: true
       rowEnd: true
