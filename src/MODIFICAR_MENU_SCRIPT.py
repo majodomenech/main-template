@@ -6,7 +6,6 @@ from redflagbpm import PgUtils
 
 bpm = redflagbpm.BPMService()
 
-
 def _get_connection():
     conn = PgUtils.get_connection(bpm, 'FLW')
     conn.autocommit = True
@@ -15,11 +14,6 @@ def _get_connection():
 
 def actualizar(context):
     conn = None
-    sql_actualizar = """
-                    update menu.menu
-        set  %s = %s
-        where nombre = %s   
-                """
     sql_actualizar1 = """
                         update menu.menu
             set """ + bpm.context['dia'] + " = %s"
@@ -32,9 +26,23 @@ def actualizar(context):
     cur.execute(sql_actualizar, context)
     return
 
+def especificar_menu():
+    if bpm.context['comentario'] is None:
+        comentario = ''
+    else:
+        comentario = bpm.context['comentario']
+
+    if bpm.context['menu2'] == 'Otro':
+        menu = comentario
+    else:
+        menu = bpm.context['menu2'] + ' ' + comentario
+    return menu
+
 if bpm.context['tipo'] == 'Usuario':
 
-    context = (bpm.context['menu2'], bpm.context['usuario'],)
+    menu = especificar_menu()
+    print(bpm.context['menu2'])
+    context = (menu, bpm.context['usuario'],)
     actualizar(context)
 
     # Cabeceras de la respuesta

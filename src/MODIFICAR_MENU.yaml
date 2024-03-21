@@ -9,6 +9,7 @@ inputSchema:
     - usuario
     - dia
     - menu2
+    - comentario
   title: Modificar menú
   properties:
     usuario:
@@ -24,6 +25,16 @@ inputSchema:
     menu2:
       type: string
       title: menu
+      hints:
+        #lista desplegable
+        optionsExpression: |
+          #!python
+          values.queryWithMap("MENU/QUERY_OPCIONES",{
+              "dia": dia
+              })
+    comentario:
+      type: string
+      title: comentario
 targetGroups:
 - ADMIN
 
