@@ -34,14 +34,15 @@ def especificar_menu():
 
     if bpm.context['menu2'] == 'Otro':
         menu = comentario
-    else:
+    elif comentario != '':
         menu = bpm.context['menu2'] + ' ' + comentario
-    return menu
+    else:
+        menu = bpm.context['menu2']
+    return menu.strip()
 
 if bpm.context['tipo'] == 'Usuario':
 
     menu = especificar_menu()
-    print(bpm.context['menu2'])
     context = (menu, bpm.context['usuario'],)
     actualizar(context)
 
