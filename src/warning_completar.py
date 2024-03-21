@@ -2,7 +2,7 @@ import datetime
 import psycopg2, psycopg2.extras
 import redflagbpm
 from redflagbpm import PgUtils
-#bpm = redflagbpm.BPMService()
+bpm = redflagbpm.BPMService()
 def obtener_dia_de_la_semana():
     dias_semana = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábado", "domingo"]
     hoy = datetime.datetime.today().weekday()
@@ -24,8 +24,19 @@ where ''' + dia + ''' = '' '''
     cur.execute(sql)
     data = cur.fetchall()
     cur.close()
-    return data
+    users = [item['nombre'] for item in data]
+    return users
+
+def warn_user(user):
+    bpm.service.notifyUser(user, title="Completar comida!", description="Si no completás la comida no comesssss",
+                           sound=True)
+
+def warn_all_users(users):
+    map(warn_user, users)
 
 def main():
     dia = obtener_dia_de_la_semana()
-    get_users_to_warn(dia)
+    users = get_users_to_warn(dia)
+    warn_all_users(users)
+
+main()
