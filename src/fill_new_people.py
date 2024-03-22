@@ -44,4 +44,4 @@ def main():
     users = users_not_in_table()
     for user in users:
         insert_new_user(user)
-    
+main()
