@@ -1,69 +1,70 @@
 #!python3
-import psycopg2, psycopg2.extras
-import openpyxl
+import psycopg2
+import psycopg2.extras
+import redflagbpm
+import pandas as pd
+from redflagbpm import PgUtils
 from openpyxl import Workbook
 from openpyxl.utils.dataframe import dataframe_to_rows
-import redflagbpm
-import datetime
-import pandas as pd
-from pandas.tseries.holiday import USFederalHolidayCalendar
-from pandas.tseries.offsets import CustomBusinessDay
-from redflagbpm import PgUtils
+
 bpm = redflagbpm.BPMService()
+
+
 def _get_connection():
     # Manual connection, no config file
     conn = PgUtils.get_connection(bpm, 'FLW')
     conn.autocommit = True
     return conn
 
+
 def consultar_pedidos_dia():
-    conn = None
 
     dia = bpm.context['dia']
 
-    sql_pos = """select CONCAT(first_, ' ', last_) as nombre,"""+ dia +"""
-from menu.menu m
-join act_id_user a
-on m.nombre = a.id_
-where """+ dia + """ != 'AUSENTE' and """ + dia + """!=''
-union all
-select CONCAT(first_, ' ', last_) as nombre,"""+ dia + """
-from menu.menu m
-join act_id_user a 
-on m.nombre = a.id_
-where """+ dia+ """ = 'AUSENTE' or """ + dia + """ = '' """
+    sql_pos = """
+            select CONCAT(first_, ' ', last_) as nombre,""" + dia + """
+            from menu.menu m
+            join act_id_user a
+            on m.nombre = a.id_
+            where """ + dia + """ != 'AUSENTE' and """ + dia + """!=''
+            union all
+            select CONCAT(first_, ' ', last_) as nombre,""" + dia + """
+            from menu.menu m
+            join act_id_user a 
+            on m.nombre = a.id_
+            where """ + dia + """ = 'AUSENTE' or """ + dia + """ = '' 
+            """
     conn = _get_connection()
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    #cur.execute(sql_pos, (fecha_trade,))
     cur.execute(sql_pos)
     data = cur.fetchall()
     cur.close()
     return pd.DataFrame(data)
+
 
 def contar_pedidos():
-    conn = None
 
     dia = bpm.context['dia']
 
-    sql_pos = """with pedidos as (select CONCAT(first_, ' ', last_) as nombre,"""+ dia +"""
-from menu.menu m
-join act_id_user a
-on m.nombre = a.id_
-where """+ dia + """ != 'AUSENTE' and """ + dia + """!=''
-)
-select count(*) as cantidad, """+ dia+""" as menu
-from pedidos
-group by 2
-"""
+    sql_pos = """   with pedidos as (select CONCAT(first_, ' ', last_) as nombre,""" + dia + """
+                    from menu.menu m
+                    join act_id_user a
+                    on m.nombre = a.id_
+                    where """ + dia + """ != 'AUSENTE' and """ + dia + """!=''
+                    )
+                    select count(*) as cantidad, """ + dia + """ as menu
+                    from pedidos
+                    group by 2
+                """
     conn = _get_connection()
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    #cur.execute(sql_pos, (fecha_trade,))
     cur.execute(sql_pos)
     data = cur.fetchall()
     cur.close()
     return pd.DataFrame(data)
 
-def generar_excel(df1,df2):
+
+def generar_excel(df1, df2):
     # Create a new Excel workbook
     wb = Workbook()
 
@@ -87,15 +88,17 @@ def generar_excel(df1,df2):
 
 # Write DataFrame values to respective sheets with formatting
 
+
 def main():
     df_pedidos = consultar_pedidos_dia()
-    df_pedidos.columns = ['nombre','menu']
+    df_pedidos.columns = ['nombre', 'menu']
 
     df_cantidades = contar_pedidos()
-    df_cantidades.columns = ['cantidad','menu']
+    df_cantidades.columns = ['cantidad', 'menu']
 
-juy6 7a< bv    generar_excel(df_pedidos,df_cantidades)
+    generar_excel(df_pedidos, df_cantidades)
+
 
 main()
-bpm.context.setJsonValue("_responseHeaders", "content-type", "application/vnd.ms-excel")#bpm.context.setJsonValue("_responseHeaders", "content-disposition", "attachment; filename=Facturar.xlsx")
+bpm.context.setJsonValue("_responseHeaders", "content-type", "application/vnd.ms-excel")
 bpm.context.setJsonValue("_responseHeaders", "resource", "/tmp/Pedidos.xlsx")
