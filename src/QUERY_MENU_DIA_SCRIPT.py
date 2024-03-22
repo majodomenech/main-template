@@ -6,7 +6,7 @@ import pandas as pd
 from redflagbpm import PgUtils
 from openpyxl import Workbook
 from openpyxl.utils.dataframe import dataframe_to_rows
-
+from openpyxl.styles import Font, Border, Side
 bpm = redflagbpm.BPMService()
 
 
@@ -75,29 +75,63 @@ def generar_excel(df1, df2):
     # Create a new sheet for each DataFrame
     ws1 = wb.create_sheet(title='Pedidos')
     ws2 = wb.create_sheet(title='Cantidades')
+    return wb, ws1, ws2
 
-    # Write DataFrame values to respective sheets
-    for row in dataframe_to_rows(df1, index=False, header=True):
-        ws1.append(row)
+def write_sheet(sheet, dataframe):
+    # Copiar el DataFrame a la hoja de Excel
+    for r_idx, row in enumerate(dataframe_to_rows(dataframe, index=False), 1):
+        for c_idx, value in enumerate(row, 1):
+            sheet.cell(row=r_idx, column=c_idx, value=value)
 
-    for row in dataframe_to_rows(df2, index=False, header=True):
-        ws2.append(row)
+    # Define bold font style
+    bold_font = Font(bold=True)
 
-    # Save the workbook to a file
-    wb.save('/tmp/Pedidos.xlsx')
+    # Apply bold font to all cells and create a bold border
+    for row in sheet.iter_rows():
+        for cell in row:
+            cell.font = bold_font
+            cell.border = Border(
+                left=Side(border_style='thin'),
+                right=Side(border_style='thin'),
+                top=Side(border_style='thin'),
+                bottom=Side(border_style='thin')
+            )
+
+    # Ajustar el ancho de las columnas
+    for column_cells in sheet.columns:
+        max_length = 0
+        for cell in column_cells:
+            try:
+                if len(str(cell.value)) > max_length:
+                    max_length = len(cell.value)
+            except:
+                pass
+        adjusted_width = (max_length + 2) * 1.2
+        sheet.column_dimensions[column_cells[0].column_letter].width = adjusted_width
+
+            # Write DataFrame values to respective sheets
+        #for row in dataframe_to_rows(df1, index=False, header=True):
+        #    ws1.append(row)
+
+        #for row in dataframe_to_rows(df2, index=False, header=True):
+        #    ws2.append(row)
+
+     # Save the workbook to a file
+
 
 # Write DataFrame values to respective sheets with formatting
 
 
 def main():
     df_pedidos = consultar_pedidos_dia()
-    df_pedidos.columns = ['nombre', 'menu']
+    df_pedidos.columns = ['Nombre', 'Menú']
 
     df_cantidades = contar_pedidos()
-    df_cantidades.columns = ['cantidad', 'menu']
-
-    generar_excel(df_pedidos, df_cantidades)
-
+    df_cantidades.columns = ['Cantidad', 'Menú']
+    wb, ws1, ws2 = generar_excel(df_pedidos, df_cantidades)
+    write_sheet(ws1, df_pedidos)
+    write_sheet(ws1, df_cantidades)
+    wb.save('/tmp/Pedidos.xlsx')
 
 main()
 bpm.context.setJsonValue("_responseHeaders", "content-type", "application/vnd.ms-excel")

@@ -72,6 +72,7 @@ def crear_tabla_menu(archivo, columnas):
 
 
 def main():
+    limpiar_sql()
     data = consultar_usuarios()
     buffer, columnas = create_csv(data)
     crear_tabla_menu(buffer, columnas)
