@@ -86,16 +86,19 @@ def write_sheet(sheet, dataframe):
     # Define bold font style
     bold_font = Font(bold=True)
 
+    #Border
+    border = Border(
+        left=Side(border_style='thin'),
+        right=Side(border_style='thin'),
+        top=Side(border_style='thin'),
+        bottom=Side(border_style='thin')
+    )
+
     # Apply bold font to all cells and create a bold border
     for row in sheet.iter_rows():
         for cell in row:
             cell.font = bold_font
-            cell.border = Border(
-                left=Side(border_style='thin'),
-                right=Side(border_style='thin'),
-                top=Side(border_style='thin'),
-                bottom=Side(border_style='thin')
-            )
+            cell.border = border
 
     # Ajustar el ancho de las columnas
     for column_cells in sheet.columns:
@@ -109,19 +112,6 @@ def write_sheet(sheet, dataframe):
         adjusted_width = (max_length + 2) * 1.2
         sheet.column_dimensions[column_cells[0].column_letter].width = adjusted_width
 
-            # Write DataFrame values to respective sheets
-        #for row in dataframe_to_rows(df1, index=False, header=True):
-        #    ws1.append(row)
-
-        #for row in dataframe_to_rows(df2, index=False, header=True):
-        #    ws2.append(row)
-
-     # Save the workbook to a file
-
-
-# Write DataFrame values to respective sheets with formatting
-
-
 def main():
     df_pedidos = consultar_pedidos_dia()
     df_pedidos.columns = ['Nombre', 'Menú']
@@ -130,7 +120,7 @@ def main():
     df_cantidades.columns = ['Cantidad', 'Menú']
     wb, ws1, ws2 = generar_excel(df_pedidos, df_cantidades)
     write_sheet(ws1, df_pedidos)
-    write_sheet(ws1, df_cantidades)
+    write_sheet(ws2, df_cantidades)
     wb.save('/tmp/Pedidos.xlsx')
 
 main()

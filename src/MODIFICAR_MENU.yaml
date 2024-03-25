@@ -36,5 +36,5 @@ inputSchema:
       type: string
       title: comentario
 targetGroups:
-- ADMIN
+- INTERNAL
 

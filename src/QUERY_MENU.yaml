@@ -43,7 +43,7 @@ template: |
   <div inner-h-t-m-l="[[item.template]]"></div>
 targetUsers: []
 targetGroups:
-- ADMIN
+- MENU
 sortables: []
 filterGroup:
   caption: Filtros

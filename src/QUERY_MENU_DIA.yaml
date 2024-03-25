@@ -22,5 +22,8 @@ inputSchema:
           - 'viernes'
 targetGroups:
 - ADMIN
+targetUsers:
+- cnieva
+- pmartinez
 menus:
 - UTILES

@@ -10,7 +10,9 @@ columns:
   fieldType: java.lang.String
 keys: []
 sortables: []
-targetUsers: []
+targetUsers:
+ - cnieva
+ - pmartinez
 targetGroups:
 - ADMIN
 dataSourceOptions:
