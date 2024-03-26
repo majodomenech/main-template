@@ -64,7 +64,8 @@ filterGroup:
     valueProvider: people::MENU
   defaultFilter:
     tipo: "Usuario"
-scripts: []
+scripts:
+- MENU/SCRIPT_NOTIFICAR
 services:
 - MENU/MODIFICAR_MENU
 exportable: true
