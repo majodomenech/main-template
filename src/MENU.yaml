@@ -35,5 +35,3 @@ properties:
         opcion:
           type: string
           title: Opción
-menus:
-- UTILES

@@ -1,6 +1,9 @@
 caption: Modificar Menu
 reusable: false
 requestUrl: run:MENU/MODIFICAR_MENU_SCRIPT
+requestOptions:
+  displayHints:
+    - refresh-on-close
 responseType: TERMINAL
 inputSchema:
   type: object
