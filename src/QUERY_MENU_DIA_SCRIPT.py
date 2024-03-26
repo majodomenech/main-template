@@ -22,18 +22,30 @@ def consultar_pedidos_dia():
     dia = bpm.context['dia']
 
     sql_pos = """
-            select CONCAT(first_, ' ', last_) as nombre,""" + dia + """
+           with
+pedidos as (select CONCAT(last_, ' ', first_) as nombre, """+ dia +""" 
             from menu.menu m
             join act_id_user a
             on m.nombre = a.id_
-            where """ + dia + """ != 'AUSENTE' and """ + dia + """!=''
-            union all
-            select CONCAT(first_, ' ', last_) as nombre,""" + dia + """
+			where """ + dia +"""!= 'AUSENTE' and """+ dia +""" !=''
+			order by 1 asc 
+			),
+			
+ausentes as (select CONCAT(last_, ' ', first_) as nombre, """+ dia +""" 
             from menu.menu m
-            join act_id_user a 
+            join act_id_user a
             on m.nombre = a.id_
-            where """ + dia + """ = 'AUSENTE' or """ + dia + """ = '' 
+			where """ + dia + """= 'AUSENTE' or """+ dia +""" =''
+			order by 1 asc 
+			)
+select *
+from pedidos
+union all
+select *
+from ausentes
+
             """
+    print(sql_pos)
     conn = _get_connection()
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cur.execute(sql_pos)
