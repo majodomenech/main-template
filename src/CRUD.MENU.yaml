@@ -2,6 +2,9 @@ name: CRUD.MENU
 caption: Menú semanal
 viewBindings: []
 columns:
+- name: id
+  caption: id
+  fieldType: java.util.Integer
 - name: dia
   caption: Día de la semana
   fieldType: java.lang.String

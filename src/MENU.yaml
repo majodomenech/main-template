@@ -2,9 +2,11 @@ type: object
 title: Menú semanal
 hints:
   fieldOrder:
+  - id
   - dia
   - menu
 required:
+  - id
   - dia
   - menu
 properties:
@@ -20,6 +22,9 @@ properties:
     hints:
       rowStart: true
       rowEnd: true
+  id:
+    type: integer
+    title: id
   menu:
     type: array
     items:
