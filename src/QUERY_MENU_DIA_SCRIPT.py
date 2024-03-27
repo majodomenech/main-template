@@ -45,7 +45,6 @@ select *
 from ausentes
 
             """
-    print(sql_pos)
     conn = _get_connection()
     cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cur.execute(sql_pos)
