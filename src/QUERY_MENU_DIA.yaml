@@ -23,7 +23,7 @@ inputSchema:
 targetGroups:
 - ADMIN
 targetUsers:
-- cnieva
+- cnievas
 - pmartinez
 menus:
 - UTILES
