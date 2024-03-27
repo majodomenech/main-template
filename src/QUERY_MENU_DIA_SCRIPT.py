@@ -3,10 +3,13 @@ import psycopg2
 import psycopg2.extras
 import redflagbpm
 import pandas as pd
+import datetime
 from redflagbpm import PgUtils
 from openpyxl import Workbook
 from openpyxl.utils.dataframe import dataframe_to_rows
 from openpyxl.styles import Font, Border, Side
+from openpyxl.utils import get_column_letter
+from openpyxl.styles import Alignment
 bpm = redflagbpm.BPMService()
 
 
@@ -90,7 +93,26 @@ def generar_excel(df1, df2):
 
 def write_sheet(sheet, dataframe):
     # Copiar el DataFrame a la hoja de Excel
-    for r_idx, row in enumerate(dataframe_to_rows(dataframe, index=False), 1):
+    dia = bpm.context['dia']
+    # Obtener el día actual
+    fecha_actual = datetime.datetime.now()
+    fecha = fecha_actual.strftime("%d/%m")
+    texto_fila = f"{dia} {fecha}"
+
+    # Obtener la primera celda de la nueva fila
+    cell = sheet.cell(row=1, column=1)
+
+    # Establecer el valor de la celda con el texto del día
+    cell.value = texto_fila
+
+    # Combinar las celdas para que el texto abarque todas las columnas
+    end_column = get_column_letter(sheet.max_column)
+    sheet.merge_cells(start_row=1, start_column=1, end_row=1, end_column=sheet.max_column)
+
+    # Ajustar la alineación del texto
+    cell.alignment = Alignment(horizontal='center')
+
+    for r_idx, row in enumerate(dataframe_to_rows(dataframe, index=False), 2):
         for c_idx, value in enumerate(row, 1):
             sheet.cell(row=r_idx, column=c_idx, value=value)
 
