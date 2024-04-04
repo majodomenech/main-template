@@ -97,7 +97,8 @@ def write_sheet(sheet, dataframe):
     # Obtener el día actual
     fecha_actual = datetime.datetime.now()
     fecha = fecha_actual.strftime("%d/%m")
-    texto_fila = f"{dia} {fecha}"
+    hora = datetime.datetime.now().strftime("%H:%M")
+    texto_fila = f"{dia} {fecha} {hora}"
 
     # Obtener la primera celda de la nueva fila
     cell = sheet.cell(row=1, column=1)
