@@ -6,7 +6,7 @@ rs=bpm.resourceService
 
 
 operador = bpm.context['userId']
-autorizados = ['cnievas', 'pmartinez', 'jluna']
+autorizados = ['cnievas', 'pmartinez']
 
 if (operador in autorizados):
     mensaje = "Ya está disponible el menú de la semana"
