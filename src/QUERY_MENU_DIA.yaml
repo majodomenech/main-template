@@ -1,0 +1,29 @@
+caption: Pedidos de menú del día
+reusable: false
+requestUrl: run:MENU/QUERY_MENU_DIA_SCRIPT
+responseType: ASSET
+inputSchema:
+  type: object
+  hints:
+    fieldOrder:
+    - dia
+  title: Pedidos de menú del día
+  required:
+    - dia
+  properties:
+    dia :
+        title: Dia a consultar
+        type: string
+        enum:
+          - 'lunes'
+          - 'martes'
+          - 'miercoles'
+          - 'jueves'
+          - 'viernes'
+targetGroups:
+- ADMIN
+targetUsers:
+- cnievas
+- pmartinez
+menus:
+- UTILES
