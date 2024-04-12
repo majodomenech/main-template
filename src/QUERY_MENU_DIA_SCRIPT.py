@@ -15,7 +15,7 @@ bpm = redflagbpm.BPMService()
 
 def _get_connection():
     # Manual connection, no config file
-    conn = PgUtils.get_connection(bpm, 'FLW')
+        conn = PgUtils.get_connection(bpm, 'FLW')
     conn.autocommit = True
     return conn
 
