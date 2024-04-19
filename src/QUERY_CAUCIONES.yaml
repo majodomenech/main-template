@@ -36,6 +36,8 @@ targetUsers: []
 targetGroups:
 - MENU
 sortables: []
+scripts:
+  - COLOCADORAS_FCI/MODIFICAR_VALORES
 exportable: true
 waitForFilter: false
 menus:
