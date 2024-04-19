@@ -8,9 +8,9 @@ from io import StringIO
 bpm = redflagbpm.BPMService()
 
 
-def _get_connection():
+def _get_connection(SOURCE):
     # Manual connection, no config file
-    conn = PgUtils.get_connection(bpm, 'FLW')
+    conn = PgUtils.get_connection(bpm, SOURCE)
     conn.autocommit = True
     return conn
 
@@ -19,7 +19,7 @@ def limpiar_sql():
     print("estoy limpiando")
     conn = None
     sql_limpiar = """ delete from colocadoras_fci.cauciones """
-    conn = _get_connection()
+    conn = _get_connection('FLW')
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     cur.execute(sql_limpiar)
     return
@@ -53,7 +53,7 @@ def consultar_cauciones():
     and "VENCIMIENTO" = CURRENT_DATE
     and op."RESUMEN" LIKE '%MAV%' 
      """
-    conn = _get_connection()
+    conn = _get_connection('SYC')
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     cur.execute(sql)
     data = cur.fetchall()
