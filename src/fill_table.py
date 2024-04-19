@@ -63,8 +63,15 @@ def consultar_cauciones():
 
 def create_csv(data):
     #row = [item['user_id_'] for item in data]
-    df = pd.DataFrame(data)#, columns=['nombre'])
+    df = pd.DataFrame(data)
+
     # Crear una lista de los días de la semana en español
+    columnas = ['operado', 'compra', 'paga', 'cerrada', 'boletos', 'derivacion']
+
+    # Agregar las columnas con los días de la semana y valores vacíos
+    for columna in columnas:
+        df[columna] = ''
+
     buffer = StringIO()
     df.to_csv(buffer, index=False, header=False, sep=';')
     buffer.seek(0)
@@ -74,7 +81,7 @@ def create_csv(data):
 
 def crear_tabla_cauciones(archivo, columnas):
     conn = None
-    conn = _get_connection()
+    conn = _get_connection('FLW')
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     try:
         cur.execute('SET search_path TO colocadoras_fci')
