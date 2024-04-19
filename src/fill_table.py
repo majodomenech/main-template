@@ -19,7 +19,8 @@ def limpiar_sql():
     print("estoy limpiando")
     conn = None
     sql_limpiar = """ delete from colocadoras_fci.cauciones """
-    conn = _get_connection('FLW')
+    conn = PgUtils.get_connection(bpm, 'FLW')
+    conn.autocommit = True
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     cur.execute(sql_limpiar)
     return
@@ -66,11 +67,16 @@ def create_csv(data):
     df = pd.DataFrame(data)
 
     # Crear una lista de los días de la semana en español
-    columnas = ['operado', 'compra', 'paga', 'cerrada', 'boletos', 'derivacion']
+    columnas = ['cerrada', 'boletos', 'derivacion']
 
     # Agregar las columnas con los días de la semana y valores vacíos
     for columna in columnas:
         df[columna] = ''
+
+    df['operado'] = 0
+    df['compra'] = 0
+    df['paga'] = 0
+
 
     buffer = StringIO()
     df.to_csv(buffer, index=False, header=False, sep=';')
