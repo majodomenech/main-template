@@ -12,28 +12,27 @@ def _get_connection():
     return conn
 
 
-def actualizar(context):
+def actualizar():
     conn = None
-
-    SET  column1 = value1, column2 = value2
-    sql_actualizar1 = """
+    cuenta = bpm.context['cuenta']
+    operado = bpm.context['operado']
+    cobra = bpm.context['cobra']
+    paga = bpm.context['paga']
+    sql_actualizar = """
                         update colocadoras_fci.cauciones
-            set """ + bpm.context['dia'] + " = %s"
-    sql_actualizar2 = """
-            where nombre = %s   
-                    """
-    sql_actualizar = sql_actualizar1 + sql_actualizar2
+                        set  operado = %s, cobra = %s, paga = %s
+                        where cuenta = %s
+                      """
+
     conn = _get_connection()
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-    cur.execute(sql_actualizar, context)
+    cur.execute(sql_actualizar, (operado,cobra,paga,cuenta,))
     return
 
-    menu = especificar_menu()
-    context = (menu, bpm.context['usuario'],)
-    actualizar(context)
 
-    # Cabeceras de la respuesta
-    print('Modificación exitosa')
-    bpm.reply({"type": "TERMINAL_UPDATE"})
-    bpm.context.setJsonValue("_responseHeaders", "content-type", "txt/html")
-    bpm.context.setJsonValue("_responseHeaders", "status", "200")
+actualizar()
+
+# Cabeceras de la respuesta
+print('Modificación exitosa')
+bpm.reply({"type": "TERMINAL_UPDATE"})
+
