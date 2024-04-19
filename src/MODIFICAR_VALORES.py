@@ -14,8 +14,10 @@ def _get_connection():
 
 def actualizar(context):
     conn = None
+
+    SET  column1 = value1, column2 = value2
     sql_actualizar1 = """
-                        update menu.menu
+                        update colocadoras_fci.cauciones
             set """ + bpm.context['dia'] + " = %s"
     sql_actualizar2 = """
             where nombre = %s   
@@ -26,22 +28,6 @@ def actualizar(context):
     cur.execute(sql_actualizar, context)
     return
 
-def especificar_menu():
-    if bpm.context['comentario'] is None:
-        comentario = ''
-    else:
-        comentario = bpm.context['comentario']
-
-    if bpm.context['menu2'] == 'Otro':
-        menu = comentario
-    elif comentario != '':
-        menu = bpm.context['menu2'] + ' ' + comentario
-    else:
-        menu = bpm.context['menu2']
-    return menu.strip()
-
-if bpm.context['tipo'] == 'Usuario':
-
     menu = especificar_menu()
     context = (menu, bpm.context['usuario'],)
     actualizar(context)
@@ -49,10 +35,5 @@ if bpm.context['tipo'] == 'Usuario':
     # Cabeceras de la respuesta
     print('Modificación exitosa')
     bpm.reply({"type": "TERMINAL_UPDATE"})
-    bpm.context.setJsonValue("_responseHeaders", "content-type", "txt/html")
-    bpm.context.setJsonValue("_responseHeaders", "status", "200")
-
-else:
-    print("La modificación debe hacerse desde la consulta usuario")
     bpm.context.setJsonValue("_responseHeaders", "content-type", "txt/html")
     bpm.context.setJsonValue("_responseHeaders", "status", "200")
