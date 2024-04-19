@@ -20,7 +20,7 @@ def crear_dataframe(conn):
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
     sql = """    
-            select *
+            select * from
     colocadoras_fci.cauciones
       """
 

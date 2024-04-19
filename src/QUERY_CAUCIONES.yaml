@@ -1,8 +1,7 @@
 name: MENU/QUERY_CAUCIONES
 caption: Colocadoras FCI
-dataSource: "run:MENU/QUERY_CAUCIONES_SCRIPT"
+dataSource: "run:COLOCADORAS_FCI/QUERY_CAUCIONES_SCRIPT"
 columns:
- #TODOS
 - name: fondo
   caption: Fondo
   fieldType: java.lang.String
@@ -14,16 +13,16 @@ columns:
   fieldType: java.lang.String
 - name: monto
   caption: Monto
-  fieldType: java.lang.Float
+  fieldType: java.lang.String
 - name: operado
   caption: Operado
-  fieldType: java.lang.Float
+  fieldType: java.lang.String
 - name: cobra
   caption: Cobra
-  fieldType: java.lang.Float
+  fieldType: java.lang.String
 - name: paga
   caption: Paga
-  fieldType: java.lang.Float
+  fieldType: java.lang.String
 - name: cerrada
   caption: Cerrada
   fieldType: java.lang.String

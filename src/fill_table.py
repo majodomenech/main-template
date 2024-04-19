@@ -37,7 +37,7 @@ def consultar_cauciones():
           WHEN op."MONEDA"=1 THEN 'ARS'
           ELSE 'USD'
     END AS "MONEDA",
-    mov."CANTIDAD" as monto
+    mov."CANTIDAD"::text as monto
     from "OP_COMPROBANTE" com 
     join "OP_OPERACION" op
     on com."OPERACION" = op."OP_OPERACION_ID"
@@ -66,16 +66,11 @@ def create_csv(data):
     #row = [item['user_id_'] for item in data]
     df = pd.DataFrame(data)
     # Crear una lista de los días de la semana en español
-    columnas = ['cerrada', 'boletos', 'derivacion']
+    columnas = ['cerrada', 'boletos', 'derivacion', 'operado', 'cobra', 'paga']
 
     # Agregar las columnas con los días de la semana y valores vacíos
     for columna in columnas:
         df[columna] = ''
-
-    df['operado'] = 0
-    df['cobra'] = 0
-    df['paga'] = 0
-
 
     buffer = StringIO()
     df.to_csv(buffer, index=False, header=False, sep=';')
