@@ -1,7 +1,6 @@
-name: MENU/QUERY_MENU
+name: MENU/QUERY_CAUCIONES
 caption: Colocadoras FCI
 dataSource: "run:MENU/QUERY_CAUCIONES_SCRIPT"
-
 columns:
  #TODOS
 - name: fondo
@@ -13,60 +12,31 @@ columns:
 - name: MONEDA
   caption: Moneda
   fieldType: java.lang.String
-- name: miercoles
-  caption: Miércoles
+- name: monto
+  caption: Monto
+  fieldType: java.lang.Float
+- name: operado
+  caption: Operado
+  fieldType: java.lang.Float
+- name: cobra
+  caption: Cobra
+  fieldType: java.lang.Float
+- name: paga
+  caption: Paga
+  fieldType: java.lang.Float
+- name: cerrada
+  caption: Cerrada
   fieldType: java.lang.String
-- name: jueves
-  caption: Jueves
+- name: boletos
+  caption: Boletos
   fieldType: java.lang.String
-- name: viernes
-  caption: Viernes
+- name: derivacion
+  caption: Derivación
   fieldType: java.lang.String
-#USUARIO-
-- name: dia
-  caption: Día
-  fieldType: java.lang.String
-- name: menu
-  caption: Menu
-  fieldType: java.lang.String
-- name: tipo
-  caption: tipo
-  fieldType: java.lang.String
-- name: template
-  caption: Template
-  fieldType: java.lang.String
-- name: usuario
-  caption: usuario
-  fieldType: java.lang.String
-template: |
-  <div inner-h-t-m-l="[[item.template]]"></div>
 targetUsers: []
 targetGroups:
 - MENU
 sortables: []
-filterGroup:
-  caption: Filtros
-  filters:
-  - name: tipo
-    caption: Tipo
-    fieldType:  java.lang.String
-    required: true
-    dependents: []
-    possibleValues:
-      - "Usuario"
-      - "Todos"
-  - name: usuario
-    caption: Usuario
-    fieldType: java.lang.String
-    required: false
-    dependents: [ ]
-    valueProvider: people::MENU
-  defaultFilter:
-    tipo: "Usuario"
-scripts:
-- MENU/SCRIPT_NOTIFICAR
-services:
-- MENU/MODIFICAR_MENU
 exportable: true
 waitForFilter: false
 menus:

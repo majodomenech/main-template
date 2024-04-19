@@ -65,7 +65,6 @@ def consultar_cauciones():
 def create_csv(data):
     #row = [item['user_id_'] for item in data]
     df = pd.DataFrame(data)
-
     # Crear una lista de los días de la semana en español
     columnas = ['cerrada', 'boletos', 'derivacion']
 
@@ -74,7 +73,7 @@ def create_csv(data):
         df[columna] = ''
 
     df['operado'] = 0
-    df['compra'] = 0
+    df['cobra'] = 0
     df['paga'] = 0
 
 
