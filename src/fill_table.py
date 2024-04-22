@@ -37,7 +37,7 @@ def consultar_cauciones():
           WHEN op."MONEDA"=1 THEN 'ARS'
           ELSE 'USD'
     END AS "MONEDA",
-    mov."CANTIDAD"::text as monto
+    REPLACE(REPLACE(REPLACE(to_char(mov."CANTIDAD", '999,999,999,999,999,999.99'::text), ',', '*'), '.', ','),'*','.') AS monto
     from "OP_COMPROBANTE" com 
     join "OP_OPERACION" op
     on com."OPERACION" = op."OP_OPERACION_ID"
