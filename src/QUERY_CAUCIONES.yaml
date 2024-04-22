@@ -38,6 +38,7 @@ targetGroups:
 sortables: []
 scripts:
   - COLOCADORAS_FCI/MODIFICAR_VALORES
+  - COLOCADORAS_FCI/REALIZAR_CHECKS
 exportable: true
 waitForFilter: false
 menus:
