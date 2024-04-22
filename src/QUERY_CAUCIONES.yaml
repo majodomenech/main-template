@@ -34,7 +34,9 @@ columns:
   fieldType: java.lang.String
 targetUsers: []
 targetGroups:
-- MENU
+- OPE
+- OPB
+- ADMIN
 sortables: []
 scripts:
   - COLOCADORAS_FCI/MODIFICAR_VALORES
