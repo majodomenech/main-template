@@ -13,16 +13,19 @@ columns:
   fieldType: java.lang.String
 - name: monto
   caption: Monto
-  fieldType: java.lang.String
+  fieldType: java.math.BigDecimal
+  format: '#,##0.00'
 - name: operado
   caption: Operado
-  fieldType: java.lang.String
+  fieldType: java.math.BigDecimal
+  format: '#,##0.00'
 - name: cobra
-  caption: Cobra
-  fieldType: java.lang.String
+  fieldType: java.math.BigDecimal
+  format: '#,##0.00'
 - name: paga
   caption: Paga
-  fieldType: java.lang.String
+  fieldType: java.math.BigDecimal
+  format: '#,##0.00'
 - name: cerrada
   caption: Cerrada
   fieldType: java.lang.String

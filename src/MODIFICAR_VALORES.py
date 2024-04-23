@@ -15,9 +15,22 @@ def _get_connection():
 def actualizar():
     conn = None
     cuenta = bpm.context['cuenta']
-    operado = bpm.context['operado2']
-    cobra = bpm.context['cobra2']
-    paga = bpm.context['paga2']
+    monto = bpm.context['monto']
+    if bpm.context['operado2'] is None:
+        operado = bpm.context['operado']
+    else:
+        operado = bpm.context['operado2']
+
+    if operado > monto:
+        paga = operado - monto
+        cobra = 0
+    if operado < monto:
+        paga = monto
+        cobra = monto - operado
+    else:
+        paga = 0
+        cobra = 0
+
     sql_actualizar = """
                         update colocadoras_fci.cauciones
                         set  operado = %s, cobra = %s, paga = %s
