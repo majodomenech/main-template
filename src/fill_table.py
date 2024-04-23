@@ -30,7 +30,7 @@ def limpiar_sql():
 def consultar_cauciones():
     conn = None
     sql = """ 
-        select 
+       with almost as (select 
     esq."DENOMINACION" as fondo,
     esq."ID" as cuenta,
     CASE 
@@ -53,7 +53,10 @@ def consultar_cauciones():
     AND op."ESTADO" !='ANULADA'
     AND com."CONCEPTO" = 'Concurrencia - Caución colocadora (Cierre)'
     and "VENCIMIENTO" = CURRENT_DATE
-    and op."RESUMEN" LIKE '%MAV%' 
+    and op."RESUMEN" LIKE '%MAV%')
+select fondo, cuenta, "MONEDA", sum(monto)
+from almost
+group by 1,2,3' 
      """
     conn = _get_connection('SYC')
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
