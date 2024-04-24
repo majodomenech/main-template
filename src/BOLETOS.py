@@ -15,17 +15,17 @@ def _get_connection():
 def actualizar():
     conn = None
     cuenta = bpm.context['cuenta']
-
+    boletos = bpm.context['boletos2']
 
     sql_actualizar = """
                         update colocadoras_fci.cauciones
-                        set  boletos = 'Ok'
+                        set  boletos = %s
                         where cuenta = %s
                       """
 
     conn = _get_connection()
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-    cur.execute(sql_actualizar, (cuenta,))
+    cur.execute(sql_actualizar, (boletos, cuenta,))
     return
 
 
