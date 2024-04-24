@@ -19,7 +19,7 @@ def actualizar():
 
     sql_actualizar = """
                         update colocadoras_fci.cauciones
-                        set  cerrada = '%s'
+                        set  cerrada = %s
                         where cuenta = %s
                       """
 
