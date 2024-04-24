@@ -19,13 +19,13 @@ def actualizar():
 
     sql_actualizar = """
                         update colocadoras_fci.cauciones
-                        set  cerrada = 'ok'
+                        set  boletos = 'Ok'
                         where cuenta = %s
                       """
 
     conn = _get_connection()
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
-    cur.execute(sql_actualizar, (cerrada,boletos,derivacion,cuenta,))
+    cur.execute(sql_actualizar, (cuenta,))
     return
 
 

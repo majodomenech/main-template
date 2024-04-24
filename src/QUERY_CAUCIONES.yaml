@@ -44,7 +44,9 @@ targetGroups:
 sortables: []
 scripts:
   - COLOCADORAS_FCI/MODIFICAR_VALORES
-  - COLOCADORAS_FCI/REALIZAR_CHECKS
+  - COLOCADORAS_FCI/CERRAR
+  - COLOCADORAS_FCI/BOLETOS
+  - COLOCADORAS_FCI/DERIVACION
 exportable: true
 waitForFilter: false
 menus:
