@@ -23,9 +23,10 @@ def actualizar():
 
     if operado > monto:
         paga = operado - monto
+        print(paga)
         cobra = 0
-    if operado < monto:
-        paga = monto
+    elif operado < monto:
+        paga = 0
         cobra = monto - operado
     else:
         paga = 0
