@@ -36,7 +36,7 @@ def consultar_cauciones():
     CASE 
           WHEN op."MONEDA"=1 THEN 'ARS'
           ELSE 'USD'
-    END AS "MONEDA",
+    END AS moneda,
     -- REPLACE(REPLACE(REPLACE(to_char(mov."CANTIDAD", '999,999,999,999,999,999.99'::text), ',', '*'), '.', ','),'*','.') AS monto
     mov."CANTIDAD" AS monto
     from "OP_COMPROBANTE" com 
@@ -54,9 +54,9 @@ def consultar_cauciones():
     AND com."CONCEPTO" = 'Concurrencia - Caución colocadora (Cierre)'
     and "VENCIMIENTO" = CURRENT_DATE
     and op."RESUMEN" LIKE '%MAV%')
-select fondo, cuenta, "MONEDA", sum(monto)
+select fondo, cuenta, moneda, sum(monto) as monto
 from almost
-group by 1,2,3' 
+group by 1, 2, 3
      """
     conn = _get_connection('SYC')
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
@@ -69,6 +69,9 @@ group by 1,2,3'
 def create_csv(data):
     #row = [item['user_id_'] for item in data]
     df = pd.DataFrame(data)
+  #  df = df.groupby(['fondo',
+   #     'cuenta',
+   #     'moneda']).sum()
     # Crear una lista de los días de la semana en español
     columnas = ['cerrada', 'boletos', 'derivacion']
 
