@@ -22,7 +22,7 @@ def crear_dataframe(conn):
     sql = """    
             select *
     from colocadoras_fci.cauciones
-    order by fondo
+    order by monto desc, operado desc,fondo
       """
 
     cur.execute(sql, )

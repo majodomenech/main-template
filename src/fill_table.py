@@ -30,7 +30,7 @@ def limpiar_sql():
 def consultar_cauciones():
     conn = None
     sql = """ 
-       with almost as (select 
+      with almost as (select 
     esq."DENOMINACION" as fondo,
     esq."ID" as cuenta,
     CASE 
@@ -42,7 +42,7 @@ def consultar_cauciones():
     from "OP_COMPROBANTE" com 
     join "OP_OPERACION" op
     on com."OPERACION" = op."OP_OPERACION_ID"
-    join
+    right join
     "CTA_ESQUEMA" esq
     ON op."CUENTA"=esq."CTA_ESQUEMA_ID"
     and esq."CARTERA"=158 --solo fci
@@ -53,10 +53,25 @@ def consultar_cauciones():
     AND op."ESTADO" !='ANULADA'
     AND com."CONCEPTO" = 'Concurrencia - Caución colocadora (Cierre)'
     and "VENCIMIENTO" = CURRENT_DATE
-    and op."RESUMEN" LIKE '%MAV%')
-select fondo, cuenta, moneda, sum(monto) as monto
+    and op."RESUMEN" LIKE '%MAV%'),
+final as (select fondo, cuenta, moneda, sum(monto) as monto
 from almost
-group by 1, 2, 3
+group by 1, 2, 3),
+sin_vencimiento as(
+select
+esq."DENOMINACION" as fondo,
+esq."ID" as cuenta,
+'' as moneda,
+0 as monto
+from "CTA_ESQUEMA" esq
+where esq."CARTERA"=158
+order by 1)
+select *
+from final
+union all
+select *
+from
+sin_vencimiento
      """
     conn = _get_connection('SYC')
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
@@ -67,11 +82,7 @@ group by 1, 2, 3
 
 
 def create_csv(data):
-    #row = [item['user_id_'] for item in data]
     df = pd.DataFrame(data)
-  #  df = df.groupby(['fondo',
-   #     'cuenta',
-   #     'moneda']).sum()
     # Crear una lista de los días de la semana en español
     columnas = ['cerrada', 'boletos', 'derivacion']
 
