@@ -20,8 +20,8 @@ def crear_dataframe(conn):
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
 
     sql = """    
-            select * from, null as template
-    colocadoras_fci.cauciones
+            select *
+    from colocadoras_fci.cauciones
     order by fondo
       """
 

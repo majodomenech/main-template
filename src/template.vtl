@@ -1,12 +1,11 @@
 <style>
     .cell{border-radius: var(--lumo-border-radius); background-color: var(--lumo-contrast-10pct);padding:0.2em;}
-    .datos6{display: grid;  grid-template-columns: repeat(10, minmax(9em, 1fr));  grid-gap: 0.2em;}
+    .datos10{display: grid;  grid-template-columns: repeat(10, minmax(9em, 1fr));  grid-gap: 0.2em;}
+    .datos6{display: grid;  grid-template-columns: repeat(6, minmax(9em, 1fr));  grid-gap: 0.2em;}
     .wrap{text-wrap: initial;}
 </style>
-
-
 <div class="datos10">
-    <div class="cell"><b> $!{fondo}</b></div>
+    <div class="cell wrap"><b> $!{fondo}</b></div>
     <div class="cell wrap"><b> $!{cuenta}</b></div>
     <div class="cell wrap"><b> $!{moneda}</b></div>
     <div class="cell wrap"><b> $!{String.format($Locale_ES,"%,.2f",$!monto)}</b></div>

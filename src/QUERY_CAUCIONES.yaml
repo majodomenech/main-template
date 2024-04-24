@@ -36,11 +36,6 @@ columns:
 - name: derivacion
   caption: Derivación
   fieldType: java.lang.String
-- name: template
-  caption: Template
-  fieldType: java.lang.String
-template: |
-  <div inner-h-t-m-l="[[item.template]]"></div>
 targetUsers: []
 targetGroups:
 - OPE

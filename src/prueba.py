@@ -16,25 +16,10 @@ def actualizar():
     conn = None
     cuenta = bpm.context['cuenta']
 
-    if bpm.context['cerrada2'] is None:
-        cerrada = bpm.context['cerrada']
-    else:
-        cerrada = bpm.context['cerrada2']
-
-    if bpm.context['boletos2'] is None:
-        boletos = bpm.context['boletos']
-    else:
-        boletos = bpm.context['boletos2']a
-
-    if bpm.context['derivacion2'] is None:
-        derivacion = bpm.context['derivacion']
-    else:
-        derivacion = bpm.context['derivacion2']
-
 
     sql_actualizar = """
                         update colocadoras_fci.cauciones
-                        set  cerrada = %s, boletos = %s, derivacion = %s
+                        set  cerrada = 'ok'
                         where cuenta = %s
                       """
 
