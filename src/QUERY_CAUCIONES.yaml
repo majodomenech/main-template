@@ -8,7 +8,7 @@ columns:
 - name: cuenta
   caption: Cuenta
   fieldType: java.lang.String
-- name: MONEDA
+- name: moneda
   caption: Moneda
   fieldType: java.lang.String
 - name: monto
@@ -20,6 +20,7 @@ columns:
   fieldType: java.math.BigDecimal
   format: '#,##0.00'
 - name: cobra
+  caption: Cobra
   fieldType: java.math.BigDecimal
   format: '#,##0.00'
 - name: paga
@@ -35,6 +36,11 @@ columns:
 - name: derivacion
   caption: Derivación
   fieldType: java.lang.String
+- name: template
+  caption: Template
+  fieldType: java.lang.String
+template: |
+  <div inner-h-t-m-l="[[item.template]]"></div>
 targetUsers: []
 targetGroups:
 - OPE
