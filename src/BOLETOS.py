@@ -16,6 +16,8 @@ def actualizar():
     conn = None
     cuenta = bpm.context['cuenta']
     boletos = bpm.context['boletos2']
+    if boletos =='Anular':
+        boletos = ''
 
     sql_actualizar = """
                         update colocadoras_fci.cauciones

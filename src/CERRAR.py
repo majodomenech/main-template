@@ -16,7 +16,8 @@ def actualizar():
     conn = None
     cuenta = bpm.context['cuenta']
     cerrada = bpm.context['cerrada2']
-
+    if cerrada =='Anular':
+        cerrada = ''
     sql_actualizar = """
                         update colocadoras_fci.cauciones
                         set  cerrada = %s
