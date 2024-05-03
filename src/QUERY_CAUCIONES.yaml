@@ -47,6 +47,8 @@ scripts:
   - COLOCADORAS_FCI/CERRAR
   - COLOCADORAS_FCI/BOLETOS
   - COLOCADORAS_FCI/DERIVACION
+  - COLOCADORAS_FCI/DESCARGAR_EXCEÑ
+
 exportable: true
 waitForFilter: false
 menus:
