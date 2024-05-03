@@ -118,5 +118,5 @@ def main():
 
 
 main()
-#bpm.context.setJsonValue("_responseHeaders", "content-type", "application/vnd.ms-excel")
-#bpm.context.setJsonValue("_responseHeaders", "resource", "/tmp/Pedidos.xlsx")
+bpm.context.setJsonValue("_responseHeaders", "content-type", "application/vnd.ms-excel")
+bpm.context.setJsonValue("_responseHeaders", "resource", "/tmp/Pedidos.xlsx")
