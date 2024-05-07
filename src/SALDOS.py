@@ -53,7 +53,7 @@ def main():
     saldomav = bpm.context['saldomav']
     cobra = qry[0]['cobra']
     paga = qry[0]['paga']
-    total = saldomav-cobra+paga
+    total = round(saldomav-cobra+paga,2)
     saldomav = format_number(saldomav)
     total = format_number(total)
 
