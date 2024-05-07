@@ -30,7 +30,7 @@ def limpiar_sql():
 def consultar_cauciones():
     conn = None
     sql = """ 
-      with almost as (select 
+     with almost as (select 
     esq."DENOMINACION" as fondo,
     esq."ID" as cuenta,
     CASE 
@@ -65,13 +65,18 @@ esq."ID" as cuenta,
 0 as monto
 from "CTA_ESQUEMA" esq
 where esq."CARTERA"=158
-order by 1)
+and esq."ID" not in (select cuenta from almost) 
+order by 1),
+casi as (
 select *
 from final
 union all
 select *
 from
-sin_vencimiento
+sin_vencimiento)
+select *,
+monto as cobra
+from casi
      """
     conn = _get_connection('SYC')
     cur = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
@@ -92,7 +97,10 @@ def create_csv(data):
 
     columnas = ['operado', 'cobra', 'paga']
     for columna in columnas:
-        df[columna] = 0
+        if columna =='cobra':
+            df[columna] = df['monto']
+        else:
+         df[columna] = 0
 
     buffer = StringIO()
     df.to_csv(buffer, index=False, header=False, sep=';')
