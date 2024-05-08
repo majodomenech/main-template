@@ -1,0 +1,55 @@
+name: COLOCADORAS_FCI/QUERY_CAUCIONES
+caption: Colocadoras FCI
+dataSource: "run:COLOCADORAS_FCI/QUERY_CAUCIONES_SCRIPT"
+columns:
+- name: fondo
+  caption: Fondo
+  fieldType: java.lang.String
+- name: cuenta
+  caption: Cuenta
+  fieldType: java.lang.String
+- name: moneda
+  caption: Moneda
+  fieldType: java.lang.String
+- name: monto
+  caption: Monto
+  fieldType: java.math.BigDecimal
+  format: '#,##0.00'
+- name: operado
+  caption: Operado
+  fieldType: java.math.BigDecimal
+  format: '#,##0.00'
+- name: cobra
+  caption: Cobra
+  fieldType: java.math.BigDecimal
+  format: '#,##0.00'
+- name: paga
+  caption: Paga
+  fieldType: java.math.BigDecimal
+  format: '#,##0.00'
+- name: cerrada
+  caption: Cerrada
+  fieldType: java.lang.String
+- name: boletos
+  caption: Boletos
+  fieldType: java.lang.String
+- name: derivacion
+  caption: Derivación
+  fieldType: java.lang.String
+targetUsers: []
+targetGroups:
+- OPE
+- OPB
+- ADMIN
+sortables: []
+scripts:
+  - COLOCADORAS_FCI/MODIFICAR_VALORES
+  - COLOCADORAS_FCI/CERRAR
+  - COLOCADORAS_FCI/BOLETOS
+  - COLOCADORAS_FCI/DERIVACION
+  - COLOCADORAS_FCI/SALDOS
+
+exportable: true
+waitForFilter: false
+menus:
+  - UTILES
